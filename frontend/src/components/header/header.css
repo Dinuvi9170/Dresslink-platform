@@ -1,0 +1,115 @@
+/* General header Styling */
+.header {
+    background-color: #ffffff;
+    color: #2C3E50;
+    padding: 8px 32px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  
+  /* Container for Alignment */
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /*max-width: 1200px;
+    max-height: 50px;*/
+    width: 80%;
+  }
+  
+  /* Logo */
+  
+  .header__logo img {
+    width: auto;
+    height: 180px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .header__logo img:hover {
+    transform: scale(1.1);
+  }
+  
+  /* Nav Links */
+  .header__links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  
+  .user{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    position: relative;
+  }
+  .user .header__user-icon {
+    width: 24px;
+    height: 24px;   
+    border-radius: 50%;
+    object-fit: cover;
+    }
+   
+   .header__links .user .options {
+    position: absolute;
+    top: 60px;
+    right: 0px;
+    background-color: #ffffff;
+    color: #000000;
+    padding: 16px 32px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 200px;
+  }
+  
+  
+  
+  .header__links a {
+    color: #2C3E50;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: color 0.3s ease;/*transform 0.2s ease;*/
+  }
+  
+  .header__links a:hover {
+    background-color: #1ABC9C20;
+    color: #1ABC9C;
+    transform: translateY(-2px);
+  }
+  
+  .header__links a:focus {
+    outline: 2px solid #1ABC9C;
+    outline-offset: 2px;
+    
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .header__links {
+      flex-direction:column;
+      gap: 12px;
+      background-color: #ffffff;
+      position:absolute;
+      top: 80px;
+      right: 32px;
+      padding: 20px;
+      border-radius: 10px;
+      /*box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);*/
+    }
+  
+    .header {
+      padding: 12px 20px;
+    }
+  
+    .header__logo img {
+      width: 120px;
+    }
+  }
+  
