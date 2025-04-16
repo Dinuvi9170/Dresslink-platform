@@ -1,5 +1,6 @@
 import React from 'react';
 import "./featured.css";
+import Tailoring from "../../assets/tailoring-image.png";
 import { useNavigate } from "react-router-dom";
 
 
@@ -18,7 +19,7 @@ const Featured = () => {
             <button className='btn' onClick={handleExplore}>Explore Now</button>
         </div>
         <div className='right'>
-          <img src="#" alt="featured" className='featured-img' />
+          <img src={Tailoring} alt="featured" className='featured-img' />
            
         </div>    
     </div>

@@ -6,8 +6,7 @@
     padding: 60px 80px;
     border-radius: 16px;
     margin: 40px auto;
-    max-width:1200px;
-    /*box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);*/
+    max-width:1000px;
   }
   
   .left {
@@ -51,5 +50,13 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+    
+  }
+  .featured-img {
+    max-width: 400%;
+    height: 300px;
+    border-radius: 0px 12px;
+    object-fit:contain;
+    padding-left: -50px;
   }
   

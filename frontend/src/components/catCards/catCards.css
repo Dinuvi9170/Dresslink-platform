@@ -1,0 +1,125 @@
+.catCards {
+    padding: 40px 20px;
+    background-color: #333333;
+    color: #fff;
+  }
+  
+  .catCards-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .catCards-h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .catCards-p {
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+    color: #ccc;
+    max-width: 600px;
+    margin-inline: auto;
+  }
+  
+  .catCards-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+  }
+  
+  .catCards-item {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    aspect-ratio: 16/9;
+  }
+  
+  .catCards-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    border-radius: 12px;
+  }
+  
+  .catCards-item:hover img {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+  
+  .catCards-item .desc,
+  .catCards-item .title {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    color: #fff;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    padding: 0 15px;
+    box-sizing: border-box;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+  }
+  
+  .catCards-item .title {
+    bottom: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .catCards-item .desc {
+    top: 20px;
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+  
+  .catCards-item:hover .desc,
+  .catCards-item:hover .title {
+    opacity: 1;
+  }
+  
+  /* Responsive UI*/
+  @media screen and (max-width: 768px) {
+    .catCards-h1 {
+      font-size: 2rem;
+    }
+  
+    .catCards-p {
+      font-size: 1rem;
+    }
+  
+    .catCards-item .title {
+      font-size: 1rem;
+    }
+  
+    .catCards-item .desc {
+      font-size: 0.85rem;
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .catCards {
+      padding: 20px 10px;
+    }
+  
+    .catCards-h1 {
+      font-size: 1.7rem;
+    }
+  
+    .catCards-p {
+      font-size: 0.95rem;
+    }
+  
+    .catCards-list {
+      gap: 20px;
+    }
+  
+    .catCards-item {
+      aspect-ratio: 4/3;
+    }
+  }

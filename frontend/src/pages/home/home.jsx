@@ -1,6 +1,8 @@
 import React from 'react';
 import Featured from '../../components/featured/featured.jsx';
 import Benefits from '../../components/benefits/benefits.jsx';
+import CatCards from '../../components/catCards/catCards.jsx';
+import categories from '../../components/catergories.jsx';
 import Landing1 from '../../assets/landing1.png';
 import "./home.css";
 
@@ -17,6 +19,7 @@ const Home=() => {
           <img src={Landing1} alt="home" className='home-img' />
         </div>
       </div>
+      <CatCards item={categories}/>
       <Featured />
       <Benefits/>
 
