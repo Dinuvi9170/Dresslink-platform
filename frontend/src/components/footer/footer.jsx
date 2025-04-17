@@ -1,6 +1,10 @@
 import React from "react";
 import "./footer.css";
 import Logo from "../../assets/Dresslink logo1.png";
+import Facebook from "../../assets/facebook.png";
+import Twitter from "../../assets/twitter.png";
+import Instagram from "../../assets/instagram.png";
+import Youtube from "../../assets/YouTube.png";  
 
 const Footer = () => {
   return (
@@ -12,11 +16,10 @@ const Footer = () => {
           <br></br>
           <br></br>
           <div className="footer-details-main-social">
-            <img id="image" alt="Facebook"></img>
-            <img id="image" alt="Twitter"></img>
-            <img id="image" alt="Instagram"></img>
-            <img id="image" alt="LinkedIn"></img>
-            <img id="image" alt="YouTube"></img>
+            <img src={Facebook} id="image" alt="Facebook"></img>
+            <img src={Twitter} id="image" alt="Twitter"></img>
+            <img src={Instagram} id="image" alt="Instagram"></img>
+            <img src={Youtube} id="image" alt="YouTube"></img>
           </div>
         </div>
         <div className="footer-details">
@@ -45,7 +48,7 @@ const Footer = () => {
               <span>Support</span>
             </li>
             <li>Getting Started</li>
-            <li>Help cnter</li>
+            <li>Help center</li>
           </ul>
         </div>
       </div>

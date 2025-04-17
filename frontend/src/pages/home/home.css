@@ -31,7 +31,7 @@
   }
   
   .btn {
-    background-color: #1ABC9C; /* Teal color */
+    background-color: #1ABC9C; 
     color: white;
     padding: 14px 28px;
     border: none;
@@ -42,7 +42,7 @@
   }
   
   .btn:hover {
-    background-color: #16a085;  /* Slightly darker Teal */
+    background-color: #16a085;  
     transform: scale(1.05);
   }
 
@@ -62,4 +62,62 @@
     display: block;
     object-fit:contain;
   }
+
+  .newsletter-section {
+    display: center;
+    text-align: center;
+    border-top: 1px solid #eee;
+  }
+  .newsletter-container {
+    display: flex;
+    flex-direction: column;
+    margin: 40px auto;
+    background-color:#f9f9f9;
+    padding: 40px 80px;
+    border-radius: 16px;
+    max-width: 1200px;
+  }
+  
+  .newsletter-title {
+    font-size: 28px;
+    color: #2C3E50;
+    margin-bottom: 10px;
+  }
+  
+  .newsletter-desc {
+    font-size: 16px;
+    color: #000;
+    margin-bottom: 20px;
+  }
+  
+  .newsletter-form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .newsletter-input {
+    padding: 12px 16px;
+    border: 1px solid #1ABC9C;
+    border-radius: 8px;
+    width: 250px;
+    font-size: 16px;
+  }
+  
+  .newsletter-button {
+    background-color: #1ABC9C;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .newsletter-button:hover {
+    background-color: #17a085;
+  }
+  
   

@@ -23,6 +23,26 @@ const Home=() => {
       <Featured />
       <Benefits/>
 
+      {/*....Subscribe....*/}
+
+      <div className="newsletter-section">
+        <div className="newsletter-container">
+          <h2 className="newsletter-title">Stay in the Stitch Loop</h2>
+          <p className="newsletter-desc">
+            Join our newsletter for the latest designs, tailoring tips, and material deals!
+          </p>
+          <form className="newsletter-form">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="newsletter-input"
+              required
+            />
+            <button type="submit" className="newsletter-button">Subscribe Now</button>
+          </form>
+        </div>
+      </div>
+
     </div>
   );
 }
