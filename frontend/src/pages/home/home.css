@@ -59,8 +59,9 @@
     max-width: 100%;
     height: auto;
     border-radius: 0px 12px;
-    display: block;
-    object-fit:contain;
+    display:block;
+    object-fit:fill;
+    
   }
 
   .newsletter-section {

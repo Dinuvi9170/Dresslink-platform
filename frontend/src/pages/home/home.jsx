@@ -3,7 +3,7 @@ import Featured from '../../components/featured/featured.jsx';
 import Benefits from '../../components/benefits/benefits.jsx';
 import CatCards from '../../components/catCards/catCards.jsx';
 import categories from '../../components/catergories.jsx';
-import Landing1 from '../../assets/landing1.png';
+import Landing1 from '../../assets/landing.png';
 import "./home.css";
 
 const Home=() => {
