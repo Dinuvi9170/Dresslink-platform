@@ -35,16 +35,16 @@
     overflow: hidden;
     border-radius: 12px;
     text-decoration: none;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.4s ease;
     aspect-ratio: 16/9;
   }
-  
+
   .catCards-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.4s ease, opacity 0.4s ease;
+    transition: transform 0.4s ease;
     border-radius: 12px;
   }
   
@@ -59,7 +59,7 @@
     width: 100%;
     left: 0;
     color: #fff;
-    text-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    text-shadow: rgba(0, 0, 0, 0.6);
     padding: 0 15px;
     box-sizing: border-box;
     transition: opacity 0.3s ease;
@@ -75,7 +75,7 @@
   .catCards-item .desc {
     top: 20px;
     font-size: 0.9rem;
-    opacity: 0.9;
+    opacity: 1;
   }
   
   .catCards-item:hover .desc,

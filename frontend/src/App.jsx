@@ -5,6 +5,7 @@ import Layout from "./layout";
 import Home from "./pages/home/home";
 import Professionals from "./pages/professionals/professionals";
 import Fabrics from "./pages/fabrics/fabrics";
+import Myfit from "./pages/myfit/myfit";
 
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
         <Route index element={<Home />} />
         <Route path="professionals" element={<Professionals />} />
         <Route path="fabrics" element={<Fabrics />} /> 
+        <Route path="myfit" element={<Myfit />} />
         {/* Add more routes as needed */}
         
       

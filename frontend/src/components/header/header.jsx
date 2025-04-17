@@ -43,6 +43,9 @@ const Header = () => {
           <Link to="/fabrics" className="link">
             Fabrics & Materials
           </Link>
+          <Link to="/myfit" className="link">
+            Preview My Fit  
+          </Link>  
 
           {/* Show Become a Seller and Sign In only when user is not signed in */}
           {!isUser && (

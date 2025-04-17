@@ -1,12 +1,17 @@
-.featured {
+.featured, .featured1  {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #f8f9fa;
     padding: 60px 80px;
     border-radius: 16px;
     margin: 40px auto;
-    max-width:1000px;
+    max-width:1200px;
+  }
+  .featured {
+    background-color: #f8f9fa;
+  }
+  .featured1 {
+    background: linear-gradient(to left,  #b4b7e5 0%, #f8f9fa 100%);
   }
   
   .left {
@@ -53,9 +58,9 @@
     
   }
   .featured-img {
-    max-width: 400%;
-    height: 300px;
-    border-radius: 0px 12px;
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px 12px;
     object-fit:contain;
     padding-left: -50px;
   }
