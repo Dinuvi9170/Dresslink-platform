@@ -11,8 +11,8 @@ const Header = () => {
 
   // Simulated current user object (toggle these to simulate login state)
   const Currentuser = {
-    username: "John Doe",
-    Seller: true,
+    //username: "John Doe",
+    //Seller: true,
   };
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const Header = () => {
           {/* Show Become a Seller and Sign In only when user is not signed in */}
           {!isUser && (
             <>
-              <a href="#become-seller">Become a Seller</a>
+              <Link to="/BecomeSeller" className="link">Become a Seller</Link>
               <a
                 href="#signin"
                 onClick={(e) => {
