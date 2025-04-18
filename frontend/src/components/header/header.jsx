@@ -5,15 +5,17 @@ import { useNavigate } from "react-router-dom";
 import Search from "../../assets/search.png";
 import Logo from "../../assets/logo.png";
 
+
 const Header = () => {
   const [open, setOpen] = useState(false);
   //{/*const [isSeller, setIsSeller] = useState(false);*/}
   const [isUser, setIsUser] = useState(false);
+  
 
   // Simulated current user object (toggle these to simulate login state)
   const Currentuser = {
-    username: "John Doe",
-    Seller: true,
+    //username: "John Doe",
+    //Seller: true,
   };
 
   useEffect(() => {
