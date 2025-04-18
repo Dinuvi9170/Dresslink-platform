@@ -7,6 +7,7 @@ import Professionals from "./pages/professionals/professionals";
 import Fabrics from "./pages/fabrics/fabrics";
 import Myfit from "./pages/myfit/myfit";
 import BecomeSeller from "./pages/becomeSeller/becomeSeller";
+import Login from "./pages/login/login"
 
 
 const App = () => {
@@ -18,6 +19,8 @@ const App = () => {
         <Route path="fabrics" element={<Fabrics />} /> 
         <Route path="myfit" element={<Myfit />} />
         <Route path="becomeSeller" element={<BecomeSeller />} />
+        <Route path="login" element={<Login/>}/>
+        
           
       </Route>
         

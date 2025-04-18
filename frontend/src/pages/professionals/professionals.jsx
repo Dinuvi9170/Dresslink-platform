@@ -1,6 +1,5 @@
 import React from 'react';
 import "./professionals.css";
-import Img from "../../assets/tailoring-image.png";
 
 const Professionals = () => {
   return (

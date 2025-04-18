@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./header.css";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Search from "../../assets/search.png";
 import Logo from "../../assets/logo.png";
 
@@ -11,8 +12,8 @@ const Header = () => {
 
   // Simulated current user object (toggle these to simulate login state)
   const Currentuser = {
-    //username: "John Doe",
-    //Seller: true,
+    username: "John Doe",
+    Seller: true,
   };
 
   useEffect(() => {
@@ -22,10 +23,11 @@ const Header = () => {
     }
   }, []);
 
+  const navigate= useNavigate();
   // Navigate to sign-in page if user isn't signed in yet
   const handleSignIn = (e) => {
     e.preventDefault();
-    navigate("/signin");
+    navigate("/login");
   };
 
   return (
@@ -59,14 +61,14 @@ const Header = () => {
           {!isUser && (
             <>
               <Link to="/BecomeSeller" className="link">Become a Seller</Link>
-              <a
-                href="#signin"
+              <Link to="/login" className="link"
+                href="#"
                 onClick={(e) => {
                   handleSignIn;
                 }}
               >
                 Sign In
-              </a>
+              </Link>
               
             </>
           )}
