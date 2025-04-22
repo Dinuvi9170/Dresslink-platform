@@ -1,0 +1,128 @@
+.gigCard {
+    width: 80%;
+    max-width: 300px;
+    margin: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: #fff;
+    transition: transform 0.3s ease, box-shadow 0.4s ease;
+  }
+  
+  .gigCard:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    
+  }
+  
+  .gigCard-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .gigCard__picture{
+    position: relative;
+  }
+  .gigCard__heart{
+    position: absolute;
+    width: 10%;
+    top: 10px;
+    right: 10px;
+    background-color: #fff;
+    border-radius: 50%;
+    padding: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .gigCard__heart:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .gigCard__image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .gigCard__details {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+  }
+  
+  .gigCard__title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2C3E50;
+  }
+  
+  .gigCard__description {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .gigCard__price {
+    font-size: 16px;
+    font-weight: bold;
+    color: #1ABC9C;
+    margin-top: auto;
+  }
+  .gigCard__link{
+    text-decoration: none;
+    color: inherit;
+    display:block;
+  }
+  .gigCard__link:hover {
+    text-decoration: none;
+  }
+  .gigCard__user{
+    font-size: 14px;
+    color: #555;
+    margin-top: 8px;
+    display: flex;
+
+  }
+  .gigCard__user img{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 8px;
+    flex-direction: row;
+    
+  }
+  .text1{
+    font-size: 14px;
+    color: #555;
+    margin-top: 2px;
+    display: flex;
+    margin-right: 4px;
+    flex-direction:row;
+   
+  }
+  .gigCard__username{
+    font-size: 14px;
+    color: #555;
+    margin-top: 2px;
+    display: flex;
+    flex-direction: row;
+    font-weight: bold ;
+    
+  }
+  .gigCard__rating {
+    display: flex;
+    align-items: center;
+    margin-top: 4px;
+  }
+  .gigCard__rating img {
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+  }
+  .gigCard__rating span {
+    font-size: 14px;
+    color: rgb(205, 205, 50);
+  }
+ 

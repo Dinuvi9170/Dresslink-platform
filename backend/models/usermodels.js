@@ -1,7 +1,11 @@
 import mongoose from 'mongoose';
 
 const userSchema = mongoose.Schema({
-  name: {
+  fname: {
+    type: String,
+    required: true,
+  },
+  lname: {
     type: String,
     required: true,
   },
@@ -15,12 +19,15 @@ const userSchema = mongoose.Schema({
     required: true,
   },
   role: {
-    type: string,
+    type: String,
     enum:['customer','professional','supplier','admin'],
     required: true,
+    default: 'customer',
   },
     image: {
         type: String,
+        required: false,
+        default:"https://avatar.iran.liara.run/public/boy?username=Ash",
     },
     createdAt:{
         type: Date,
@@ -28,5 +35,5 @@ const userSchema = mongoose.Schema({
     }
 });
 
-const user= mongoose.model('User', userSchema);
-export default user;
+const User= mongoose.model('User', userSchema);
+export default User;

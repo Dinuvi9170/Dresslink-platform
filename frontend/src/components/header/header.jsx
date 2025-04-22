@@ -1,93 +1,66 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./header.css";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import Search from "../../assets/search.png";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/logo.png";
 
-
-const Header = () => {
+const Header = ({ currentUser, setCurrentUser }) => {
   const [open, setOpen] = useState(false);
-  //{/*const [isSeller, setIsSeller] = useState(false);*/}
-  const [isUser, setIsUser] = useState(false);
+  const navigate = useNavigate();
+
+  const isUser = currentUser && currentUser.email;
   
-
-  // Simulated current user object (toggle these to simulate login state)
-  const Currentuser = {
-    //username: "John Doe",
-    //Seller: true,
-  };
-
-  useEffect(() => {
-    if (Currentuser && Currentuser.username) {
-      setIsUser(true);
-      //{/*setIsSeller(Currentuser.Seller === true);*/}
-    }
-  }, []);
-
-  const navigate= useNavigate();
-  // Navigate to sign-in page if user isn't signed in yet
   const handleSignIn = (e) => {
     e.preventDefault();
     navigate("/login");
   };
 
+  const handleLogout = () => {
+    setCurrentUser(null);
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
   return (
     <div className="header">
       <div className="container">
+        {/* Left Logo */}
         <div className="header__left">
           <Link to="/" className="link1">
             <img src={Logo} className="logo" alt="Logo" />
           </Link>
         </div>
+
+        {/* Search bar */}
         <div className="search">
           <div className="search_input">
             <input type="text" placeholder="Search..." />
           </div>
           <button className="search_button">Search</button>
         </div>
-        
 
+        {/* Right-side links */}
         <div className="header__links">
-          <Link to="/professionals" className="link">
-            Professionals
-          </Link>
-          <Link to="/fabrics" className="link">
-            Fabrics & Materials
-          </Link>
-          <Link to="/myfit" className="link">
-            Preview My Fit  
-          </Link>  
+          <Link to="/professionals" className="link">Professionals</Link>
+          <Link to="/fabrics" className="link">Fabrics & Materials</Link>
+          <Link to="/myfit" className="link">Preview My Fit</Link>
 
-          {/* Show Become a Seller and Sign In only when user is not signed in */}
-          {!isUser && (
+          {!isUser ? (
             <>
-              <Link to="/BecomeSeller" className="link">Become a Seller</Link>
-              <Link to="/login" className="link"
-                href="#"
-                onClick={(e) => {
-                  handleSignIn;
-                }}
-              >
-                Sign In
-              </Link>
-              
+              <Link to="/becomeSeller" className="link">Become a Seller</Link>
+              <a href="#" className="link" onClick={handleSignIn}>Sign In</a>
             </>
-          )}
-
-          {/* If user is signed in */}
-          {isUser && (
+          ) : (
             <div className="user" onClick={() => setOpen(!open)}>
               <img
-                src="./src/assets/user.png"
+                src={currentUser.image }
                 alt="User"
                 className="header__user-icon"
               />
-              <span>{Currentuser.username}</span>
+              <span>{currentUser.fname}</span>
               {open && (
                 <div className="options">
                   <span>My Products</span>
-                  <span onClick={() => setIsUser(false)}>Logout</span>
+                  <span onClick={handleLogout}>Logout</span>
                 </div>
               )}
             </div>

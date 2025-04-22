@@ -5,10 +5,11 @@ import { Outlet } from "react-router-dom";
 
 import "./App.css";
 
-function Layout() {
+function Layout({ currentUser, setCurrentUser }) {
+  
   return (
     <div>
-      <Header />
+      <Header currentUser={currentUser} setCurrentUser={setCurrentUser}  />
       <main>
 
         <section>

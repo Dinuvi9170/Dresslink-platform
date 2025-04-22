@@ -15,7 +15,6 @@ const ProfessionalProfileSchema = mongoose.Schema({
     type: String,
   },
   portpolioImages:{type: String},
-  yearsOfExperience: { type: Number },
   rating: { type: Number, default: 0 },
 
 });
