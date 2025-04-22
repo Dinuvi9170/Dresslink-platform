@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/logo.png";
 
 const Header = ({ currentUser, setCurrentUser }) => {
+
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -52,11 +53,12 @@ const Header = ({ currentUser, setCurrentUser }) => {
           ) : (
             <div className="user" onClick={() => setOpen(!open)}>
               <img
-                src={currentUser.image }
+                src={currentUser.image}
                 alt="User"
                 className="header__user-icon"
               />
               <span>{currentUser.fname}</span>
+              <span>{currentUser.lname}</span>
               {open && (
                 <div className="options">
                   <span>My Products</span>

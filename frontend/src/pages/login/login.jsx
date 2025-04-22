@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import "./login.css";
 
@@ -20,8 +20,15 @@ const SignIn = ({setCurrentUser}) => {
       // Store token in localStorage;
       localStorage.setItem("token",token);
 
+      // Make sure user object includes image from the response
+      const userWithImage = {
+        ...user,
+        image: user.image // Default image if none provided
+      };
+      console.log(user.fname, user.lname, user.email, user.image, user.role);
+
       // Set user in global state
-      setCurrentUser(user);
+      setCurrentUser(userWithImage);
 
       alert("Login successful!");
       navigate("/"); 
@@ -48,7 +55,7 @@ const SignIn = ({setCurrentUser}) => {
         </div>
         <div>
             <a href="/forgot-password" className="forgot-password">Forgot Password?</a>
-            <a href="/register" className="register">Create new account</a>
+            <Link to="/register" className="register">Create new account</Link>
         </div>
         <button type="submit">Login</button>
       </form>

@@ -2,6 +2,7 @@ import User from '../models/usermodels.js';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
+
 dotenv.config();
 export function getusers(req, res) {
   User.find().then(
@@ -11,6 +12,18 @@ export function getusers(req, res) {
 }   
 
 export function Saveuser (req, res){
+    if(req.body.role=="admin"){
+        if(req.user!=null){
+            if(req.user.role!="admin"){
+                res.status(403).json({ message: 'You are not authorized to create an admin user' })
+                return
+            }
+        }
+        else{
+            res.status(401).json({ message: 'you are not logged in. Pease login first' })
+            return
+        }   
+    } 
     // Hash the password before saving the user
     const hashedPassword = bcrypt.hashSync(req.body.password, 10);
     const user = new User({
@@ -62,6 +75,7 @@ export function loginUser (req, res) {
                     fname: user.fname,
                     lname: user.lname,
                     role: user.role,
+                    image: user.image,
                 },
             });
         })

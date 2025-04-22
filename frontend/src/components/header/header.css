@@ -32,7 +32,6 @@
 .logo {
   width: 140px;
   height: auto;
-  /*align-items:center;*/
   flex-shrink: 0;
   cursor: pointer;
   transition: transform 0.3s ease;
@@ -134,6 +133,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 180px;
 }
+
 
 @media (max-width: 768px) {
   .container {

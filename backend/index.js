@@ -3,7 +3,6 @@ import dotenv from'dotenv';
 import bodyParser from 'body-parser';
 import connectDB from './config/db.js';
 import userRouter from './routes/userRouter.js';
-
 import cors from "cors";
 
 dotenv.config();

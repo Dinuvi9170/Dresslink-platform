@@ -20,15 +20,15 @@ const userSchema = mongoose.Schema({
   },
   role: {
     type: String,
-    enum:['customer','professional','supplier','admin'],
+    enum:['customer','professional','supplier'],
     required: true,
     default: 'customer',
   },
-    image: {
+  image: {
         type: String,
-        required: false,
-        default:"https://avatar.iran.liara.run/public/boy?username=Ash",
-    },
+        required: true,
+        default:'https://avatar.iran.liara.run/public/boy?username=Ash',
+  },
     createdAt:{
         type: Date,
         default: Date.now,
