@@ -13,18 +13,23 @@ const authenticate = (req,res,next)=> {
                 (err, decoded) => {
                     if (decoded !== null) {
                        req.user=decoded;
+                       req.isAuthenticated = true;
                        next();
                     }
                     else
                     {
-                        res.status(401).json({ message: "Unauthorized" });
+                        res.status(403).json({ message: "invalid Token" });
                     }    
                 });
         }
         else{
+            req.isAuthenticated = false;
+            req.user = null;
             next();
         }
     }
+
+    
 export default authenticate;
 
 

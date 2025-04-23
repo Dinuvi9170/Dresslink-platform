@@ -60,6 +60,7 @@ export function loginUser (req, res) {
             }
             // Generate a JWT token
             const token = jwt.sign({
+                _id: user._id,
                 email: user.email,
                 fname: user.fname,
                 lname: user.lname,
@@ -72,6 +73,7 @@ export function loginUser (req, res) {
                 message: 'Login successful', 
                 token: token, 
                 user: {
+                    _id: user._id,
                     email: user.email,
                     fname: user.fname,
                     lname: user.lname,
@@ -85,3 +87,5 @@ export function loginUser (req, res) {
             res.status(500).json({ error: 'Internal server error' });
         });
 }
+
+

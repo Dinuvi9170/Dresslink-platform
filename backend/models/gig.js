@@ -14,20 +14,43 @@ const gigSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    totalStars:{
+        type: Number,
+        default: 0,
+        required: false,
+    },
+    starNumber:{
+        type: Number,
+        default: 0,
+        required: false,
+    },
     price: {
         type: Number,
         required: true,
     },
     category:{
         type:String,
+        enum:['tailoring','designing'],
         required:true,
     },
-    images:[
+    cover:{
+        type:String,
+        required:true,
+    },
+    shorttitle:{
+        type:String,
+        required:true,
+    },
+    shortdesc:{
+        type:String,
+        required:true,
+    },
+    images:
         {
-            type:String,
-            required:true,
+        type:[String],
+        required:false,
         }
-    ],
+    ,
     createdAt:{
         type: Date,
         default: Date.now,

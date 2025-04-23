@@ -3,6 +3,7 @@ import dotenv from'dotenv';
 import bodyParser from 'body-parser';
 import connectDB from './config/db.js';
 import userRouter from './routes/userRouter.js';
+import gigRouter from './routes/gigRouter.js';
 import cors from "cors";
 
 dotenv.config();
@@ -13,6 +14,7 @@ app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
 
 app.use("/user", userRouter)
+app.use("/gig", gigRouter)
 
 
 const PORT= process.env.PORT || 3000;

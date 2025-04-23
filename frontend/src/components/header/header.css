@@ -113,8 +113,8 @@
 }
 
 .header__user-icon {
-  width: 24px;
-  height: 24px;
+  width: 40px;
+  height: auto;
   border-radius: 50%;
   object-fit: cover;
 }
