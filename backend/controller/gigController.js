@@ -29,14 +29,18 @@ export function creategig (req,res){
 
 }
 
-export function getGigs (req,res){
-    Gig.find()
-    .then((gigs) => {
-        res.status(200).json(gigs);
-    })
-    .catch((error) => {
-        console.error(error);
+export async function getgigs (req,res){
+    const {_id} = req.params;
+    try{
+        const gigs = await Gig.findOne({_id}).populate('user', 'fname lname image role shorttitle shortdesc price category createdAt');
+        if (!gigs) {
+            return res.status(404).json({ message: 'Gig not found' });
+        }
+        return res.status(200).json(gigs);
+    }
+    
+    catch (error) {
         res.status(500).json({ error: 'Failed to fetch gigs' });
-    });
+    }
 }
    
