@@ -26,7 +26,7 @@ const userSchema = mongoose.Schema({
   },
   image: {
         type: String,
-        required: true,
+        required: false,
         default:'https://avatar.iran.liara.run/public/boy?username=Ash',
   },
     createdAt:{

@@ -11,7 +11,7 @@ export function getusers(req, res) {
   });     
 }   
 
-export function Saveuser (req, res){
+export function registeruser (req, res){
     if(req.body.role=="admin"){
         if(req.user!=null){
             if(req.user.role!="admin"){
@@ -32,6 +32,7 @@ export function Saveuser (req, res){
         email: req.body.email,
         password: hashedPassword,
         role: req.body.role,
+        image: req.body.image,
         createdAt: req.body.createdAt,
     });
     user.save()
