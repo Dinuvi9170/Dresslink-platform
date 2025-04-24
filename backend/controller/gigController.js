@@ -32,7 +32,7 @@ export function creategig (req,res){
 export async function getgig (req,res){
     const {_id} = req.params;
     try{
-        const gigs = await Gig.findOne({_id}).populate('user', 'fname lname image role shorttitle shortdesc cover price category createdAt');
+        const gigs = await Gig.findOne({_id}).populate('user', 'fname lname image role address shorttitle shortdesc cover price category createdAt');
         if (!gigs) {
             return res.status(404).json({ message: 'Gig not found' });
         }
@@ -52,5 +52,75 @@ export async function getAllgigs(req, res) {
       res.status(500).json({ error: 'Failed to fetch gigs' });
     }
   }
+
+  export async function findgig(req, res) {
+    const { city, minPrice, maxPrice } = req.query;
+    console.log("Filters Received → City:", city, "Min Price:", minPrice, "Max Price:", maxPrice);
   
-   
+    try {
+      // Use aggregation for more efficient filtering
+      const pipeline = [];
+      
+      // Start with a lookup to get user data
+      pipeline.push({
+        $lookup: {
+          from: 'users',
+          localField: 'user',
+          foreignField: '_id',
+          as: 'userData'
+        }
+      });
+      
+      // Unwind the userData array
+      pipeline.push({
+        $unwind: '$userData'
+      });
+      
+      // Build match conditions
+      const matchConditions = {};
+      
+      // Price filter
+      if (!isNaN(minPrice) || !isNaN(maxPrice)) {
+        matchConditions.price = {};
+        if (!isNaN(minPrice)) matchConditions.price.$gte = parseInt(minPrice);
+        if (!isNaN(maxPrice)) matchConditions.price.$lte = parseInt(maxPrice);
+      }
+      
+      // City filter - apply at database level when possible
+      if (city) {
+        matchConditions['userData.address.city'] = { $regex: new RegExp(city, 'i') };
+      }
+      
+      // Add match stage if we have conditions
+      if (Object.keys(matchConditions).length > 0) {
+        pipeline.push({ $match: matchConditions });
+      }
+      
+      // Execute the aggregation
+      const filteredGigs = await Gig.aggregate(pipeline);
+      
+      // Format the result to match your current structure
+      const formattedGigs = filteredGigs.map(gig => ({
+        ...gig,
+        user: {
+          _id: gig.userData._id,
+          fname: gig.userData.fname,
+          lname: gig.userData.lname,
+          image: gig.userData.image,
+          role: gig.userData.role,
+          address: gig.userData.address
+        }
+      }));
+      
+      console.log(`Found ${formattedGigs.length} gigs after applying all filters`);
+      return res.status(200).json(formattedGigs);
+      
+    } catch (error) {
+      console.error("Error fetching filtered gigs:", error);
+      return res.status(500).json({
+        error: true,
+        message: error.message || 'Internal server error while fetching gigs'
+      });
+    }
+  }
+  

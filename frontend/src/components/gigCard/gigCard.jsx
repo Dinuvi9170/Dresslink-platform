@@ -7,7 +7,7 @@ import UnfilledHeart from "../../assets/icons/unfill-heart.png";
 const GigCard = ({ gig }) => {
   return (
     <div className="gigCard">
-      <Link to="/gigs/${gig._id}" className="gigCard__link">
+      <Link to={`/gigs/${gig._id}`} className="gigCard__link">
       <div className="gigCard-container">
         <div className="gigCard__picture">
           <img src={gig.image} alt={gig.title} className="gigCard__image" />

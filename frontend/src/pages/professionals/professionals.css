@@ -4,7 +4,7 @@
     color: #2C3E50;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items:center;
   }
   
   .professional_img {
@@ -28,7 +28,61 @@
     padding: 10px;
   }
   
+  .filters {
+    display: flex;
+    gap: 1rem;
+    margin: 20px 0;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filters label {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .filters input {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    min-width: 150px;
+  }
+  
+  .filters button {
+    padding: 8px 16px;
+    background-color: #1ABC9C;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .filters button:hover {
+    background-color: #17a589;
+  }
+  
+/* Responsive UI */
+@media (max-width: 768px) {
+    .professional_img {
+      width: 400px;
+      padding: 20px 40px;
+      margin-top: 0;
+    }
+    .professional_card {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .filters {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .filters input, .filters button {
+      width: 100%;
+    }
 
+  }
 
   
   

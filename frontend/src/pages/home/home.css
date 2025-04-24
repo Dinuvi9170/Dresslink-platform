@@ -68,6 +68,7 @@
     display: center;
     text-align: center;
     border-top: 1px solid #eee;
+    
   }
   .newsletter-container {
     display: flex;
@@ -96,6 +97,8 @@
     justify-content: center;
     gap: 10px;
     flex-wrap: wrap;
+    width: 20%;
+    margin-left: 460px;
   }
   
   .newsletter-input {
@@ -110,6 +113,7 @@
     background-color: #1ABC9C;
     color: white;
     border: none;
+    width: -50px;
     padding: 12px 24px;
     border-radius: 8px;
     font-size: 16px;

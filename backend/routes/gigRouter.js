@@ -1,11 +1,14 @@
 import express from 'express';
-import { creategig, getgig,getAllgigs } from '../controller/gigController.js';
+import { creategig, getgig, findgig, getAllgigs } from '../controller/gigController.js';
 import authenticate from '../Middleware/authMiddleware.js';
 
 const gigRouter = express.Router();
 
+//get filtered gigs
+gigRouter.get('/search',findgig);
+
 //get single gig
-gigRouter.get('/single/:_id', getgig);
+gigRouter.get('/:_id',getgig);
 
 //get all gigs
 gigRouter.get('/',getAllgigs);
