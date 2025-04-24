@@ -24,6 +24,17 @@ const userSchema = mongoose.Schema({
     required: true,
     default: 'customer',
   },
+  phone: {
+    type: String,
+    required: false,
+  },
+  address: {
+    number: { type: String, required: true },
+    street: { type: String },
+    city: { type: String, required: true },
+    district: { type: String, required: true },
+    province: { type: String, required: true },
+  },
   image: {
         type: String,
         required: false,

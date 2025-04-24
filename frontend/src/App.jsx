@@ -26,7 +26,6 @@ const App = () => {
         <Route path="login" element={<Login setCurrentUser={setCurrentUser}/>}/>
         <Route path="gigs/:gigId" element={<Gigs />} />
         <Route path="register" element={<Register />} />
-        {/* Add more routes as needed */}
                
           
       </Route>

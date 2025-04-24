@@ -28,7 +28,8 @@
   
   .form-group input[type="text"],
   .form-group input[type="email"],
-  .form-group input[type="password"]
+  .form-group input[type="password"],
+  .form-group input[type="tel"]
   {
     padding: 10px 12px;
     border-radius: 8px;
@@ -36,7 +37,11 @@
     font-size: 14px;
     transition: border-color 0.2s;
   }
-  
+  .address-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
   .form-group input:focus {
     outline: none;
     border-color: #1abc9c;

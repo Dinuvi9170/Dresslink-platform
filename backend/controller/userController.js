@@ -32,6 +32,8 @@ export function registeruser (req, res){
         email: req.body.email,
         password: hashedPassword,
         role: req.body.role,
+        phone: req.body.phone,
+        address: req.body.address,
         image: req.body.image,
         createdAt: req.body.createdAt,
     });

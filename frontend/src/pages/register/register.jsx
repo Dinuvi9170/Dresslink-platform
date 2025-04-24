@@ -5,6 +5,9 @@ import "./register.css";
 
 const rolesList = ["customer", "professional", "supplier"];
 
+const capitalize = (str) =>
+  str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
 const Register = () => {
   const [formData, setFormData] = useState({
     fname: "",
@@ -13,12 +16,23 @@ const Register = () => {
     password: "",
     confirmPassword: "",
     roles: [],
+    phone: "",
+    address: {
+      number: "",
+      street: "",
+      city: "",
+      district: "",
+      province: "",
+    },
     image: null,
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (name === "fname" || name === "lname") {
+      setFormData((prev) => ({ ...prev, [name]: capitalize(value) }));
+    }else
+    {setFormData((prev) => ({ ...prev, [name]: value }));}
   };
 
   const handleRoleChange = (e) => {
@@ -29,6 +43,21 @@ const Register = () => {
         ? [...prev.roles, value]
         : prev.roles.filter((role) => role !== value),
     }));
+  };
+
+  const handleAdressChange = (e) => {
+    const { name, value } = e.target;
+    if (["number", "street", "lane", "city", "district", "province"].includes(name)) {
+      setFormData((prev) => ({
+        ...prev,
+        address: {
+          ...prev.address,
+          [name]: value
+        }
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleImageChange = (e) => {
@@ -82,9 +111,10 @@ const Register = () => {
       return null;
     }
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     
     // Validate form data
     if (formData.password !== formData.confirmPassword) {
@@ -99,7 +129,7 @@ const Register = () => {
     
     try {
       // Set default image URL
-      let imageUrl = "https://avatar.iran.liara.run/public/boy?username=Ash"; // Default image
+      let imageUrl = "https://avatar.iran.liara.run/public/boy?username=Ash"; 
       
       // Try to upload image if provided
       if (formData.image) {
@@ -107,16 +137,24 @@ const Register = () => {
         if (uploadedUrl) {
           imageUrl = uploadedUrl;
         }
-        // If upload fails, we'll use the default image
+        // If upload fails,use the default image
       }
   
-      // Create user data with image URL (either uploaded or default)
+      // Create user data with image URL
       const userData = {
-        fname: formData.fname,
-        lname: formData.lname,
-        email: formData.email,
+        fname: formData.fname.trim(),
+        lname: formData.lname.trim(),
+        email: formData.email.trim(),
         password: formData.password,
-        role: formData.roles[0], // Backend expects single role, not array
+        role: formData.roles[0],
+        phone: formData.phone.trim(),
+        address: {
+          number: formData.address.number.trim(),
+          street: formData.address.street.trim(),
+          city: formData.address.city.trim(),
+          district: formData.address.district.trim(),
+          province: formData.address.province.trim(),
+        }, 
         image: imageUrl,
       };
   
@@ -126,6 +164,7 @@ const Register = () => {
       if (response.status === 201) {
         alert("Registration successful!");
         // Reset form or redirect user
+        window.location.href = "/login"; // Redirect to login page after successful registration
       } else {
         alert("Registration failed. Please try again.");
       }
@@ -169,6 +208,29 @@ const Register = () => {
               </label>
             ))}
           </div>
+        </div>
+        <div className="form-group">
+          <label>Phone</label><span className="required">*</span>
+          <input 
+            type="tel" 
+            name="phone" 
+            value={formData.phone} 
+            onChange={handleChange} 
+            maxLength={10} 
+            inputMode="numeric" pattern="\d{10}" required
+            placeholder="Enter 10 digit phone number" 
+          />
+        </div>
+            
+        <div className="form-group">
+          <label>Address</label><span className="required">*</span>
+          <div className="address-group">
+            <input type="text" name="number" placeholder="Street Number" value={formData.address.number} onChange={handleAdressChange} required />
+            <input type="text" name="street" placeholder="Street Name" value={formData.address.street} onChange={handleAdressChange} />
+            <input type="text" name="city" placeholder="City" value={formData.address.city} onChange={handleAdressChange} required />
+            <input type="text" name="district" placeholder="District" value={formData.address.district} onChange={handleAdressChange} required />
+            <input type="text" name="province" placeholder="Province" value={formData.address.province} onChange={handleAdressChange} required />
+          </div>    
         </div>
 
         <div className="form-group">
