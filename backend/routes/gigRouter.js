@@ -1,10 +1,14 @@
 import express from 'express';
-import { creategig, getgigs } from '../controller/gigController.js';
+import { creategig, getgig,getAllgigs } from '../controller/gigController.js';
 import authenticate from '../Middleware/authMiddleware.js';
 
 const gigRouter = express.Router();
 
-gigRouter.get('/:_id', getgigs);
+//get single gig
+gigRouter.get('/single/:_id', getgig);
+
+//get all gigs
+gigRouter.get('/',getAllgigs);
 
 gigRouter.post('/creategig',authenticate,creategig);
 

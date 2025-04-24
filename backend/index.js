@@ -14,7 +14,7 @@ app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
 
 app.use("/user", userRouter)
-app.use("/gig", gigRouter)
+app.use("/gigs", gigRouter)
 
 
 const PORT= process.env.PORT || 3000;

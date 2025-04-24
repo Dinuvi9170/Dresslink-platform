@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import { Routes, Route } from "react-router-dom";
-import axios from "axios";
 import "./App.css";
 import Layout from "./layout";
 import Home from "./pages/home/home";
@@ -25,7 +24,7 @@ const App = () => {
         <Route path="myfit" element={<Myfit />} />
         <Route path="becomeSeller" element={<BecomeSeller />} />
         <Route path="login" element={<Login setCurrentUser={setCurrentUser}/>}/>
-        <Route path="gigs" element={<Gigs />} />
+        <Route path="gigs/:gigId" element={<Gigs />} />
         <Route path="register" element={<Register />} />
         {/* Add more routes as needed */}
                

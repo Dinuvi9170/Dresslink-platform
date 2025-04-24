@@ -29,10 +29,10 @@ export function creategig (req,res){
 
 }
 
-export async function getgigs (req,res){
+export async function getgig (req,res){
     const {_id} = req.params;
     try{
-        const gigs = await Gig.findOne({_id}).populate('user', 'fname lname image role shorttitle shortdesc price category createdAt');
+        const gigs = await Gig.findOne({_id}).populate('user', 'fname lname image role shorttitle shortdesc cover price category createdAt');
         if (!gigs) {
             return res.status(404).json({ message: 'Gig not found' });
         }
@@ -43,4 +43,14 @@ export async function getgigs (req,res){
         res.status(500).json({ error: 'Failed to fetch gigs' });
     }
 }
+export async function getAllgigs(req, res) {
+    try {
+      const gigs = await Gig.find().populate('user', 'fname lname image role');
+      res.status(200).json(gigs);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Failed to fetch gigs' });
+    }
+  }
+  
    
