@@ -1,59 +1,84 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import "./gigs.css";
 
-const images = [
-  "/images/tailoring.png",
-  "/images/fitting preview.png",
-  "/images/tailoring.png"
-];
-
 const Gigs = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const { gigId } = useParams();
+  const navigate = useNavigate();
+  const [gig, setGig] = useState(null);
+  const[loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) =>
-        prevIndex === images.length - 1 ? 0 : prevIndex + 1
-      );
-    }, 3000); 
+    const fetchGig = async () => {
+      try {
+        if(!gigId) {
+          setError("Gig ID is missing.");
+          setLoading(false);
+          return;
+        }
+        setLoading(true);
+        const res = await axios.get(`http://localhost:3000/gigs/${gigId}`);
+        setGig(res.data);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching gig details:", err);
+        setError("Failed to fetch gig details. Please try again later.");
 
-    return () => clearInterval(interval);
-  }, []);
+        if(err.response && err.response.status===404){
+          navigate('/professionals');
+        }
+      }finally{
+        setLoading(false);
+      }
+    };
+    if (gigId) {
+      fetchGig();
+    }
+
+  }, [gigId]);
+
+  if (loading) return <div className="loading">Loading...</div>;
+  if (error) return <div className="error">{error}</div>;
+  if (!gig) return <div className="not-found">Gig not found</div>;
+
+  const averageRating = gig.totalStars / (gig.starNumber || 1);
 
   return (
-    <div style={{color:"black"}} className="gigs">
-      <div className="container">
-        <div className="gigs_left">
-          <h1>Hi..</h1>
-          <div className="user">
-            <img
-              src="https://images.unsplash.com/photo-1502685104226-e9df14d4d9f2?auto=format&fit=crop&w=500&q=60"
-              alt="user"
-              className="user_img"
-            />
-            <span className="text1">name</span>
-            <div className="user_rating">
-              <img src="https://example.com/star.png" alt="star" className="star_img" />
-              <img src="https://example.com/star.png" alt="star" className="star_img" />
-              <img src="https://example.com/star.png" alt="star" className="star_img" />
-              <img src="https://example.com/star.png" alt="star" className="star_img" />
-              <span className="user_star">4</span>
-            </div>
-          </div>
-
-          <div className="custom_slider">
-            <img src={images[currentIndex]} alt="slider" className="slider_img" />
-          </div>
-
-          <h2 className="gigs_title">About Gig</h2>
-          <p className="gigs_desc">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae
-            vestibulum...
-          </p>
+    <div className="gig-detail-page">
+      <div className="gig-header">
+        <img src={gig.cover} alt="Gig Cover" />
+        <div className="gig-info">
+          <h1>{gig.title}</h1>
+          <p className="category">{gig.category}</p>
+          <p>{gig.description}</p>
+          <p className="price">Rs. {gig.price.toFixed(2)}</p>
+          <p className="rating">⭐ {averageRating.toFixed(1)} / 5</p>
         </div>
-        <div className="gigs_right">
+      </div>
 
+      <div className="gig-professional">
+        <img src={gig.user.image} alt="User" />
+        <div>
+          <h3>{gig.user.fname} {gig.user.lname}</h3>
+          <p>{gig.user.address.city}, {gig.user.address.district}</p>
         </div>
+      </div>
+
+      <div className="tailoring-info">
+        <h3>Tailoring Details (Sri Lankan System)</h3>
+        <ul>
+          <li>🎽 Type: {gig.category === 'tailoring' ? 'Stitching / Alteration' : 'Designing'}</li>
+          <li>🧵 Fabric Type: Custom selected during appointment</li>
+          <li>📏 Measurement: Collected during scheduling or through profile</li>
+          <li>🎨 Design: Client provided or custom suggested</li>
+        </ul>
+      </div>
+
+      <div className="gig-actions">
+        <button className="btn appointment-btn">Schedule Appointment</button>
+        <button className="btn chat-btn">Chat Now</button>
       </div>
     </div>
   );

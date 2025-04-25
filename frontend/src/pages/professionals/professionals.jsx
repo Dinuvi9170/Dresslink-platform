@@ -52,8 +52,8 @@ const Professionals = () => {
   return (
     <div className="professionals">
       <div className="professional_img"/>
-      <h1>Welcome to the Professionals Page</h1>
-      <p>This is a simple professionals page.</p>
+      <h1>Meet tailoring & Designing Professionals</h1>
+      <p>Use filters to find the perfect match for your need. </p>
       
       <form className="filters" onSubmit={handleFilterSubmit}>
         <label className="filter-option"> City</label>
@@ -83,7 +83,9 @@ const Professionals = () => {
       </form>
       <div className="professional_card">
         {gigs.map((gig) => (
-          <GigCard key={gig._id} gig={{title: gig.title,
+          <GigCard key={gig._id} gig={{
+            _id: gig._id,
+            title: gig.title,
             description: gig.shortdesc,
             image: gig.cover,
             price: gig.price,
