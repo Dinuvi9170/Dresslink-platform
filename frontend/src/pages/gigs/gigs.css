@@ -1,59 +1,189 @@
-.gigs {
+.gig-detail-page {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: auto;
+    font-family: 'Segoe UI', sans-serif;
+    flex-wrap: wrap;
+  }
+  
+  /* LEFT SIDE */
+  .gig-left {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .gig-left img {
+    width: 100%;
+    max-height: 350px;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+  
+  .gig-info h1 {
+    color: #2c3e50;
+    font-size: 2rem;
+  }
+  
+  .category {
+    color: #1abc9c;
+    font-weight: bold;
+    margin: 0.5rem 0;
+  }
+  
+  .price {
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .rating {
+    color: #f39c12;
+    font-weight: bold;
+  }
+  
+  .gig-professional {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    background: #f7f7f7;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+  }
+  
+  .gig-professional img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .tailoring-info {
+    background: #f9f9f9;
+    padding: 1.2rem;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+  }
+  
+  .tailoring-info h3 {
+    margin-bottom: 1rem;
+    color: #2c3e50;
+  }
+  
+  .tailoring-info ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .tailoring-info li {
+    margin: 0.5rem 0;
+  }
+  
+  /* RIGHT SIDE */
+  .gig-right {
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 1rem;
-}
-.gigs__title {
-    font-size: 24px;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+  
+  .btn {
+    padding: 1rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
     font-weight: bold;
-    color: #2C3E50;
-    margin-bottom: 1rem;
-}
-.gigs__description {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 1rem;
-}
-.gigs__list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-}
-.gigs__item {
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    padding: 20px;
-    width: 300px;
-    text-align: center;
-    transition: transform 0.2s;
-}
-.gigs__item:hover {
-    transform: scale(1.05);
-}
-.gigs__item img {
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+  
+  .appointment-btn {
+    background-color: #1abc9c;
+    color: white;
+  }
+  
+  .chat-btn {
+    background-color: #2c3e50;
+    color: white;
+  }
+  
+  .btn:hover {
+    opacity: 0.9;
+  }
+  
+  /*IMAGES*/
+  .gig-main-image {
     width: 100%;
-    height: 200px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 400px;
+  }
+  
+  .gig-main-image img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     border-radius: 12px;
-}
-.gigs__item h3 {
-    font-size: 20px;
-    font-weight: bold;
-    color: #2C3E50;
-    margin: 10px 0;
-}
-.gigs__item p {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 10px;
-}
-gigs__slider {
+  }
+  
+  .gig-thumbnails {
     display: flex;
-    overflow-x: auto;
-    gap: 1rem;
-    padding: 1rem;
-    scroll-snap-type: x mandatory;
-}
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .thumbnail {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+  }
+  
+  .thumbnail.active {
+    border-color: #1abc9c;
+  }
+  
+  .thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .thumbnail:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  /* RESPONSIVE DESIGN */
+  @media (max-width: 900px) {
+    .gig-detail-page {
+      flex-direction: column;
+    }
+  
+    .gig-right {
+      flex-direction: row;
+      justify-content: space-between;
+      margin-top: 1.5rem;
+    }
+  
+    .btn {
+      flex: 1;
+    }
+  }
+  
+  @media (max-width: 500px) {
+    .gig-right {
+      flex-direction: column;
+    }
+  }
+  

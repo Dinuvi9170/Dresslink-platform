@@ -9,6 +9,7 @@ const Gigs = () => {
   const [gig, setGig] = useState(null);
   const[loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     const fetchGig = async () => {
@@ -45,9 +46,13 @@ const Gigs = () => {
 
   const averageRating = gig.totalStars / (gig.starNumber || 1);
 
+  const handleImageSelect = (img) => {
+    setSelectedImage(img);
+  };
+
   return (
     <div className="gig-detail-page">
-      <div className="gig-header">
+      <div className="gig-left">
         <img src={gig.cover} alt="Gig Cover" />
         <div className="gig-info">
           <h1>{gig.title}</h1>
@@ -56,27 +61,62 @@ const Gigs = () => {
           <p className="price">Rs. {gig.price.toFixed(2)}</p>
           <p className="rating">⭐ {averageRating.toFixed(1)} / 5</p>
         </div>
-      </div>
 
-      <div className="gig-professional">
-        <img src={gig.user.image} alt="User" />
-        <div>
-          <h3>{gig.user.fname} {gig.user.lname}</h3>
-          <p>{gig.user.address.city}, {gig.user.address.district}</p>
+        <div className="gig-professional">
+          <img src={gig.user.image} alt="User" />
+          <div>
+            <h3>{gig.user.fname} {gig.user.lname}</h3>
+            <p>{gig.user.address.city}, {gig.user.address.district}</p>
+          </div>
         </div>
+
+        <div className="tailoring-info">
+          <h3>Tailoring Details (Sri Lankan System)</h3>
+          <ul>
+            <li>🎽 Type: {gig.category === 'tailoring' ? 'Stitching / Alteration' : 'Designing'}</li>
+            <li>🧵 Fabric Type: Custom selected during appointment</li>
+            <li>📏 Measurement: Collected during scheduling or through profile</li>
+            <li>🎨 Design: Client provided or custom suggested</li>
+          </ul>
+        </div>
+        <div className="gig-images">
+          <h3>My Work Showcase</h3>
+          <p>Click on the images to view them in full size.</p>
+        <div className="gig-main-image">
+          {/* Display selected image or cover image if none selected */}
+          <img 
+            src={selectedImage || gig.cover} 
+            alt={gig.title} 
+            className="main-image" 
+          />
+        </div>
+
+          {gig.images && gig.images.length > 0 && (
+            <div className="gig-thumbnails">
+              {/* Add cover as first image */}
+              <div 
+                className={`thumbnail ${selectedImage === gig.cover ? 'active' : ''}`} 
+                onClick={() => handleImageSelect(gig.cover)}
+              >
+                <img src={gig.cover} alt="Cover" />
+              </div>
+            
+              {/* Display additional images */}
+              {gig.images.map((img, index) => (
+                <div 
+                  key={index} 
+                  className={`thumbnail ${selectedImage === img ? 'active' : ''}`} 
+                  onClick={() => handleImageSelect(img)}
+                >
+                  <img src={img} alt={`Image ${index + 1}`} />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>   
       </div>
 
-      <div className="tailoring-info">
-        <h3>Tailoring Details (Sri Lankan System)</h3>
-        <ul>
-          <li>🎽 Type: {gig.category === 'tailoring' ? 'Stitching / Alteration' : 'Designing'}</li>
-          <li>🧵 Fabric Type: Custom selected during appointment</li>
-          <li>📏 Measurement: Collected during scheduling or through profile</li>
-          <li>🎨 Design: Client provided or custom suggested</li>
-        </ul>
-      </div>
-
-      <div className="gig-actions">
+      <div className="gig-right">
         <button className="btn appointment-btn">Schedule Appointment</button>
         <button className="btn chat-btn">Chat Now</button>
       </div>
