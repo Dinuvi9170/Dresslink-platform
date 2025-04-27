@@ -53,7 +53,7 @@ const Professionals = () => {
     <div className="professionals">
       <div className="professional_img"/>
       <h1>Meet tailoring & Designing Professionals</h1>
-      <p>Use filters to find the perfect match for your need. </p>
+      <p className='professional-desc'>Use filters to find the perfect match for your need. </p>
       
       <form className="filters" onSubmit={handleFilterSubmit}>
         <label className="filter-option"> City</label>

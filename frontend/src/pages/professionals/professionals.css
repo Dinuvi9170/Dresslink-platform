@@ -4,7 +4,7 @@
     color: #2C3E50;
     display: flex;
     flex-direction: column;
-    /*align-items:center;*/
+    /*align-items:first baselin;*/
   }
   
   .professional_img {
@@ -33,7 +33,7 @@
     
   }
   
-  p {
+  .professional-desc {
     text-align: center;
     margin-left: 30px;
     margin-bottom: 5px;

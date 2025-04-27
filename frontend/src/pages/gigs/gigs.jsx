@@ -50,6 +50,11 @@ const Gigs = () => {
     setSelectedImage(img);
   };
 
+  const handleScheduleAppointment = () => {
+    navigate(`/scheduleAppoint/${gig._id}`);
+  };
+
+
   return (
     <div className="gig-detail-page">
       <div className="gig-left">
@@ -57,7 +62,7 @@ const Gigs = () => {
         <div className="gig-info">
           <h1>{gig.title}</h1>
           <p className="category">{gig.category}</p>
-          <p>{gig.description}</p>
+          <p className='gigs-desc'>{gig.description}</p>
           <p className="price">Rs. {gig.price.toFixed(2)}</p>
           <p className="rating">⭐ {averageRating.toFixed(1)} / 5</p>
         </div>
@@ -113,14 +118,64 @@ const Gigs = () => {
               ))}
             </div>
           )}
-        </div>   
+        </div> 
+
+         {/* Customer Reviews Section */}
+        <div className="reviews-section">
+          <h3>Customer Reviews</h3>
+          <div className="reviews-summary">
+            <div className="reviews-average">
+              <span className="average-rating">{averageRating.toFixed(1)}</span>
+              <div className="stars">
+                {'★'.repeat(Math.round(averageRating))}
+                {'☆'.repeat(5 - Math.round(averageRating))}
+              </div>
+              <span className="total-reviews">{gig.starNumber || 0} reviews</span>
+            </div>
+          </div>
+
+          <div className="reviews-list">
+            {gig.reviews && gig.reviews.length > 0 ? (
+              gig.reviews.map((review, index) => (
+                <div key={index} className="review-item">
+                  <div className="review-header">
+                    <img 
+                      src={review.userImg || "https://avatar.iran.liara.run/public/boy?username=User"} 
+                      alt={review.username || "User"} 
+                      className="reviewer-img" 
+                    />
+                    <div className="reviewer-info">
+                      <h4>{review.username || "Anonymous User"}</h4>
+                      <div className="review-stars">
+                        {'★'.repeat(review.star)}
+                        {'☆'.repeat(5 - review.star)}
+                      </div>
+                      <p className="review-date">{new Date(review.createdAt).toLocaleDateString()}</p>
+                    </div>
+                  </div>
+                  <p className="review-text">{review.desc}</p>
+                  {review.response && (
+                    <div className="review-response">
+                      <h5>Response from Professional:</h5>
+                      <p>{review.response}</p>
+                    </div>
+                  )}
+                </div>
+              ))
+            ) : (
+              <p className="no-reviews">No reviews yet. Be the first to review!</p>
+            )}
+          </div>
+        </div>  
       </div>
 
       <div className="gig-right">
-        <button className="btn appointment-btn">Schedule Appointment</button>
+        <button className="btn appointment-btn" onClick={handleScheduleAppointment}>Schedule Appointment</button>
         <button className="btn chat-btn">Chat Now</button>
       </div>
     </div>
+
+    
   );
 };
 
