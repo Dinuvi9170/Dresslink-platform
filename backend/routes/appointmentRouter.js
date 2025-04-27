@@ -1,0 +1,19 @@
+import express from 'express';
+import { createAppointment, getUserAppointments, updateAppointmentStatus, cancelAppointment } from '../controller/appointmentController.js';
+import authenticate from '../Middleware/authMiddleware.js';
+
+const appointmentRouter = express.Router();
+
+// Create a new appointment
+appointmentRouter.post('/', authenticate, createAppointment);
+
+// Get current user's appointments ( customer or professional)
+appointmentRouter.get('/user', authenticate, getUserAppointments);
+
+// Update appointment status (for professionals)
+appointmentRouter.patch('/status', authenticate, updateAppointmentStatus);
+
+// Cancel an appointment
+appointmentRouter.patch('/:appointmentId/cancel', authenticate, cancelAppointment);
+
+export default appointmentRouter;
