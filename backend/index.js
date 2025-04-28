@@ -5,6 +5,8 @@ import connectDB from './config/db.js';
 import userRouter from './routes/userRouter.js';
 import gigRouter from './routes/gigRouter.js';
 import cors from "cors";
+import http from 'http';
+import { Server } from 'socket.io';
 import appointmentRouter from './routes/appointmentRouter.js';
 import conversationRouter from './routes/conversationRouter.js';
 import messageRouter from './routes/messageRouter.js';
@@ -23,9 +25,35 @@ app.use("/appointments", appointmentRouter)
 app.use("/conversations", conversationRouter)
 app.use("/messages", messageRouter)
 
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:5173",
+        methods: ["GET", "POST"],
+        credentials: true,
+    },
+});
+
+io.on("connection", (socket) => {
+    console.log(`User connected: ${socket.id}`);
+
+    socket.on('sendMessage', ({ senderId, receiverId, content }) => {
+        io.emit('getMessage', {
+          senderId,
+          receiverId,
+          content,
+          createdAt: new Date()
+        });
+      });
+
+    socket.on("disconnect", () => {
+        console.log(`User disconnected: ${socket.id}`);
+    });
+});
+
 
 const PORT= process.env.PORT || 3000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 });
 

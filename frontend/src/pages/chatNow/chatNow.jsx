@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import {io} from "socket.io-client";
 import './chatNow.css';
 
 const ChatNow = () => {
@@ -12,6 +13,7 @@ const ChatNow = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [user, setUser] = useState(null);
+    const [socket, setSocket] = useState(null);
   
     // Get professional info from navigation state or fetch it
     const professionalName = location.state?.professionalName || 'Professional';
@@ -19,6 +21,50 @@ const ChatNow = () => {
     const gigTitle = location.state?.gigTitle || '';
   
     const messageEndRef = useRef(null);
+    //setup socket connection
+    
+    useEffect(() => {
+        // Only attempt connection if user is authenticated
+        if (!user) return;
+    
+        try {
+            const token = localStorage.getItem('token');
+        
+            // Create socket with proper configuration
+            const newSocket = io('http://localhost:3000', {
+                transports: ['websocket', 'polling'], // Try both transports
+                reconnectionAttempts: 5,
+                reconnectionDelay: 1000,
+                auth: {
+                    token // Send auth token with connection
+                },
+                query: {
+                    userId: user._id
+                }
+            });
+        
+            // Debug connection events
+            newSocket.on('connect', () => {
+                console.log('Socket connected successfully:', newSocket.id);
+                setError(null);
+            });
+        
+            newSocket.on('connect_error', (err) => {
+                console.error('Socket connection error:', err.message);
+                setError(`Connection error: ${err.message}. Trying to reconnect...`);
+            });
+        
+            setSocket(newSocket);
+        
+            return () => {
+                console.log('Closing socket connection');
+                newSocket.disconnect();
+            };
+        } catch (err) {
+            console.error("Socket setup error:", err);
+            setError("Failed to establish chat connection");
+        }
+    }, [user]);
 
     // Check authentication and get current user
     useEffect(() => {
@@ -90,6 +136,29 @@ const ChatNow = () => {
         }
     }, [professionalId, user]);
 
+    // Listen for real-time incoming messages
+    useEffect(() => {
+        if (!socket || !user) return;
+
+        socket.on('getMessage', (data) => {
+            if (
+                (data.senderId === professionalId && data.receiverId === user._id) ||
+                (data.senderId === user._id && data.receiverId === professionalId)
+            ) {
+                setMessages(prev => [...prev, {
+                    _id: Date.now().toString(),
+                    sender: data.senderId,
+                    content: data.content,
+                    createdAt: new Date().toISOString()
+                }]);
+            }
+        });
+
+        return () => {
+            socket.off('getMessage');
+        };
+    }, [socket, user, professionalId]);
+
     // Auto-scroll to bottom of messages
     useEffect(() => {
         messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -98,37 +167,39 @@ const ChatNow = () => {
     const handleSendMessage = async (e) => {
         e.preventDefault();
     
-        if (!newMessage.trim()) return;
-    
-        try {
-            const token = localStorage.getItem('token');
-      
-        // Add message optimistically to UI
+        if (!newMessage.trim()|| !socket) return;
+
         const tempMessage = {
             _id: Date.now().toString(),
             sender: user._id,
             content: newMessage,
             createdAt: new Date().toISOString(),
-            isTemp: true // Flag to identify temp messages
+            isTemp: true
         };
-      
+
         setMessages(prev => [...prev, tempMessage]);
         setNewMessage('');
-      
-        // Send message to API
-        const response = await axios.post(
-            'http://localhost:3000/messages',
-            {
-                receiverId: professionalId,
-                content: newMessage
-            },
-            { headers: { Authorization: `Bearer ${token}` } }
-        );
-      
-        // Replace temp message with actual one from server
-        setMessages(prev => 
-            prev.filter(msg => !msg.isTemp).concat(response.data)
-        );
+
+        // Send real-time message
+        socket.emit('sendMessage', {
+            senderId: user._id,
+            receiverId: professionalId,
+            content: newMessage
+        });
+        // save to database
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.post(
+                'http://localhost:3000/messages',
+                {
+                    receiverId: professionalId,
+                    content: newMessage
+                },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            setMessages(prev =>
+                prev.filter(msg => !msg.isTemp).concat(response.data)
+            );
       
         } catch (err) {
             console.error("Error sending message:", err);
