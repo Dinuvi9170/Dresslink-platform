@@ -54,6 +54,26 @@ const Gigs = () => {
     navigate(`/scheduleAppoint/${gig._id}`);
   };
 
+  const handleChatNow = () => {
+    // Check if user is logged in
+    const token = localStorage.getItem('token');
+  
+    if (!token) {
+      // If not logged in, redirect to login page with return URL
+      navigate('/login', { state: { from: `/gigs/${gigId}` } });
+      return;
+    }
+  
+    // Navigate to chat page with the professional's ID
+    navigate(`/chatNow/${gig.user._id}`, { 
+      state: { 
+        professionalName: `${gig.user.fname} ${gig.user.lname}`,
+        professionalImage: gig.user.image,
+        gigTitle: gig.title
+      } 
+    });
+  };
+
 
   return (
     <div className="gig-detail-page">
@@ -171,7 +191,7 @@ const Gigs = () => {
 
       <div className="gig-right">
         <button className="btn appointment-btn" onClick={handleScheduleAppointment}>Schedule Appointment</button>
-        <button className="btn chat-btn">Chat Now</button>
+        <button className="btn chat-btn" onClick={handleChatNow}>Chat Now</button>
       </div>
     </div>
 

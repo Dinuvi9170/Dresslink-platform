@@ -6,6 +6,9 @@ import userRouter from './routes/userRouter.js';
 import gigRouter from './routes/gigRouter.js';
 import cors from "cors";
 import appointmentRouter from './routes/appointmentRouter.js';
+import conversationRouter from './routes/conversationRouter.js';
+import messageRouter from './routes/messageRouter.js';
+
 
 dotenv.config();
 connectDB();
@@ -17,6 +20,9 @@ app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use("/user", userRouter)
 app.use("/gigs", gigRouter)
 app.use("/appointments", appointmentRouter)
+app.use("/conversations", conversationRouter)
+app.use("/messages", messageRouter)
+
 
 const PORT= process.env.PORT || 3000;
 app.listen(PORT, () => {

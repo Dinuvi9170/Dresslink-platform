@@ -11,6 +11,7 @@ import Login from "./pages/login/login"
 import Gigs from "./pages/gigs/gigs";
 import Register from "./pages/register/register";
 import ScheduleAppoint from "./pages/scheduleAppoint/scheduleAppoint";
+import ChatNow from "./pages/chatNow/chatNow";
 
 
 const App = () => {
@@ -28,6 +29,8 @@ const App = () => {
         <Route path="gigs/:gigId" element={<Gigs />} />
         <Route path="register" element={<Register />} />
         <Route path="scheduleAppoint/:gigId" element={<ScheduleAppoint />} />
+        <Route path="chatNow/:professionalId" element={<ChatNow />} />
+        <Route path="chat/:professionalId" element={<ChatNow />} />
                
           
       </Route>
