@@ -120,6 +120,8 @@
     resize: none;
     font-family: inherit;
     font-size: 14px;
+    min-height: 40px;
+    outline: none;
   }
   
   .message-form button {
