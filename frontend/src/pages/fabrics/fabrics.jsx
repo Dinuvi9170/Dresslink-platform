@@ -1,24 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-// import GigCard from '../../components/gigCard/GigCard';
+import SupplierCard from '../../components/supplierCard/supplierCard';
 import './fabrics.css';
 
-const Materials = () => {
+const Fabrics = () => {
   const [gigs, setGigs] = useState([]);
   const [filteredGigs, setFilteredGigs] = useState([]);
   const [city, setCity] = useState('');
   const [materialType, setMaterialType] = useState('');
   const [priceRange, setPriceRange] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Fetch all gigs from the backend
   useEffect(() => {
     const fetchGigs = async () => {
       try {
+        setLoading(true);
+        setError(null);
+
         const res = await axios.get('http://localhost:3000/suppliers');
+        console.log("API Response:", res.data);
         setGigs(res.data);
         setFilteredGigs(res.data);
       } catch (err) {
-        console.error(err);
+        console.error("Error fetching supplier data:", err);
+        setError("Unable to load suppliers. Please try again later.");
+
+        setGigs([]);
+        setFilteredGigs([]);
+      }finally{
+        setLoading(false);
       }
     };
 
@@ -29,6 +41,9 @@ const Materials = () => {
     e.preventDefault();
     
     try {
+      setLoading(true);
+      setError(null);
+
       const params = new URLSearchParams();
       if (city) params.append("city", city);
       if (materialType) params.append("materialType", materialType);
@@ -95,11 +110,29 @@ const Materials = () => {
           </div>
         </div>
       </form>
+      {loading && <div className="loading-indicator">Loading suppliers...</div>}
+      {error && <div className="error-message">{error}</div>}
 
-      <div className="gig-cards-grid">
+      <div className="fabrics-card">
         {filteredGigs.length > 0 ? (
-          filteredGigs.map((gig) => (
-            <GigCard key={gig._id} gig={gig} />
+          filteredGigs.map((supplier) => (
+            <SupplierCard key={supplier._id} supplier={{
+              _id: supplier._id,
+              ShopName: supplier.ShopName,
+              description: supplier.description,
+              materialType: supplier.materialType,
+              cover: supplier.cover,
+              title: supplier.title,
+              price: supplier.price,
+              city: supplier.city,
+              images: supplier.images,
+              user: supplier.user._id,
+              address:supplier.user && supplier.user.address ? 
+              `${supplier.user.address.number || ''} ${supplier.user.address.street || ''}, ${supplier.user.address.city || ''}, ${supplier.user.address.district || ''}, ${supplier.user.address.province || ''}` : 
+              'Address not available' ,
+              user_img: supplier.user.image,
+              username: `${supplier.user.fname} ${supplier.user.lname}`
+            }}/>  
           ))
         ) : (
           <p>No materials found matching your filters.</p>
@@ -109,4 +142,4 @@ const Materials = () => {
   );
 };
 
-export default Materials;
+export default Fabrics;

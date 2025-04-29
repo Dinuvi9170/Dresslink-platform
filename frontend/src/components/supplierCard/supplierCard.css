@@ -1,0 +1,90 @@
+.supplierCard {
+    width: 100%;
+    max-width: 350px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin: 16px;
+    background-color: #fff;
+    transition: transform 0.3s ease;
+  }
+  
+  .supplierCard:hover {
+    transform: scale(1.02);
+  }
+  
+  .supplierCard__link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  
+  .supplierCard-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .supplierCard__picture {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+  }
+  
+  .supplierCard__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  
+  .supplierCard__details {
+    padding: 16px;
+  }
+  
+  .shop__name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #2C3E50;
+  }
+  
+  .shop__address,
+  .shop__title {
+    font-size: 0.95rem;
+    color: #555;
+    margin: 2px 0;
+  }
+  
+  .supplierCard-user {
+    display: flex;
+    align-items: center;
+    margin-top: 12px;
+    gap: 8px;
+  }
+  
+  .gigCard__user-image {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #1ABC9C;
+  }
+  
+  .text2 {
+    font-size: 0.85rem;
+    color: #888;
+  }
+  
+  .gigCard__username {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .supplierCard__price {
+    margin-top: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1ABC9C;
+  }
+  

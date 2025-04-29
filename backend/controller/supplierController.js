@@ -1,43 +1,60 @@
 import SupplierGig from '../models/supplierprofilemodel.js';
-import User from '../models/usermodels.js';
 
 // Create new supplier shop profile
 export const createSupplierGig = async (req, res) => {
-  try {
-    const { userId, shopName, description, materialType, price, city, images } = req.body;
-
-    // Validate supplier role
-    const user = await User.findById(userId);
-    if (!user || user.role !== 'supplier') {
-      return res.status(403).json({ error: 'Only suppliers can create shop profiles' });
+    // check if user is authenticated or not
+    if (!req.isAuthenticated || !req.user || !req.user._id) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+    // Check if user has the supplier role
+    if (!req.user.role || req.user.role !== 'supplier') {
+        return res.status(403).json({ message: 'Access denied. Only suppliers can create shop profiles.' });
     }
 
-    const newGig = new SupplierGig({
-      userId,
-      shopName,
-      description,
-      materialType,
-      price,
-      city,
-      images,
-    });
+    try {
+        //if (!req.body.city){
+        //    return res.status(400).json({message: 'City is required'});
+        //}
+        const supplier = new SupplierGig({
+            user: req.user._id,
+            userId:req.user._id,
+            ShopName: req.body.ShopName,
+            shopDescription: req.body.shopDescription,
+            materialOffered: req.body.materialOffered,
+            title:req.body.title,
+            cover:req.body.cover,
+            images:req.body.images,
+            contactInfo:req.body.contactInfo
+            //city: req.body.city
+        });
 
-    const savedGig = await newGig.save();
-    res.status(201).json(savedGig);
-  } catch (error) {
+        await supplier.save();
+        res.status(201).json({ message: 'Gig created successfully', supplier: supplier });
+    }catch (error) {
     res.status(500).json({ error: 'Failed to create supplier gig', details: error.message });
   }
 };
 
+
 // Get all supplier shop profiles
 export const getAllSupplierGigs = async (req, res) => {
-  try {
-    const gigs = await SupplierGig.find().populate('userId', 'fname lname email image');
-    res.status(200).json(gigs);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch supplier gigs', details: error.message });
-  }
-};
+    try {
+      const gigs = await SupplierGig.find().populate('user', 'fname lname email image address');
+      
+      // Add a check if no gigs are found
+      if (!gigs) {
+        return res.status(404).json({ message: 'No supplier gigs found' });
+      }
+      
+      res.status(200).json(gigs);
+    } catch (error) {
+      console.error("Error fetching supplier gigs:", error); 
+      res.status(500).json({ 
+        error: 'Failed to fetch supplier gigs', 
+        details: error.message 
+      });
+    }
+  };
 
 // Get a single shop profile by ID
 export const getSupplierGigById = async (req, res) => {

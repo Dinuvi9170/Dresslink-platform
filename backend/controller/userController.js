@@ -68,6 +68,7 @@ export function loginUser (req, res) {
                 lname: user.lname,
                 role: user.role,
                 image: user.image,
+                address: user.address,
             }, process.env.JWT_SECRET,);
 
             // send a success response
@@ -81,6 +82,7 @@ export function loginUser (req, res) {
                     lname: user.lname,
                     role: user.role,
                     image: user.image,
+                    address: user.address,
                 },
             });
         })

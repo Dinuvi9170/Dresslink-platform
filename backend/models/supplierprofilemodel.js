@@ -14,10 +14,19 @@ const SupplierProfileSchema= mongoose.Schema({
         type: String,
     },
     materialOffered:{
-        type: String,
+        type: [String],
+        required:true,
+    },
+    cover:{
+        type:String,
+        required: true,
     },
     contactInfo:{
         type: String,
+    },
+    title:{
+        type:String,
+        required:true,
     },
     shopImages:{
         type: String,
