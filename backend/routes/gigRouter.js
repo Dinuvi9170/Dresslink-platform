@@ -13,6 +13,7 @@ gigRouter.get('/:_id',getgig);
 //get all gigs
 gigRouter.get('/',getAllgigs);
 
+//create gig
 gigRouter.post('/creategig',authenticate,creategig);
 
 export default gigRouter;

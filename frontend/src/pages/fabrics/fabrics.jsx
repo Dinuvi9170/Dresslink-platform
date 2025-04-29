@@ -10,10 +10,11 @@ const Materials = () => {
   const [materialType, setMaterialType] = useState('');
   const [priceRange, setPriceRange] = useState('');
 
+  // Fetch all gigs from the backend
   useEffect(() => {
     const fetchGigs = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/gigs/suppliers');
+        const res = await axios.get('http://localhost:3000/suppliers');
         setGigs(res.data);
         setFilteredGigs(res.data);
       } catch (err) {
@@ -24,26 +25,24 @@ const Materials = () => {
     fetchGigs();
   }, []);
 
-  const handleFilter = (e) => {
-    e.preventDefault(); // prevent page reload on form submit
-    let result = gigs;
-
-    if (city) {
-      result = result.filter((gig) =>
-        gig.city.toLowerCase().includes(city.toLowerCase())
-      );
+  const handleFilter = async (e) => {
+    e.preventDefault();
+    
+    try {
+      const params = new URLSearchParams();
+      if (city) params.append("city", city);
+      if (materialType) params.append("materialType", materialType);
+      if (priceRange) params.append("priceRange", priceRange);
+      
+      const url = params.toString() 
+        ? `http://localhost:3000/suppliers/search?${params.toString()}`
+        : 'http://localhost:3000/suppliers';
+        
+      const res = await axios.get(url);
+      setFilteredGigs(res.data);
+    } catch (err) {
+      console.error("Error fetching filtered supplier gigs:", err);
     }
-
-    if (materialType) {
-      result = result.filter((gig) => gig.materialType === materialType);
-    }
-
-    if (priceRange) {
-      const [min, max] = priceRange.split('-').map(Number);
-      result = result.filter((gig) => gig.price >= min && gig.price <= max);
-    }
-
-    setFilteredGigs(result);
   };
 
   return (

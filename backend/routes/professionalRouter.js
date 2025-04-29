@@ -3,8 +3,8 @@ import { getprofessionals, Saveprofessional } from '../controller/professionalCo
 
  const professionalRouter = express.Router();
 
- professionalRouter.get('/',getprofessionals);     
+// professionalRouter.get('/',getprofessionals);     
   
- professionalRouter.post('/',Saveprofessional );
+ //professionalRouter.post('/',Saveprofessional );
 
  export default professionalRouter;

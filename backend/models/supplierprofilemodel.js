@@ -16,10 +16,6 @@ const SupplierProfileSchema= mongoose.Schema({
     materialOffered:{
         type: String,
     },
-    rating:{
-        type: Number,
-        default: 0,
-    },
     contactInfo:{
         type: String,
     },
