@@ -17,9 +17,8 @@ const SupplierCard = ({ supplier }) => {
                     <div className="supplierCard-user">
                         <img src={supplier.user_img} alt={supplier.username} className="gigCard__user-image" />
                         <p className='text2'>Created by</p>
-                        <p className="gigCard__username">{supplier.username}</p>
+                        <p className="gigCards__username">{supplier.username}</p>
                     </div>
-                    <p className="supplierCard__price">LKR {supplier.price}</p>
                 </div>
             </div>
             </Link>

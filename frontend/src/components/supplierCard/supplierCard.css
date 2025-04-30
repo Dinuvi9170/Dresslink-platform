@@ -1,6 +1,6 @@
 .supplierCard {
     width: 100%;
-    max-width: 350px;
+    max-width: 300px;
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -75,16 +75,11 @@
     color: #888;
   }
   
-  .gigCard__username {
+  .gigCards__username {
     font-size: 0.9rem;
     font-weight: 500;
     color: #333;
   }
   
-  .supplierCard__price {
-    margin-top: 12px;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #1ABC9C;
-  }
+  
   

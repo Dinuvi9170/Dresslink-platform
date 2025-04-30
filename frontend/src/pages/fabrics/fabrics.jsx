@@ -20,7 +20,6 @@ const Fabrics = () => {
         setError(null);
 
         const res = await axios.get('http://localhost:3000/suppliers');
-        console.log("API Response:", res.data);
         setGigs(res.data);
         setFilteredGigs(res.data);
       } catch (err) {
@@ -128,7 +127,7 @@ const Fabrics = () => {
               images: supplier.images,
               user: supplier.user._id,
               address:supplier.user && supplier.user.address ? 
-              `${supplier.user.address.number || ''} ${supplier.user.address.street || ''}, ${supplier.user.address.city || ''}, ${supplier.user.address.district || ''}, ${supplier.user.address.province || ''}` : 
+              `${supplier.user.address.number || ''} ${supplier.user.address.street || ''}, ${supplier.user.address.city || ''}, ${supplier.user.address.district || ''}` : 
               'Address not available' ,
               user_img: supplier.user.image,
               username: `${supplier.user.fname} ${supplier.user.lname}`

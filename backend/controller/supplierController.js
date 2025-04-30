@@ -24,7 +24,8 @@ export const createSupplierGig = async (req, res) => {
             title:req.body.title,
             cover:req.body.cover,
             images:req.body.images,
-            contactInfo:req.body.contactInfo
+            contactInfo:req.body.contactInfo,
+            materials:req.body.materials
             //city: req.body.city
         });
 
@@ -71,7 +72,7 @@ export const getSupplierGigById = async (req, res) => {
   }
 };
 
-// Get filtered supplier shop profiles
+{/*// Get filtered supplier shop profiles
 export async function findSupplier(req, res) {
     const { city, materialType, priceRange } = req.query;
     console.log("Filters Received → City:", city, "Material Type:", materialType, "Price Range:", priceRange);
@@ -134,4 +135,92 @@ export async function findSupplier(req, res) {
         message: error.message || 'Internal server error while fetching supplier profiles'
       });
     }
+  }*/}
+
+  // Get filtered supplier shop profiles
+export async function findSupplier(req, res) {
+  const { city, materialType, priceRange } = req.query;
+  console.log("Filters Received → City:", city, "Material Type:", materialType, "Price Range:", priceRange);
+  
+  try {
+    // Basic query without complex aggregation first
+    let query = {};
+    
+    // Since city is not in the supplier model but in the user model, we'll need to use aggregation
+    const pipeline = [
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'user',
+          foreignField: '_id',
+          as: 'userData'
+        }
+      },
+      {
+        $unwind: '$userData'
+      }
+    ];
+    
+    // Build match conditions
+    const matchConditions = {};
+    
+    // Filter by city from user's address if provided
+    if (city && city !== '') {
+      matchConditions['userData.address.city'] = { $regex: new RegExp(city, 'i') };
+    }
+    
+    // Filter by material type if provided
+    if (materialType && materialType !== '') {
+      matchConditions['materialOffered'] = materialType;
+    }
+    
+    // Add price range filter if it exists
+    if (priceRange) {
+      const [minPrice, maxPrice] = priceRange.split('-').map(Number);
+      if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+        matchConditions.averagePrice = { $gte: minPrice, $lte: maxPrice };
+      }
+    }
+    
+    // Add match stage if we have conditions
+    if (Object.keys(matchConditions).length > 0) {
+      pipeline.push({ $match: matchConditions });
+    }
+    
+    // Execute the aggregation
+    const filteredSuppliers = await SupplierGig.aggregate(pipeline);
+    
+    console.log(`Found ${filteredSuppliers.length} supplier profiles after applying all filters`);
+    
+    // Format the response to match your expected structure
+    const formattedSuppliers = filteredSuppliers.map(gig => {
+      return {
+        _id: gig._id,
+        ShopName: gig.ShopName,
+        shopDescription: gig.shopDescription,
+        materialOffered: gig.materialOffered,
+        title: gig.title,
+        cover: gig.cover,
+        images: gig.images,
+        contactInfo: gig.contactInfo,
+        user: {
+          _id: gig.userData._id,
+          fname: gig.userData.fname,
+          lname: gig.userData.lname,
+          email: gig.userData.email,
+          image: gig.userData.image,
+          address: gig.userData.address
+        }
+      };
+    });
+    
+    return res.status(200).json(formattedSuppliers);
+    
+  } catch (error) {
+    console.error("Error fetching filtered supplier profiles:", error);
+    return res.status(500).json({
+      error: true,
+      message: error.message || 'Internal server error while fetching supplier profiles'
+    });
   }
+}
