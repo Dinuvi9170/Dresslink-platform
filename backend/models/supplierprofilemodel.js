@@ -25,9 +25,6 @@ const SupplierProfileSchema= mongoose.Schema({
         type:String,
         required: true,
     },
-    averagePrice:{
-        type: Number,
-    },
     contactInfo:{
         type: String,
     },

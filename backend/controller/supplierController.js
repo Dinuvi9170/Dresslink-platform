@@ -12,9 +12,6 @@ export const createSupplierGig = async (req, res) => {
     }
 
     try {
-        //if (!req.body.city){
-        //    return res.status(400).json({message: 'City is required'});
-        //}
         const supplier = new SupplierGig({
             user: req.user._id,
             userId:req.user._id,
@@ -26,7 +23,7 @@ export const createSupplierGig = async (req, res) => {
             images:req.body.images,
             contactInfo:req.body.contactInfo,
             materials:req.body.materials
-            //city: req.body.city
+            
         });
 
         await supplier.save();
@@ -72,81 +69,16 @@ export const getSupplierGigById = async (req, res) => {
   }
 };
 
-{/*// Get filtered supplier shop profiles
-export async function findSupplier(req, res) {
-    const { city, materialType, priceRange } = req.query;
-    console.log("Filters Received → City:", city, "Material Type:", materialType, "Price Range:", priceRange);
-    
-    try {
-      // Basic query without complex aggregation first
-      let query = {};
-      
-      // Add filters to query if they exist
-      if (city && city !== '') {
-        query.city = { $regex: new RegExp(city, 'i') };
-      }
-      
-      if (materialType && materialType !== '') {
-        query.materialType = materialType;
-      }
-      
-      // Add price range filter if it exists
-      if (priceRange) {
-        const [minPrice, maxPrice] = priceRange.split('-').map(Number);
-        if (!isNaN(minPrice) && !isNaN(maxPrice)) {
-          query.price = { $gte: minPrice, $lte: maxPrice };
-        }
-      }
-      
-      // Execute the query with populated user data
-      const filteredSuppliers = await SupplierGig.find(query)
-        .populate('userId', 'fname lname email image')
-        .lean(); // Use lean() for better performance
-      
-      console.log(`Found ${filteredSuppliers.length} supplier profiles after applying all filters`);
-      
-      // Format the response to match your expected structure
-      const formattedSuppliers = filteredSuppliers.map(gig => {
-        return {
-          _id: gig._id,
-          shopName: gig.shopName,
-          description: gig.description,
-          materialType: gig.materialType,
-          price: gig.price,
-          city: gig.city,
-          images: gig.images,
-          userId: gig.userId._id,
-          user: {
-            _id: gig.userId._id,
-            fname: gig.userId.fname,
-            lname: gig.userId.lname,
-            email: gig.userId.email,
-            image: gig.userId.image
-          }
-        };
-      });
-      
-      return res.status(200).json(formattedSuppliers);
-      
-    } catch (error) {
-      console.error("Error fetching filtered supplier profiles:", error);
-      return res.status(500).json({
-        error: true,
-        message: error.message || 'Internal server error while fetching supplier profiles'
-      });
-    }
-  }*/}
-
-  // Get filtered supplier shop profiles
+// Get filtered supplier shop profiles
 export async function findSupplier(req, res) {
   const { city, materialType, priceRange } = req.query;
   console.log("Filters Received → City:", city, "Material Type:", materialType, "Price Range:", priceRange);
   
   try {
-    // Basic query without complex aggregation first
+    
     let query = {};
     
-    // Since city is not in the supplier model but in the user model, we'll need to use aggregation
+   // Check if city is provided and add to query
     const pipeline = [
       {
         $lookup: {
@@ -168,31 +100,55 @@ export async function findSupplier(req, res) {
     if (city && city !== '') {
       matchConditions['userData.address.city'] = { $regex: new RegExp(city, 'i') };
     }
+
+    const materialsConditions = [];
     
     // Filter by material type if provided
     if (materialType && materialType !== '') {
-      matchConditions['materialOffered'] = materialType;
+      materialsConditions.push({ 
+        $match: {
+          "materials.type": materialType
+        } 
+      });
     }
     
     // Add price range filter if it exists
     if (priceRange) {
       const [minPrice, maxPrice] = priceRange.split('-').map(Number);
       if (!isNaN(minPrice) && !isNaN(maxPrice)) {
-        matchConditions.averagePrice = { $gte: minPrice, $lte: maxPrice };
+        materialsConditions.push({
+          $match: {
+            "materials.price": { $gte: minPrice, $lte: maxPrice }
+          }
+        });
       }
     }
+
+    if (materialsConditions.length > 0) {
+      pipeline.push({
+        $match: {
+          $or: [
+            { "materials.type": materialType && materialType !== '' ? materialType : { $exists: true } },
+            { "materials.price": priceRange ? { 
+                $gte: Number(priceRange.split('-')[0]), 
+                $lte: Number(priceRange.split('-')[1]) 
+              } : { $exists: true } 
+            }
+          ]
+        }
+      });
+    }
     
-    // Add match stage if we have conditions
+    // Add the match conditions to the pipeline
     if (Object.keys(matchConditions).length > 0) {
       pipeline.push({ $match: matchConditions });
     }
-    
-    // Execute the aggregation
+
     const filteredSuppliers = await SupplierGig.aggregate(pipeline);
     
     console.log(`Found ${filteredSuppliers.length} supplier profiles after applying all filters`);
     
-    // Format the response to match your expected structure
+    
     const formattedSuppliers = filteredSuppliers.map(gig => {
       return {
         _id: gig._id,
@@ -203,6 +159,7 @@ export async function findSupplier(req, res) {
         cover: gig.cover,
         images: gig.images,
         contactInfo: gig.contactInfo,
+        materials: gig.materials,
         user: {
           _id: gig.userData._id,
           fname: gig.userData.fname,

@@ -120,6 +120,7 @@ const Fabrics = () => {
               ShopName: supplier.ShopName,
               description: supplier.description,
               materialType: supplier.materialType,
+              materials: supplier.materials,
               cover: supplier.cover,
               title: supplier.title,
               price: supplier.price,
