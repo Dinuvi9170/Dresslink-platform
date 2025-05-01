@@ -20,6 +20,181 @@
     
   }
 
+  .become-seller-title {
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.become-seller-intro {
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.seller-types {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+@media (min-width: 768px) {
+  .seller-types {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.seller-card {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 25px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.seller-card:hover {
+  transform: translateY(-4px);
+}
+
+.seller-card h2 {
+  color: #1ABC9C;
+  margin-bottom: 10px;
+}
+
+.seller-card ul {
+  padding-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.seller-button {
+  background-color: #1ABC9C;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.seller-button:hover {
+  background-color: #159a84;
+}
+
+.hero-section {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.hero-section h1 {
+  font-size: 3rem;
+  color: #1ABC9C;
+}
+
+.hero-section p {
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+
+.seller-options {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+@media (min-width: 768px) {
+  .seller-options {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.card {
+  flex: 1;
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card img {
+  width: 100px;
+  margin-bottom: 20px;
+}
+
+.card h2 {
+  color: #1ABC9C;
+  margin-bottom: 10px;
+}
+
+.card button {
+  margin-top: 20px;
+  background-color: #1ABC9C;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.card button:hover {
+  background-color: #159a84;
+}
+
+.how-it-works {
+  text-align: center;
+}
+
+.how-it-works h2 {
+  font-size: 2.2rem;
+  margin-bottom: 40px;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+@media (min-width: 768px) {
+  .steps {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.step {
+  flex: 1;
+  padding: 20px;
+}
+
+.step img {
+  width: 70px;
+  margin-bottom: 20px;
+}
+
+.step h3 {
+  color: #1ABC9C;
+  font-size: 1.2rem;
+}
+
+.step p {
+  font-size: 1rem;
+}
+
 
   
   
