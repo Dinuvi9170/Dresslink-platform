@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Suppliergig.css';
 
@@ -8,6 +8,8 @@ const Suppliergig = () => {
   const [supplier, setSupplier] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const handleChat = () => navigate(`/chatNow/${supplier.user._id}`);
 
   useEffect(() => {
     const fetchSupplier = async () => {
@@ -37,7 +39,8 @@ const Suppliergig = () => {
 
   return (
     <div className="single-supplier-container">
-      <div className="supplier-header">
+      <div className="supplier-left">
+        <div className="supplier-header">
         <img src={supplier.cover} alt="Shop Cover" className="shop-cover" />
         <div className="supplier-info">
           <h1>{supplier.ShopName}</h1>
@@ -53,7 +56,17 @@ const Suppliergig = () => {
         </div>
       </div>
 
-      <div className="materials-pricing">
+        <div className="contact-info">
+          <h2>Contact Information</h2>
+          <p>{supplier.contactInfo || "No contact information provided"}</p>
+        </div>
+        <div className="chat-now-wrapper">
+            <button className="chat-now-btn" onClick={handleChat}>Chat Now</button>
+        </div>
+        </div>
+
+        <div className="supplier-right">
+            <div className="materials-pricing">
           <h2>Available Materials and Prices</h2>
           {supplier.materials && Array.isArray(supplier.materials) && supplier.materials.length > 0 ? (
             <ul className="materials-list">
@@ -72,10 +85,6 @@ const Suppliergig = () => {
             <p>No materials available at the moment</p>
           )}
         </div>
-        
-        <div className="contact-info">
-          <h2>Contact Information</h2>
-          <p>{supplier.contactInfo || "No contact information provided"}</p>
         </div>
     </div>
   );
