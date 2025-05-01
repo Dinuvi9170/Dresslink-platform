@@ -18,8 +18,14 @@ const SupplierProfileSchema= mongoose.Schema({
         required:true,
     },
     materials:[{
-        type: String,
-        price: Number,
+        type: {
+            type: String,
+            required: true
+        },
+        price: {
+            type: Number,
+            required: true
+        }
     }],
     cover:{
         type:String,

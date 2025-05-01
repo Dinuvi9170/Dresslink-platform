@@ -57,7 +57,7 @@ export const getAllSupplierGigs = async (req, res) => {
 // Get a single shop profile by ID
 export const getSupplierGigById = async (req, res) => {
   try {
-    const gig = await SupplierGig.findById(req.params.id).populate('userId', 'fname lname email image');
+    const gig = await SupplierGig.findById(req.params._id).populate('user', 'fname lname email image address');
 
     if (!gig) {
       return res.status(404).json({ error: 'Shop profile not found' });
@@ -181,3 +181,4 @@ export async function findSupplier(req, res) {
     });
   }
 }
+

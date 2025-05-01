@@ -16,4 +16,5 @@ supplierRouter.get('/:_id', getSupplierGigById);
 // Create supplier profile
 supplierRouter.post('/creategig', authenticate, createSupplierGig);
 
+
 export default supplierRouter;
