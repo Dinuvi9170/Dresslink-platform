@@ -5,7 +5,8 @@ import { io } from "socket.io-client";
 import "./chatNow.css";
 
 const ChatNow = () => {
-    const { professionalId } = useParams();
+    const { professionalId, supplierId } = useParams();
+    const participantId = professionalId || supplierId;
     const location = useLocation();
     const navigate = useNavigate();
     const [messages, setMessages] = useState([]);
@@ -15,9 +16,9 @@ const ChatNow = () => {
     const [user, setUser] = useState(null);
     const [socket, setSocket] = useState(null);
 
-    const professionalName = location.state?.professionalName || 'Professional';
-    const professionalImage = location.state?.professionalImage || 'https://avatar.iran.liara.run/public/boy?username=Pro';
-    const gigTitle = location.state?.gigTitle || '';
+    const professionalName = location.state?.professionalName || location.state?.supplierName  || 'Professional';
+    const professionalImage = location.state?.professionalImage || location.state?.supplierImage || 'https://avatar.iran.liara.run/public/boy?username=Pro';
+    const gigTitle = location.state?.gigTitle || location.state?.shopName || '';
 
     const messageEndRef = useRef(null);
 
@@ -65,7 +66,7 @@ const ChatNow = () => {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (!token) {
-            navigate(`/login`, { state: { from: `/chat/${professionalId}` } });
+            navigate(`/login`, { state: { from: `/chat/${participantId}` } });
             return;
         }
 
@@ -86,7 +87,7 @@ const ChatNow = () => {
         } catch (err) {
             console.error("Error parsing token:", err);
             setError("Authentication failed. Please login again.");
-            navigate(`/login`, { state: { from: `/chat/${professionalId}` } });
+            navigate(`/login`, { state: { from: `/chat/${participantId}` } });
         }
     }, [professionalId, navigate]);
 
@@ -101,7 +102,7 @@ const ChatNow = () => {
 
                 const conversationResponse = await axios.post(
                     'http://localhost:3000/conversations',
-                    { participantId: professionalId },
+                    { participantId },
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
 

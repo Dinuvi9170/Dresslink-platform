@@ -31,7 +31,7 @@ const App = () => {
         <Route path="register" element={<Register />} />
         <Route path="scheduleAppoint/:gigId" element={<ScheduleAppoint />} />
         <Route path="chatNow/:professionalId" element={<ChatNow />} />
-        <Route path="chat/:professionalId" element={<ChatNow />} />
+        <Route path="chatNow/:supplierId" element={<ChatNow />} />
         <Route path="suppliers/:supplierId" element={<Suppliergig />} />  
       </Route>
         

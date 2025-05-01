@@ -9,7 +9,14 @@ const Suppliergig = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const handleChat = () => navigate(`/chatNow/${supplier.user._id}`);
+  const handleChat = () => 
+    navigate(`/chatNow/${supplier.user._id}`,{    
+        state: {
+            professionalName: fullName,
+            professionalImage: supplier.user.image,
+            gigTitle: supplier.ShopName
+        }
+    });
 
   useEffect(() => {
     const fetchSupplier = async () => {
