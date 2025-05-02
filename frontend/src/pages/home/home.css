@@ -125,4 +125,44 @@
     background-color: #17a085;
   }
   
+  /* Responsive UI*/
+
+@media (max-width: 1024px) {
+  .home-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .home-left, .home-right {
+    flex: 1 1 100%;
+    padding: 20px;
+  }
+
+  .home-left h1 {
+    font-size: 2.2rem;
+  }
+
+  .home-left p {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .home-left h1 {
+    font-size: 1.8rem;
+  }
+
+  .home-left p {
+    font-size: 1rem;
+  }
+
+  .btn {
+    font-size: 1rem;
+    padding: 12px 24px;
+  }
+
+  .home-img {
+    width: 90%;
+  }
+}
   
