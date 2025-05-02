@@ -35,7 +35,7 @@ const gigSchema = mongoose.Schema({
     },
     cover:{
         type:String,
-        required:false,
+        required:true,
     },
     shorttitle:{
         type:String,

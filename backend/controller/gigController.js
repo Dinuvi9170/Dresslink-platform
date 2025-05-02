@@ -29,8 +29,9 @@ export async function creategig(req, res) {
           shorttitle: req.body.shorttitle || '',
           shortdesc: req.body.shortdesc || '',
           price: parseInt(req.body.price) || 0,
-          category: req.body.category || 'other',
-          // No files handling for now
+          category: req.body.category || 'tailoring',
+          cover: req.body.cover || '',
+          images: req.body.images || [],
           createdAt: new Date(),
       });
       
@@ -44,7 +45,7 @@ export async function creategig(req, res) {
           });
       }
       
-      // Save the gig using await for better error handling
+      // Save the gig 
       const savedGig = await gig.save();
       
       return res.status(201).json({
@@ -56,8 +57,6 @@ export async function creategig(req, res) {
       });
   } catch (error) {
       console.error("Error creating gig:", error);
-      
-      // Return a more helpful error message
       return res.status(500).json({
           error: 'Failed to create gig'
       });
