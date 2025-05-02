@@ -62,6 +62,7 @@ const Header = ({ currentUser, setCurrentUser }) => {
               {open && (
                 <div className="options">
                   <span>My Products</span>
+                  <Link to= "/becomeSeller"><span>Become Seller</span></Link>
                   <span onClick={handleLogout}>Logout</span>
                 </div>
               )}

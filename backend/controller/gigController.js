@@ -1,32 +1,67 @@
 import Gig from "../models/gig.js";
 
 
-export function creategig (req,res){
-    // check is user authenticated or not
-    if (!req.isAuthenticated || !req.user || !req.user._id) {
-        return res.status(401).json({ message: 'Unauthorized' });
-    }
-    const gig = new Gig({
-        user: req.user._id,
-        title: req.body.title,
-        description: req.body.description,
-        shorttitle: req.body.shorttitle,
-        shortdesc: req.body.shortdesc,
-        price: req.body.price,
-        category: req.body.category,
-        cover: req.body.cover,
-        images: req.body.images,
-        createdAt: req.body.createdAt,
-    });
-    gig.save()
-    .then(() => {
-        res.status(201).json({ message: 'Gig created successfully' });
-    })
-    .catch((error) => {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to create gig' });
-    });
-
+export async function creategig(req, res) {
+  try {
+      // Enhanced authentication debugging
+      console.log("Authentication check:", {
+          hasUser: !!req.user,
+          userId: req.user?._id,
+          isAuthenticated: !!req.isAuthenticated
+      });
+      
+      // Log request body for debugging
+      console.log("Request body received:", req.body);
+      
+      // Check if user is authenticated
+      if (!req.user || !req.user._id) {
+          return res.status(401).json({ 
+              message: 'Unauthorized - invalid authentication',
+              details: 'User information is missing from the request'
+          });
+      }
+      
+      // Create the gig object without files
+      const gig = new Gig({
+          user: req.user._id,
+          title: req.body.title || '',
+          description: req.body.description || '',
+          shorttitle: req.body.shorttitle || '',
+          shortdesc: req.body.shortdesc || '',
+          price: parseInt(req.body.price) || 0,
+          category: req.body.category || 'other',
+          // No files handling for now
+          createdAt: new Date(),
+      });
+      
+      // Validate the gig object before saving
+      const validationError = gig.validateSync();
+      if (validationError) {
+          console.error("Validation error:", validationError);
+          return res.status(400).json({
+              error: 'Validation failed',
+              details: validationError.errors
+          });
+      }
+      
+      // Save the gig using await for better error handling
+      const savedGig = await gig.save();
+      
+      return res.status(201).json({
+          message: 'Gig created successfully',
+          gig: {
+              id: savedGig._id,
+              title: savedGig.title
+          }
+      });
+  } catch (error) {
+      console.error("Error creating gig:", error);
+      
+      // Return a more helpful error message
+      return res.status(500).json({
+          error: 'Failed to create gig'
+      });
+  }
 }
 
 export async function getgig (req,res){
