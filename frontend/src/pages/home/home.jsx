@@ -17,7 +17,7 @@ const Home=() => {
       <div className="home-container">
         <div className="home-left">
           <h1>Bringing Tailoring Dreams to Life</h1>
-          <p><span className='line'> Unlock exclusive features, connect with professionals and explore</span><span> a variety of materials tailored to your needs.</span></p>
+          <p><span className='line'> Unlock exclusive features, connect with professionals and explore a variety of materials tailored to your needs.</span></p>
           <button className='btn' onClick={handleGetStarted}>Get Started</button>
         </div>
         <div className="home-right">

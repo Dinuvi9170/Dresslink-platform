@@ -17,6 +17,7 @@
     color: #ffffff;  
     font-weight: bold;
     margin-bottom: 20px;
+    
   }
   
   .home-left p {
@@ -24,6 +25,7 @@
     color: #f8f9fa;
     margin-bottom: 30px;
     line-height: 1.6;
+    margin-left:20px;
   }
   .line {
     display: block;
@@ -37,6 +39,7 @@
     border: none;
     border-radius: 8px;
     font-size: 1.1rem;
+    margin-left: 15px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
   }
