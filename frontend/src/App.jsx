@@ -14,10 +14,47 @@ import ScheduleAppoint from "./pages/scheduleAppoint/scheduleAppoint";
 import ChatNow from "./pages/chatNow/chatNow";
 import Suppliergig from "./pages/suppliergig/suppliergig";
 import CreateProfessional from "./pages/createProfessionalgig/createProfessional";
-
+import {jwtDecode} from "jwt-decode";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
+
+  // Restore user from token when app loads or refreshes
+  useEffect(() => {
+    const restoreUser = () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          // Decode the JWT token
+          const decodedUser = jwtDecode(token);
+          
+          // Check if token has expired
+          const currentTime = Date.now() / 1000;
+          if (decodedUser.exp && decodedUser.exp < currentTime) {
+            // Token has expired, remove it
+            localStorage.removeItem('token');
+            return;
+          }
+          
+          // Set the current user from token data
+          setCurrentUser({
+            _id: decodedUser._id,
+            fname: decodedUser.fname,
+            lname: decodedUser.lname,
+            email: decodedUser.email,
+            role: decodedUser.role,
+            image: decodedUser.image,
+            address: decodedUser.address
+          });
+        } catch (error) {
+          console.error("Error restoring user session:", error);
+          localStorage.removeItem('token');
+        }
+      }
+    };
+    
+    restoreUser();
+  }, []);
 
   return (
     <Routes>

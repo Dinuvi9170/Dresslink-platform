@@ -26,7 +26,26 @@ const CreateProfessional = () => {
         const token = localStorage.getItem('token');
         if (!token) {
             navigate('/login', { state: { from: '/createProfessioonalgig' } });
+            return;
         }
+
+        // Make a test request to verify the token is valid
+        const verifyToken = async () => {
+            try {
+                await axios.get('http://localhost:3000/gigs', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                // If successful, set loading to false
+                setLoading(false);
+            } catch (err) {
+                console.error('Token verification failed:', err);
+                // If token is invalid, redirect to login
+                navigate('/login', { state: { from: '/createProfessioonalgig' } });
+            }
+        };
+        verifyToken();
     }, [navigate]);
 
     // Handle input changes
@@ -153,6 +172,12 @@ const CreateProfessional = () => {
             
         } catch (err) {
             console.error('Error creating gig:', err);
+            if (err.response?.status === 401) {
+                // Clear token and redirect to login
+                localStorage.removeItem('token');
+                navigate('/login', { state: { from: '/createProfessioonalgig' } });
+                return;
+            }
             setError(err.response?.data?.message || err.response?.data?.error || 'Failed to create gig. Please try again.');
         } finally {
             setLoading(false);
