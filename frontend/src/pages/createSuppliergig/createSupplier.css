@@ -1,0 +1,100 @@
+.supplier-form {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 25px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.supplier-form h2,
+.supplier-form h3 {
+  color: #2C3E50;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.supplier-form label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.supplier-form input[type="text"],
+.supplier-form input[type="email"],
+.supplier-form input[type="number"],
+.supplier-form input[type="file"],
+.supplier-form textarea {
+  width: 97%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.supplier-form input:focus,
+.supplier-form textarea:focus {
+  border-color: #1ABC9C;
+  outline: none;
+}
+
+.supplier-form textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.material-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.material-row input {
+  flex: 1;
+}
+
+.supplier-form button[type="button"] {
+  background-color: #1ABC9C;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin-top: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.supplier-form button[type="button"]:hover {
+  background-color: #159a83;
+}
+
+.submit-btn {
+  background-color: #2C3E50;
+  color: #fff;
+  padding: 12px;
+  margin-top: 25px;
+  width: 100%;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+  background-color: #1a252f;
+}
+
+.supplier-form img {
+  display: block;
+  margin-top: 10px;
+  border-radius: 6px;
+  max-height: 150px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}

@@ -32,7 +32,17 @@ const SupplierProfileSchema= mongoose.Schema({
         required: true,
     },
     contactInfo:{
-        type: String,
+        mobile: {
+            type: String,
+            required: true
+        },
+        email: {
+            type: String,
+            required: true
+        },
+        whatsapp: {
+            type: String
+        }
     },
     title:{
         type:String,

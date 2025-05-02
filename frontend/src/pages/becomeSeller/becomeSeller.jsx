@@ -56,7 +56,7 @@ const BecomeSeller = () => {
             <p>
               List your fabrics, threads, accessories and supply to professionals across the country.
             </p>
-            <button onClick={() => navigate('/create-gig/supplier')}>Join Us</button>
+            <button onClick={() => navigate('/createSuppliergig')}>Join Us</button>
           </div>
         </div>
       </section>

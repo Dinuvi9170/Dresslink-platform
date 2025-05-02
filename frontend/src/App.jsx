@@ -14,6 +14,7 @@ import ScheduleAppoint from "./pages/scheduleAppoint/scheduleAppoint";
 import ChatNow from "./pages/chatNow/chatNow";
 import Suppliergig from "./pages/suppliergig/suppliergig";
 import CreateProfessional from "./pages/createProfessionalgig/createProfessional";
+import CreateSupplier from "./pages/createSuppliergig/createSupplier";
 import {jwtDecode} from "jwt-decode";
 
 const App = () => {
@@ -72,6 +73,7 @@ const App = () => {
         <Route path="chatNow/:supplierId" element={<ChatNow />} />
         <Route path="suppliers/:supplierId" element={<Suppliergig />} /> 
         <Route path="createProfessioonalgig" element={<CreateProfessional />} /> 
+        <Route path="createSuppliergig" element={<CreateSupplier />} />
         
       </Route>
         
