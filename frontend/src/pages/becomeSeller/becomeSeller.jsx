@@ -1,12 +1,14 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import "./becomeSeller.css";
 
 const BecomeSeller = () => {
+  const navigate = useNavigate();
   return (
     <div className="become-seller">
       <div className="become-seller-img"/>
       <section className="hero-section">
-        <h1>Start Selling on DressLink</h1>
+        <h1>Build Your Business with DressLink</h1>
         <p>Join our mission to connect tailors, designers, and material suppliers with a larger audience. Let your craft shine!</p>
       </section>
 
@@ -33,21 +35,29 @@ const BecomeSeller = () => {
 
       <section className="seller-options">
         <div className="card">
-          <img src="https://cdn-icons-png.flaticon.com/512/4645/4645949.png" alt="Professional" />
-          <h2>Become a Professional</h2>
-          <p>
-            Are you a tailor or designer? Offer custom clothing services, showcase your portfolio, and get discovered by rural and urban customers.
-          </p>
-          <button onClick={() => navigate('/create-gig/professional')}>Create Professional Gig</button>
+          <div className="card-right" >
+            <img src="https://cdn-icons-png.flaticon.com/512/4645/4645949.png" alt="Professional" />
+          </div>
+          <div className="card-left" >
+            <h2> Are you a tailor or designer?</h2>
+            <p>
+              Offer custom clothing services, showcase your portfolio, and get discovered by rural and urban customers.
+            </p>
+            <button onClick={() => navigate('/createProfessioonalgig')}>Join Us</button>
+          </div>
         </div>
 
         <div className="card">
-          <img src="https://cdn-icons-png.flaticon.com/512/4645/4645820.png" alt="Supplier" />
-          <h2>Become a Supplier</h2>
-          <p>
-            Own a shop or provide tailoring materials? List your fabrics, threads, accessories and supply to professionals across the country.
-          </p>
-          <button onClick={() => navigate('/create-gig/supplier')}>Create Supplier Gig</button>
+          <div className="card-right" >
+            <img src="https://cdn-icons-png.flaticon.com/512/4645/4645820.png" alt="Supplier" />
+          </div>
+          <div className="card-left" >
+            <h2>Own a shop or provide tailoring materials?</h2>
+            <p>
+              List your fabrics, threads, accessories and supply to professionals across the country.
+            </p>
+            <button onClick={() => navigate('/create-gig/supplier')}>Join Us</button>
+          </div>
         </div>
       </section>
         

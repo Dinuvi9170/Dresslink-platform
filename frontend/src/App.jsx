@@ -13,6 +13,7 @@ import Register from "./pages/register/register";
 import ScheduleAppoint from "./pages/scheduleAppoint/scheduleAppoint";
 import ChatNow from "./pages/chatNow/chatNow";
 import Suppliergig from "./pages/suppliergig/suppliergig";
+import CreateProfessional from "./pages/createProfessionalgig/createProfessional";
 
 
 const App = () => {
@@ -32,7 +33,9 @@ const App = () => {
         <Route path="scheduleAppoint/:gigId" element={<ScheduleAppoint />} />
         <Route path="chatNow/:professionalId" element={<ChatNow />} />
         <Route path="chatNow/:supplierId" element={<ChatNow />} />
-        <Route path="suppliers/:supplierId" element={<Suppliergig />} />  
+        <Route path="suppliers/:supplierId" element={<Suppliergig />} /> 
+        <Route path="createProfessioonalgig" element={<CreateProfessional />} /> 
+        
       </Route>
         
     </Routes>

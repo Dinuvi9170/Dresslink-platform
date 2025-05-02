@@ -1,0 +1,45 @@
+.create-gig-container {
+    max-width: 700px;
+    margin: 50px auto;
+    background: #f9f9f9;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(16, 181, 167, 0.4);
+  }
+  
+  .create-gig-container h1 {
+    text-align: center;
+    color: #2C3E50;
+    margin-bottom: 20px;
+  }
+  
+  .create-gig-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .create-gig-form input,
+  .create-gig-form select,
+  .create-gig-form textarea {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    resize: vertical;
+  }
+  
+  .create-gig-form button {
+    padding: 14px;
+    background-color: #1ABC9C;
+    color: white;
+    border: none;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .create-gig-form button:hover {
+    background-color: #17a589;
+  }
+  
