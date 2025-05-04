@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import "./gigCard.css";
 import Star from "../../assets/icons/star.png";
-import UnfilledHeart from "../../assets/icons/unfill-heart.png";
+//import UnfilledHeart from "../../assets/icons/unfill-heart.png";
 
 const GigCard = ({ gig }) => {
   return (
@@ -11,7 +11,7 @@ const GigCard = ({ gig }) => {
       <div className="gigCard-container">
         <div className="gigCard__picture">
           <img src={gig.image} alt={gig.title} className="gigCard__image" />
-          <img src={UnfilledHeart} alt="heart" className="gigCard__heart" />
+          
         </div>
         <div className="gigCard__details">
           <h2 className="gigCard__title">{gig.title}</h2>
