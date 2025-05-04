@@ -36,7 +36,7 @@ const Myfit = () => {
   return (
     <div className="myfit">
       <div className="myfit-img"></div>
-      <h1>Preview My Fit</h1>
+      <h1>Style It, Fit It, Love It</h1>
       <p>Upload your design and get a preview of how it will look on you.</p>
       <div className='preview-container'>
         <div className="left-panel">

@@ -148,6 +148,7 @@ const CreateProfessional = () => {
                 price: Number(formData.price),
                 cover: coverUrl,
                 images: imageUrls, 
+                description: formData.description.replace(/\n/g, '\\n'),
             };
 
             // Add the URLs
@@ -172,12 +173,6 @@ const CreateProfessional = () => {
             
         } catch (err) {
             console.error('Error creating gig:', err);
-            if (err.response?.status === 401) {
-                // Clear token and redirect to login
-                localStorage.removeItem('token');
-                navigate('/login', { state: { from: '/createProfessioonalgig' } });
-                return;
-            }
             setError(err.response?.data?.message || err.response?.data?.error || 'Failed to create gig. Please try again.');
         } finally {
             setLoading(false);
@@ -192,7 +187,7 @@ const CreateProfessional = () => {
           <form onSubmit={handleSubmit} className="create-gig-form">
             <input type="text" name="title" placeholder="Full Gig Title" required value={formData.title} onChange={handleChange} />
             <input type="text" name="shorttitle" placeholder="Short Title" required value={formData.shorttitle} onChange={handleChange}  />
-            <textarea name="description" placeholder="Detailed Description" required value={formData.description} onChange={handleChange}></textarea>
+            <textarea name="description" placeholder="Detailed Description" required value={formData.description} className="preserve-newlines" onChange={handleChange}></textarea>
             <textarea name="shortdesc" placeholder="Short Description" required value={formData.shortdesc} onChange={handleChange}></textarea>
             <input type="number" name="price" placeholder="Starting Price (LKR)" required value={formData.price} onChange={handleChange} />
             <select name="category" required value={formData.category} onChange={handleChange}>

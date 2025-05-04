@@ -62,7 +62,7 @@ const Fabrics = () => {
   return (
     <div className="materials-page">
       <div className="fabrics-img" />
-      <h1 className="page-title">Fabrics & Materials</h1>
+      <h1 className="page-title">Browse Fabric & Accessory Suppliers Today</h1>
       <p className="page-subtitle">Use filters to find the perfect match for your need.</p>
 
       <form className="filters-form" onSubmit={handleFilter}>

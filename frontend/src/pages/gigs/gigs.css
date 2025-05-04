@@ -43,11 +43,15 @@
   .price {
     font-size: 1.2rem;
     color: #333;
+    
+    
   }
   
   .rating {
     color: #f39c12;
     font-weight: bold;
+    margin-top: 100px;
+    margin-left: -90px;
   }
   
   .gig-professional {
@@ -86,6 +90,18 @@
   
   .tailoring-info li {
     margin: 0.5rem 0;
+  }
+  .gig-images h3{
+    color:#2c3e50;
+    text-align: center;
+  }
+  
+  .gig-main-image {
+    width: auto;
+    height: 50px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1rem;
   }
   
   /* RIGHT SIDE */

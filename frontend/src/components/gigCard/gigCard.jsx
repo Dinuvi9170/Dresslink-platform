@@ -25,7 +25,7 @@ const GigCard = ({ gig }) => {
             <img src={Star} className="star_img"/>
             <span className="gigCard__star">{gig.star}</span>
           </div>  
-          <p className="gigCard__price">LKR {gig.price}</p>
+          <p className="gigCard__price">Start from: LKR {gig.price}</p>
         </div>
       </div>
       </Link>
