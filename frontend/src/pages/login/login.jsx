@@ -54,7 +54,6 @@ const SignIn = ({setCurrentUser}) => {
             onChange={(e) => setPassword(e.target.value)} required />
         </div>
         <div>
-            <a href="/forgot-password" className="forgot-password">Forgot Password?</a>
             <Link to="/register" className="register">Create new account</Link>
         </div>
         <button type="submit">Login</button>

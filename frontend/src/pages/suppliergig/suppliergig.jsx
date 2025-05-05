@@ -8,11 +8,11 @@ const Suppliergig = () => {
   const [supplier, setSupplier] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activeImage, setActiveImage] = useState(0);
   const navigate = useNavigate();
 
   console.log("Supplier ID from params:", supplierId);
   
-  // Move handleChat inside useEffect or after supplier data is available
   const handleChat = () => {
     if (!supplier || !supplier.user) {
       console.error("Cannot chat: supplier or user data missing");
@@ -47,6 +47,10 @@ const Suppliergig = () => {
           setError("No supplier found with this ID");
         } else {
           setSupplier(res.data);
+          // If supplier has images, set the first one as active
+          if (res.data.images && res.data.images.length > 0) {
+            setActiveImage(0);
+          }
         }
       } catch (err) {
         console.error('Error fetching supplier:', err);
@@ -69,6 +73,11 @@ const Suppliergig = () => {
     ? `${supplier.user.address.number || ''} ${supplier.user.address.street || ''}, ${supplier.user.address.city || ''}, ${supplier.user.address.district || ''}`
     : 'Address not available';
 
+  // Use supplier.images or default to an array with the cover image
+  const galleryImages = supplier.images && Array.isArray(supplier.images) && supplier.images.length > 0 
+    ? supplier.images 
+    : supplier.cover ? [supplier.cover] : [];
+
   return (
     <div className="single-supplier-container">
       <div className="supplier-left">
@@ -82,12 +91,43 @@ const Suppliergig = () => {
                 <img src={supplier.user.image} alt="Supplier" className="supplier-avatar" />
               )}
               <div>
-                <h4>{fullName}</h4>
+                <h4>Owner: {fullName}</h4>
                 <p>{address}</p>
-                {supplier.user && <p>Email: {supplier.user.email}</p>}
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Image Gallery Section */}
+        <div className="supplier-gallery">
+          <h2>Shop Gallery</h2>
+          {galleryImages.length > 0 ? (
+            <div className="gallery-container">
+              <div className="gallery-main-image">
+                <img 
+                  src={galleryImages[activeImage]} 
+                  alt={`Gallery image ${activeImage + 1}`}
+                  className="gallery-active-image"
+                />
+              </div>
+              
+              {galleryImages.length > 1 && (
+                <div className="gallery-thumbnails">
+                  {galleryImages.map((image, index) => (
+                    <div 
+                      key={index} 
+                      className={`gallery-thumbnail ${index === activeImage ? 'active' : ''}`}
+                      onClick={() => setActiveImage(index)}
+                    >
+                      <img src={image} alt={`Thumbnail ${index + 1}`} />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ) : (
+            <p>No gallery images available</p>
+          )}
         </div>
 
         <div className="contact-info">
@@ -95,7 +135,7 @@ const Suppliergig = () => {
           {supplier.contactInfo ? (
             <div>
               <p>Mobile: {supplier.contactInfo.mobile}</p>
-              <p>Email: {supplier.contactInfo.email}</p>
+              {supplier.user && <p>Email: {supplier.user.email}</p>}
               {supplier.contactInfo.whatsapp && <p>WhatsApp: {supplier.contactInfo.whatsapp}</p>}
             </div>
           ) : (
@@ -112,6 +152,10 @@ const Suppliergig = () => {
           <h2>Available Materials and Prices</h2>
           {supplier.materials && Array.isArray(supplier.materials) && supplier.materials.length > 0 ? (
             <ul className="materials-list">
+              <div className='desc'>
+                <span className='text2'>Materials</span>
+                <span className='text3'>prices for 1 meter</span>
+              </div>
               {supplier.materials.map((material, index) => (
                 <li key={index} className="material-item">
                   {material.type && (

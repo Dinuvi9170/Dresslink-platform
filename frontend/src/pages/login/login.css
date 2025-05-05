@@ -56,14 +56,14 @@
     background-color: #159c85;
   }
 
-  .forgot-password,
+  
 .register {
   display: inline-block;
   margin-right: 12px;
   font-size: 13px;
   color: #2c7be5;
   text-decoration: none;
-  margin-left: 50px;
+  margin-left: 150px;
 }
 
 .forgot-password:hover,
