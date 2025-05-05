@@ -120,19 +120,19 @@ const Fabrics = () => {
               ShopName: supplier.ShopName,
               description: supplier.description,
               materialType: supplier.materialType,
-              materials: supplier.materials,
               cover: supplier.cover,
               title: supplier.title,
               price: supplier.price,
               city: supplier.city,
               images: supplier.images,
-              user: supplier.user._id,
+              materials: supplier.materials || [],
+              user: supplier.user,
               address:supplier.user && supplier.user.address ? 
               `${supplier.user.address.number || ''} ${supplier.user.address.street || ''}, ${supplier.user.address.city || ''}, ${supplier.user.address.district || ''}` : 
               'Address not available' ,
               user_img: supplier.user.image,
               username: `${supplier.user.fname} ${supplier.user.lname}`
-            }}/>  
+            }}/>
           ))
         ) : (
           <p>No materials found matching your filters.</p>

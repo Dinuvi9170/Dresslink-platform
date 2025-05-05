@@ -72,7 +72,7 @@ const App = () => {
         <Route path="chatNow/:professionalId" element={<ChatNow />} />
         <Route path="chatNow/:supplierId" element={<ChatNow />} />
         <Route path="suppliers/:supplierId" element={<Suppliergig />} /> 
-        <Route path="createProfessioonalgig" element={<CreateProfessional />} /> 
+        <Route path="createProfessionalgig" element={<CreateProfessional />} />
         <Route path="createSuppliergig" element={<CreateSupplier />} />
         
       </Route>

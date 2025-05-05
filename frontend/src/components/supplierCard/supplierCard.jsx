@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import "./supplierCard.css";
 
 const SupplierCard = ({ supplier }) => {
+    console.log("Supplier data in card:", supplier);
     return (
         <div className="supplierCard">
-            <Link to={`/suppliers/${supplier._id}`} className="supplierCard__link">
+<Link to={`/suppliers/${supplier._id}`} className="supplierCard__link">
             <div className="supplierCard-container">
                 <div className="supplierCard__picture">
                     <img src={supplier.cover} alt={supplier.cover} className="supplierCard__image" />
