@@ -188,7 +188,10 @@ button:hover {
   color: #2C3E50;
   margin-bottom: 10px;
 }
-
+.model-preview p{
+  text-align: center;
+  margin-top: 20px;
+}
 .fit-result {
   background-color: #e8fdfc;
   border: 1px solid #1ABC9C;
@@ -196,19 +199,23 @@ button:hover {
   padding: 20px;
   margin-top: 10px;
   text-align: center;
+ 
 }
 
 .fake-2d-model {
   margin-top: 15px;
-  height: 250px;
-  background-color: #ddd;
+  height: 450px;
+  background-color: #f0f0f0;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #333;
   font-size: 1.1em;
+  
 }
+
+
 
   
   

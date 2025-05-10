@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import FitModel from '../fitmodel/fitmodel';
 import "./myfit.css";
 
 const Myfit = () => {
@@ -90,13 +91,17 @@ const Myfit = () => {
           </form>
         </div>
         <div className="right-panel">
-          <p>Display here your 2D Fit Preview</p>
+          {!showModel && (
+            <p>Display here your 2D Fit Preview</p>
+          )}
           {showModel && (
             <div className="fit-result">
               <h3>Your 2D Fit Preview</h3>
               <div className="model-preview">
                 <p> Simulated 2D model generated based on your inputs.</p>
-                <div className="fake-2d-model">[2D Model Here]</div>
+                <div className="fake-2d-model">
+                  <FitModel image={image} measurements={measurements} />
+                </div>
               </div>
             </div>
           )}

@@ -1,0 +1,118 @@
+.fit-model-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  
+  .dress-display {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+  }
+  
+  .dress-wrapper {
+    position: relative;
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  .dress-image {
+    max-width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+    border-radius: 4px;
+    transition: all 0.5s ease;
+  }
+  
+  .loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    font-weight: bold;
+    gap: 12px;
+  }
+  
+  .loading-spinner {
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(26, 188, 156, 0.3);
+    border-top-color: #1ABC9C;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  .measurement-indicators {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+  }
+  
+  .bust-indicator,
+  .waist-indicator,
+  .hip-indicator,
+  .height-indicator {
+    position: absolute;
+    left: 100%;
+    transform: translateX(10px);
+    transition: top 0.3s ease;
+  }
+  
+  .measurement-label {
+    background-color: rgba(26, 188, 156, 0.8);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  
+  .adjustment-points {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+  }
+  
+  .adjustment-point {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    opacity: 0.3;
+    transition: transform 0.5s ease;
+  }
+  
+  .adjustment-point.bust {
+    background-color: rgba(255, 0, 0, 0.7);
+  }
+  
+  .adjustment-point.waist {
+    background-color: rgba(0, 255, 0, 0.7);
+  }
+  
+  .adjustment-point.hip {
+    background-color: rgba(0, 0, 255, 0.7);
+  }
