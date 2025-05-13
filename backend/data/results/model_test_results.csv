@@ -1,0 +1,8 @@
+label,bust,waist,hips,ml_prediction,ml_confidence,rule_based,match
+expected hourglass,92,65,94,hourglass,0.98,hourglass,True
+expected apple,100,90,95,rectangle,0.89,rectangle,True
+expected pear,85,70,100,pear,0.68,pear,True
+expected rectangle,88,80,90,rectangle,0.99,rectangle,True
+equal bust and hips,95,80,95,hourglass,0.87,hourglass,True
+all equal,85,85,85,rectangle,0.57,rectangle,True
+extreme hourglass,110,60,110,hourglass,0.97,hourglass,True

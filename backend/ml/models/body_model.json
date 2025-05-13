@@ -1,0 +1,52 @@
+{
+  "measurements": {
+    "height": 165,
+    "bust": 88,
+    "waist": 70,
+    "hips": 95,
+    "shoulder_width": 38,
+    "arm_length": 60,
+    "leg_length": 80.0
+  },
+  "body_segments": {
+    "shoulders": {
+      "x": 300,
+      "y": 120.0,
+      "width": 148.77575757575755,
+      "height": 34.0
+    },
+    "bust": {
+      "x": 300,
+      "y": 201.6,
+      "width": 326.4,
+      "height": 54.400000000000006
+    },
+    "waist": {
+      "x": 300,
+      "y": 308.7,
+      "width": 274.06060606060606,
+      "height": 34.0
+    },
+    "hips": {
+      "x": 300,
+      "y": 410.7,
+      "width": 430.6666666666667,
+      "height": 54.400000000000006
+    },
+    "arms": {
+      "length": 247.27272727272725,
+      "width": 58.752
+    },
+    "legs": {
+      "length": 329.6969696969697,
+      "width": 107.66666666666667,
+      "thigh_factor": 1.2
+    }
+  },
+  "body_shape": "pear",
+  "size": "M",
+  "canvas_size": [
+    600,
+    800
+  ]
+}

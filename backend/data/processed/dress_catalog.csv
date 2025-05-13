@@ -1,0 +1,5 @@
+id,name,type,style,image_path,size
+dress001,Summer Dress,full,casual,dress1.png,M
+dress002,Evening Gown,full,formal,dress2.png,S
+dress003,T-Shirt,top,casual,top1.png,L
+dress004,Skirt,bottom,casual,skirt1.png,M

@@ -81,6 +81,7 @@
     z-index: 1;
   }
   
+  
   .catCards-item .title {
     bottom: 20px;
     font-size: 1.2rem;
@@ -91,6 +92,8 @@
     top: 20px;
     font-size: 0.9rem;
     opacity: 1;
+    background-color: transparent;
+    
   }
   
   .catCards-item:hover .desc,

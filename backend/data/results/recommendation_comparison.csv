@@ -1,0 +1,11 @@
+bust,waist,hips,ml_shape,rule_shape,ml_pref_styles,rule_pref_styles,recommendation_differs
+89,75,108,pear,pear,"a-line, flared","a-line, flared",False
+86,76,100,pear,pear,"a-line, flared","a-line, flared",False
+94,92,83,apple,apple,"casual, empire","casual, empire",False
+102,86,104,hourglass,hourglass,"elegant, formal","elegant, formal",False
+101,96,96,rectangle,rectangle,"fitted, belted","fitted, belted",False
+100,80,103,hourglass,hourglass,"elegant, formal","elegant, formal",False
+86,69,86,hourglass,hourglass,"elegant, formal","elegant, formal",False
+98,92,85,apple,apple,"casual, empire","casual, empire",False
+81,71,95,pear,pear,"a-line, flared","a-line, flared",False
+100,97,88,apple,apple,"casual, empire","casual, empire",False
