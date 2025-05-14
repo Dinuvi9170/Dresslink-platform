@@ -185,7 +185,7 @@ const CreateSupplier = () => {
         // Handle success
         setUploadStatus('Profile created successfully!');
         alert('Supplier profile created successfully!');
-        navigate('/fabrics'); // Redirect to fabrics page where suppliers are shown
+        navigate('/fabrics'); 
         
       } catch (err) {
         console.error('Error creating supplier profile:', err);
@@ -213,9 +213,9 @@ const CreateSupplier = () => {
       <input type="text" name="title" className='shoptitle' value={formData.title} onChange={handleChange} required />
 
       <label>Shop Description</label>
-      <textarea name="shopDescription" classname='shopDescription' value={formData.shopDescription} onChange={handleChange} />
+      <textarea name="shopDescription" className='shopDescription' value={formData.shopDescription} onChange={handleChange} />
 
-      <label>Material Offered (comma-separated)</label>
+      <label>Materials (comma-separated)</label>
       <input
         type="text"
         name="materialOffered"
@@ -247,6 +247,13 @@ const CreateSupplier = () => {
             onChange={(e) => handleMaterialChange(index, 'price', e.target.value)}
             required
           />
+          <button 
+            type="button" 
+            className="remove-material-btn" 
+            onClick={() => handleRemoveMaterial(index)}
+          >
+            X
+          </button>
         </div>
       ))}
       <button type="button" onClick={handleAddMaterial}>+ Add Material</button>
