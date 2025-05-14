@@ -364,7 +364,6 @@ const Myfit = () => {
             {bodyShape && tryOnResult && (
               <div className="fit-adjustments">
                 <h3>Adjust Your Fit</h3>
-                
                 <div className="slider-controls">
                   <label>
                     <span className="slider-label">Tightness:</span>
