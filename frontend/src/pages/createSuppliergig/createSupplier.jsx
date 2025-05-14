@@ -21,7 +21,7 @@ const CreateSupplier = () => {
             whatsapp: '',
         },
         title: '',
-        shopImages: '',
+        shopImages: [],
     });
 
     // Check authentication
@@ -118,10 +118,18 @@ const CreateSupplier = () => {
         .from('dinuvi1')
         .getPublicUrl(filePath);
       
-      setFormData((prev) => ({
-        ...prev,
-        [field]: publicUrl.publicUrl,
-      }));
+      // Special handling for shopImages field to support multiple images
+      if (field === 'shopImages') {
+        setFormData((prev) => ({
+          ...prev,
+          shopImages: [...prev.shopImages, publicUrl.publicUrl],
+        }));
+      } else {
+        setFormData((prev) => ({
+          ...prev,
+          [field]: publicUrl.publicUrl,
+        }));
+      }
       
       setUploadStatus(`${field} image uploaded successfully!`);
       setTimeout(() => setUploadStatus(null), 3000);
@@ -132,6 +140,19 @@ const CreateSupplier = () => {
     }
   };
 
+  const handleRemoveImage = (field, index) => {
+    if (field === 'shopImages') {
+      setFormData((prev) => ({
+        ...prev,
+        shopImages: prev.shopImages.filter((_, i) => i !== index)
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [field]: ''
+      }));
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -260,11 +281,35 @@ const CreateSupplier = () => {
 
       <label>Cover Image</label>
       <input type="file" accept="image/*" className='coverimage' onChange={(e) => handleImageUpload(e, 'cover')} />
-      {formData.cover && <img src={formData.cover} alt="Cover" width="120" style={{ marginTop: '10px' }} />}
+      {formData.cover && (
+        <div className="image-preview">
+          <button 
+            type="button" 
+            className="remove-image-btn" 
+            onClick={() => handleRemoveImage('cover')}
+          >
+            x
+          </button>
+          <img src={formData.cover} alt="Cover" width="120" />
+        </div>
+      )}
 
-      <label>Shop Image</label>
+      <label>Shop Images</label>
       <input type="file" accept="image/*" className='images' onChange={(e) => handleImageUpload(e, 'shopImages')} />
-      {formData.shopImages && <img src={formData.shopImages} alt="Shop" width="120" style={{ marginTop: '10px' }} />}
+      <div className="image-previews-container">
+        {formData.shopImages && formData.shopImages.map((imageUrl, index) => (
+          <div key={index} className="image-preview">
+            <button 
+              type="button" 
+              className="remove-image-btn" 
+              onClick={() => handleRemoveImage('shopImages', index)}
+            >
+              x
+            </button>
+            <img src={imageUrl} alt={`Shop ${index + 1}`} width="120" />
+          </div>
+        ))}
+      </div>
 
       <h3>Contact Info</h3>
 
