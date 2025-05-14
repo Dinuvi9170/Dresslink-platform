@@ -50,6 +50,7 @@
 .left-panel, .right-panel {
   flex: 1;
   min-width: 300px;
+  margin-bottom: 50px;
 }
 
 .fit-form {
