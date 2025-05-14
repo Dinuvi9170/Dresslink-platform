@@ -1,5 +1,5 @@
 import logging
-from flask import request, jsonify, send_file
+from flask import request, jsonify, send_file, send_from_directory
 import os
 
 # Import controllers
@@ -89,7 +89,6 @@ def register_routes(app):
             response = app.make_default_options_response()
             return response
     
-        # For POST requests, call the same function as the API endpoint
         return classify_body_shape()
 
     @app.route('/api/recommend-dresses', methods=['POST'])
@@ -182,7 +181,7 @@ def register_routes(app):
             
             return try_on_controller.virtual_try_on(
                 data,
-                None,  # No fitting room needed for simple overlay
+                None,  
                 app.config['RESULTS_DIR']
             )
             
@@ -236,6 +235,40 @@ def register_routes(app):
         except Exception as e:
             logger.error(f"Error serving image: {str(e)}")
             return jsonify({"error": str(e)}), 500
+        
+    
+    @app.route('/adjust-fit', methods=['POST', 'OPTIONS'])
+    def adjust_fit_direct():
+        """Direct endpoint for adjusting fit"""
+        if request.method == 'OPTIONS':
+            response = app.make_default_options_response()
+            return response
+        return adjust_fit()
+    
+   
+    @app.route('/<path:filename>', methods=['GET'])
+    def serve_static_file(filename):
+        """Serve static files from the results directory"""
+        if filename.startswith('try_on_') or filename.startswith('silhouette_') or filename.startswith('adjusted_'):
+            return send_from_directory(app.config['TEMP_DIR'], filename)
+        return jsonify({"error": "File not found"}), 404
+    
+    # New route to catch /get-image/* URLs
+    @app.route('/get-image/<path:image_path>', methods=['GET'])
+    def get_image_direct(image_path):
+        """Direct endpoint for serving images"""
+        # Redirect to the API endpoint
+        if image_path.startswith('results/'):
+            filename = image_path.replace('results/', '')
+            if filename.startswith('try_on_') or filename.startswith('silhouette_') or filename.startswith('adjusted_'):
+                return send_from_directory(app.config['RESULTS_DIR'], filename)
+    
+        # Build the full path for other cases
+        full_path = os.path.join(app.config['DATA_DIR'], image_path)
+        if os.path.exists(full_path):
+            return send_file(full_path)
+    
+        return jsonify({"error": "Image not found"}), 404
 
     @app.route('/api/visualize-body-shapes', methods=['GET'])
     def visualize_body_shapes():

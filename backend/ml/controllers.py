@@ -456,6 +456,15 @@ class try_on_controller:
         
             if not previous_result:
                 return jsonify({"error": "No previous result provided"}), 400
+            
+            # Handle different path formats
+            if previous_result.startswith('/api/get-image/'):
+                # Extract relative path from API URL
+                relative_path = previous_result.replace('/api/get-image/', '')
+                full_path = os.path.join("e:/Induvidual project/Dresslink-platform/backend/data", relative_path)
+                previous_result = full_path
+        
+            logger.info(f"Adjusting fit for image at: {previous_result}")
         
             if not os.path.exists(previous_result):
                 return jsonify({"error": f"Previous result not found at {previous_result}"}), 404
@@ -539,7 +548,7 @@ class try_on_controller:
         
             return jsonify({
                 "success": True,
-                "result_image": f"/api/get-image/results/{os.path.basename(result_path)}",
+                "result_image": os.path.basename(result_path),
                 "fit_description": fit_description
             })
         

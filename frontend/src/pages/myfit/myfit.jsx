@@ -185,7 +185,15 @@ const Myfit = () => {
     setError(null);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/adjust-fit`, {
+
+      const imagePath = tryOnResult.result_image;
+
+      let filePath = imagePath;
+      if (imagePath.startsWith('/api/get-image/results/')) {
+        filePath = `e:/Induvidual project/Dresslink-platform/backend/data/results/${imagePath.split('/').pop()}`;
+      }
+
+      const response = await fetch(`${API_BASE_URL}/adjust-fit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -205,7 +213,11 @@ const Myfit = () => {
       const data = await response.json();
       setTryOnResult({
         ...tryOnResult,
-        result_image: data.result_image
+        result_image: data.result_image.startsWith('/api/') 
+          ? data.result_image 
+          : data.result_image.startsWith('/') 
+            ? data.result_image 
+            : `/${data.result_image}`
       });
     } catch (error) {
       console.error('Error:', error);
@@ -231,16 +243,36 @@ const Myfit = () => {
 
   const getResultImageUrl = (path) => {
     if (!path) return null;
-    // Handle different path formats
+  
+    // Handle API paths that start with /api/get-image
+    if (path.startsWith('/api/get-image/')) {
+      return `${API_BASE_URL}${path}`;
+    }
+  
+    // Handle paths that start with /
     if (path.startsWith('/')) {
       return `${API_BASE_URL}${path}`;
-    } else if (path.startsWith('http')) {
-      return path;
-    } else {
-      // Handle local file paths by extracting the relevant portion
-      const relativePath = path.replace(/^.*[\\\/]data[\\\/]/, '');
-      return `${API_BASE_URL}/uploads/${relativePath.replace(/\\/g, '/')}`;
     }
+  
+    // Handle full URLs
+    if (path.startsWith('http')) {
+      return path;
+    }
+  
+    // For try_on_ or silhouette_ filenames
+    if (path.includes('try_on_') || path.includes('silhouette_')) {
+      const filename = path.split(/[\\/]/).pop();
+      return `${API_BASE_URL}/${filename}`;
+    }
+  
+    // For other paths containing data
+    if (path.includes('data')) {
+      const relativePath = path.replace(/^.*[\\\/]data[\\\/]/, '');
+      return `${API_BASE_URL}/api/get-image/${relativePath.replace(/\\/g, '/')}`;
+    }
+  
+    // Default case
+    return `${API_BASE_URL}/${path}`;
   };
 
   // Cleanup URL objects when component unmounts
