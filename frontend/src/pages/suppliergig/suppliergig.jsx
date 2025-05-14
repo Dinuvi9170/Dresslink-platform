@@ -74,8 +74,8 @@ const Suppliergig = () => {
     : 'Address not available';
 
   // Use supplier.images or default to an array with the cover image
-  const galleryImages = supplier.images && Array.isArray(supplier.images) && supplier.images.length > 0 
-    ? supplier.images 
+  const galleryImages = supplier.shopImages && Array.isArray(supplier.shopImages) && supplier.shopImages.length > 0 
+    ? supplier.shopImages 
     : supplier.cover ? [supplier.cover] : [];
 
   return (
