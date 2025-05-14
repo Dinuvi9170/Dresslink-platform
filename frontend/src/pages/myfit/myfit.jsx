@@ -75,7 +75,7 @@ const Myfit = () => {
     try {
       // 1. First classify body shape from measurements
       console.log('Calling body-shape API');
-      const bodyShapeResponse = await fetch(`${API_BASE_URL}/body-shape`, {
+      const bodyShapeResponse = await fetch(`${API_BASE_URL}/api/body-shape`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -92,6 +92,7 @@ const Myfit = () => {
 
       console.log('Body shape API response status:', bodyShapeResponse.status);
       if (!bodyShapeResponse.ok) {
+        const errorText = await bodyShapeResponse.text();
         console.error('Body shape API error:', errorText);
         throw new Error('Failed to classify body shape');
       }

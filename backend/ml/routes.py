@@ -47,11 +47,21 @@ def register_routes(app):
             return jsonify({"error": "No JSON data provided"}), 400
             
         try:
+            data = request.json
+
+            if 'measurements' in data:
+                # Handle the case where measurements are nested
+                measurements_data = data['measurements']
+            else:
+                # Original case where measurements are at the top level
+                measurements_data = data
+
             # Get measurements from request
             measurements = {
-                "bust": float(request.json.get('bust', 0)),
-                "waist": float(request.json.get('waist', 0)),
-                "hips": float(request.json.get('hips', 0))
+                "bust": float(measurements_data.get('bust', 0)),
+                "waist": float(measurements_data.get('waist', 0)),
+                "hips": float(measurements_data.get('hips', 0)),
+                "height": float(measurements_data.get('height', 0))
             }
             
             # Optional parameters
@@ -61,13 +71,12 @@ def register_routes(app):
             if measurements["bust"] <= 0 or measurements["waist"] <= 0 or measurements["hips"] <= 0:
                 return jsonify({"error": "Invalid measurements provided"}), 400
             
-            return body_shape_controller.classify_body_shape(
+            return body_shape_controller.get_body_shape(
                 measurements, 
                 use_ml, 
                 app.config['MODEL'], 
                 app.config['SCALER']
-            )
-            
+            )        
         except Exception as e:
             logger.error(f"Error classifying body shape: {str(e)}")
             return jsonify({"error": f"Error processing request: {str(e)}"}), 500
@@ -79,24 +88,9 @@ def register_routes(app):
         if request.method == 'OPTIONS':
             response = app.make_default_options_response()
             return response
-        
-        # For POST requests, return a simple response for testing
-        try:
-            data = request.json
-            measurements = data.get('measurements', {})
-            
-            # Log the incoming data for debugging
-            logger.info(f"Received body shape request: {measurements}")
-            
-            # Return a simple response for testing
-            return jsonify({
-                "success": True,
-                "body_shape": "body_shape"
-            })
-            
-        except Exception as e:
-            logger.error(f"Error in direct body shape endpoint: {str(e)}")
-            return jsonify({"error": str(e)}), 500
+    
+        # For POST requests, call the same function as the API endpoint
+        return classify_body_shape()
 
     @app.route('/api/recommend-dresses', methods=['POST'])
     def recommend_dresses():
