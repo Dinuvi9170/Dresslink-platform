@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import "./myfit.css";
 
-// Simple FitModel component
 const FitModel = ({ imageUrl }) => {
   return (
     <div className="fit-model">
@@ -11,6 +11,8 @@ const FitModel = ({ imageUrl }) => {
 };
 
 const Myfit = () => {
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
   const [dressImage, setDressImage] = useState(null);
   const [measurements, setMeasurements] = useState({
     bust: '',
@@ -30,7 +32,38 @@ const Myfit = () => {
   });
   
   // Backend API base URL - ensure it matches your server
-  const API_BASE_URL = 'http://localhost:5000';
+  const API_BASE_URL = 'http://localhost:5000';//model
+  const NODE_API_URL = 'http://localhost:3000';//authentication
+
+  // Check authentication when component mounts
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          setIsAuthenticated(false);
+          return;
+        }
+        
+        const response = await fetch(`${NODE_API_URL}/myfit/api/auth-check`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (response.ok) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+        }
+      } catch (error) {
+        console.error('Auth check error:', error);
+        setIsAuthenticated(false);
+      }
+    };
+    
+    checkAuth();
+  }, [NODE_API_URL]);
 
   const handleDressImageChange = (e) => {
     const file = e.target.files[0];
@@ -43,10 +76,20 @@ const Myfit = () => {
   };
 
   const handleInputChange = (e) => {
+    // Check if user is authenticated 
+    if (isAuthenticated === false) {
+      navigate('/login');
+      return;
+    }
     setMeasurements({ ...measurements, [e.target.name]: e.target.value });
   };
 
   const handleAdjustmentChange = (e) => {
+    // Check if user is authenticated
+    if (isAuthenticated === false) {
+      navigate('/login');
+      return;
+    }
     setAdjustments({
       ...adjustments,
       [e.target.name]: parseInt(e.target.value, 10)
@@ -55,6 +98,11 @@ const Myfit = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Check if user is authenticated
+    if (isAuthenticated === false) {
+      navigate('/login');
+      return;
+    }
     if (!dressImage?.file) {
       setError('Please upload a dress image');
       return;
@@ -176,6 +224,11 @@ const Myfit = () => {
   };
 
   const handleAdjustFit = async () => {
+    // Check if user is authenticated
+    if (isAuthenticated === false) {
+      navigate('/login');
+      return;
+    }
     if (!tryOnResult?.result_image) {
       setError('No try-on result to adjust');
       return;
@@ -310,6 +363,11 @@ const Myfit = () => {
                     name="height"
                     value={measurements.height}
                     onChange={handleInputChange}
+                    onClick={()=>{
+                      if(isAuthenticated === false) {
+                        navigate('/login');
+                      }
+                    }}
                     placeholder="cm"
                     min="120"
                     max="220"
@@ -325,6 +383,11 @@ const Myfit = () => {
                     name="bust"
                     value={measurements.bust}
                     onChange={handleInputChange}
+                    onClick={()=>{
+                      if(isAuthenticated === false) {
+                        navigate('/login');
+                      }
+                    }}
                     placeholder="cm"
                     min="60"
                     max="150"
@@ -340,6 +403,11 @@ const Myfit = () => {
                     name="waist"
                     value={measurements.waist}
                     onChange={handleInputChange}
+                    onClick={()=>{
+                      if(isAuthenticated === false) {
+                        navigate('/login');
+                      }
+                    }}
                     placeholder="cm"
                     min="50"
                     max="140"
@@ -355,6 +423,11 @@ const Myfit = () => {
                     name="hips"
                     value={measurements.hips}
                     onChange={handleInputChange}
+                    onClick={()=>{
+                      if(isAuthenticated === false) {
+                        navigate('/login');
+                      }
+                    }}
                     placeholder="cm"
                     min="70"
                     max="160"
@@ -370,6 +443,12 @@ const Myfit = () => {
                 type="file" 
                 accept="image/*" 
                 onChange={handleDressImageChange}
+                onClick={(e)=>{
+                  if(isAuthenticated === false) {
+                    e.preventDefault();
+                    navigate('/login');
+                  }
+                }}
                 required 
                 id="dress-upload"
                 className="file-input"
@@ -386,7 +465,15 @@ const Myfit = () => {
             </div>
             
             <div className="form-buttons">
-              <button type="submit" disabled={loading} className="primary-button">
+              <button type="submit" 
+                disabled={loading} 
+                onClick={(e)=>{
+                  if(isAuthenticated === false) {
+                    navigate('/login');
+                  }
+                }} 
+                className="primary-button"
+              >
                 {loading ? 'Processing...' : 'Generate 2D Fit Preview'}
               </button>
               <button type="button" onClick={handleReset} className="secondary-button">

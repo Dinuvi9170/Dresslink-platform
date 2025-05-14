@@ -11,6 +11,7 @@ import appointmentRouter from './routes/appointmentRouter.js';
 import conversationRouter from './routes/conversationRouter.js';
 import messageRouter from './routes/messageRouter.js';
 import supplierRouter from './routes/supplierRouter.js';
+import myfitRouter from './routes/myfitRouter.js';
 
 
 dotenv.config();
@@ -26,6 +27,7 @@ app.use("/appointments", appointmentRouter)
 app.use("/conversations", conversationRouter)
 app.use("/messages", messageRouter)
 app.use("/suppliers",supplierRouter)
+app.use("/myfit", myfitRouter)
 
 const server = http.createServer(app);
 const io = new Server(server, {
