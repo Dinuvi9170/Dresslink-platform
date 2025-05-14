@@ -49,7 +49,8 @@ const SupplierProfileSchema= mongoose.Schema({
         required:true,
     },
     shopImages:{
-        type: String,
+        type: [String],
+        default: []
     },
 });
 const SupplierProfile= mongoose.model('SupplierProfile',SupplierProfileSchema);

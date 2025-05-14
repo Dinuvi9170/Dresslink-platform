@@ -20,7 +20,7 @@ export const createSupplierGig = async (req, res) => {
             materialOffered: req.body.materialOffered,
             title:req.body.title,
             cover:req.body.cover,
-            images:req.body.images,
+            shopImages:req.body.shopImages,
             contactInfo:req.body.contactInfo,
             materials:req.body.materials
             

@@ -129,10 +129,14 @@ const CreateSupplier = () => {
       
       // Special handling for shopImages field to support multiple images
       if (field === 'shopImages') {
-        setFormData((prev) => ({
-          ...prev,
-          shopImages: [...prev.shopImages, publicUrl.publicUrl],
-        }));
+        setFormData((prev) => {
+          const updatedFormData={
+            ...prev,
+            shopImages: [...prev.shopImages, publicUrl.publicUrl],
+          };
+          console.log("Updated shopImages state:", updatedFormData.shopImages);
+          return updatedFormData;
+        });
       } else {
         setFormData((prev) => ({
           ...prev,
@@ -194,12 +198,14 @@ const CreateSupplier = () => {
         const supplierData = {
           ...formData,
           materialOffered,
+          shopImages: formData.shopImages,
           materials: formData.materials.map(m => ({
             type: m.type,
             price: Number(m.price)
           }))
         };
-        
+        console.log('Form data shopImages before sending:', formData.shopImages);
+        console.log('Sending data to backend:', supplierData);
         // Send request to backend
         const response = await axios.post(
           'http://localhost:3000/suppliers/creategig',
@@ -213,6 +219,7 @@ const CreateSupplier = () => {
         );
         
         // Handle success
+        console.log('Response from backend:', response.data);
         setUploadStatus('Profile created successfully!');
         alert('Supplier profile created successfully!');
         navigate('/fabrics'); 
