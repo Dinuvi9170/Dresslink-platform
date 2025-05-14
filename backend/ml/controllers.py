@@ -475,9 +475,20 @@ class try_on_controller:
                 return jsonify({"error": "Could not load previous result image"}), 500
         
             h, w = img.shape[:2]
+
+            # Convert to HSV for better color detection
+            hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+            # Define range for white/light gray color
+            lower_white = np.array([0, 0, 180])  # Light colors with low saturation
+            upper_white = np.array([180, 30, 255])  # Includes white and very light grays
+            # Create a mask for background
+            background_mask = cv2.inRange(hsv, lower_white, upper_white)
         
             # Create a modified image based on adjustments
             modified_img = img.copy()
+
+            # Use the mask to change the background to white
+            modified_img[background_mask > 0] = [255, 255, 255]
         
             # Apply tightness adjustment (horizontal scaling)
             if tightness != 0:
@@ -488,7 +499,9 @@ class try_on_controller:
                     [scale_x, 0, center_x * (1 - scale_x)],
                     [0, 1, 0]
                 ], dtype=np.float32)
-                modified_img = cv2.warpAffine(modified_img, scale_matrix, (w, h))
+                modified_img = cv2.warpAffine(modified_img, scale_matrix, (w, h),
+                                            borderMode=cv2.BORDER_CONSTANT, 
+                                            borderValue=(255, 255, 255))
         
             # Apply length adjustment (vertical scaling of bottom part)
             if length != 0:
