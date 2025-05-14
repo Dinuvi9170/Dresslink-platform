@@ -27,6 +27,7 @@
 .supplier-form input[type="email"],
 .supplier-form input[type="number"],
 .supplier-form input[type="file"],
+.supplier-form input[type="tel"],
 .supplier-form textarea {
   width: 97%;
   padding: 10px;
@@ -37,6 +38,9 @@
   transition: border-color 0.3s;
 }
 
+.supplier-form input[type="email"]{
+  background-color: #ffffff;
+}
 .supplier-form input:focus,
 .supplier-form textarea:focus {
   border-color: #1ABC9C;

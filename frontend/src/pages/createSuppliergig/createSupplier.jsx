@@ -53,7 +53,16 @@ const CreateSupplier = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (name.includes('contactInfo.')) {
+    if (name === 'contactInfo.mobile') {
+      // Only allow numeric input and limit to 10 digits
+      const numericValue = value.replace(/\D/g, '');
+      const limitedValue = numericValue.slice(0, 10);
+    
+      setFormData((prev) => ({
+        ...prev,
+        contactInfo: { ...prev.contactInfo, mobile: limitedValue },
+      }));
+    } else if (name.includes('contactInfo.')) {
       const key = name.split('.')[1];
       setFormData((prev) => ({
         ...prev,
@@ -314,13 +323,40 @@ const CreateSupplier = () => {
       <h3>Contact Info</h3>
 
       <label>Mobile</label>
-      <input type="text" name="contactInfo.mobile" value={formData.contactInfo.mobile} onChange={handleChange} required />
+      <input 
+        type="tel" 
+        name="contactInfo.mobile" 
+        value={formData.contactInfo.mobile} 
+        onChange={handleChange} 
+        required 
+        pattern="[0-9]{10}" 
+        maxLength="10" 
+        placeholder="10-digit mobile number"
+        
+        
+      />
 
       <label>Email</label>
-      <input type="email" name="contactInfo.email" value={formData.contactInfo.email} onChange={handleChange} required />
+      <input 
+        type="email" 
+        name="contactInfo.email" 
+        value={formData.contactInfo.email} 
+        onChange={handleChange} 
+        required 
+        placeholder="Enter your email"
+      />
 
       <label>WhatsApp</label>
-      <input type="text" name="contactInfo.whatsapp" value={formData.contactInfo.whatsapp} onChange={handleChange} />
+      <input 
+        type="tel" 
+        name="contactInfo.whatsapp" 
+        value={formData.contactInfo.whatsapp} 
+        onChange={handleChange} 
+        pattern="[0-9]{10}" 
+        maxLength="10" 
+        placeholder="10-digit mobile number"
+        
+      />
 
       <button type="submit" className="submit-btn">Submit</button>
     </form>
