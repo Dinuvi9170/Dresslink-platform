@@ -32,8 +32,8 @@
   
   .supplierCard__image {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    object-fit: contain;
     display: block;
   }
   
@@ -46,6 +46,7 @@
     font-weight: 600;
     margin-bottom: 4px;
     color: #2C3E50;
+    margin-top: -15px;
   }
   
   .shop__address,
@@ -53,6 +54,9 @@
     font-size: 0.95rem;
     color: #555;
     margin: 2px 0;
+  }
+  .shop__address{
+    font-style: italic;
   }
   
   .supplierCard-user {
