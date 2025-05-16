@@ -82,21 +82,38 @@ const Suppliergig = () => {
     <div className="single-supplier-container">
       <div className="supplier-left">
         <div className="supplier-header">
+          <h1>{supplier.ShopName}</h1>
           <img src={supplier.cover} alt="Shop Cover" className="shop-cover" />
-          <div className="supplier-info">
-            <h1>{supplier.ShopName}</h1>
-            <p>{supplier.shopDescription}</p>
+          <p className='shop-desc'>{supplier.shopDescription}</p>
+        </div>
+
+        <div className="supplier-info">
             <div className="supplier-owner">
               {supplier.user && supplier.user.image && (
-                <img src={supplier.user.image} alt="Supplier" className="supplier-avatar" />
+                <img src={supplier.user.image} alt="Supplier" />
               )}
               <div>
-                <h4>Owner: {fullName}</h4>
-                <p>{address}</p>
+                <div className='owner-line'>
+                  <h4>Owner:</h4><span >{fullName}</span>
+                </div>
+                <div className='owner-line'>
+                  <h4>Address:</h4><span>{address}</span>
+                </div>
+                <div className="contact-info">
+                  <h4>Contact Information</h4>
+                  {supplier.contactInfo ? (
+                    <div>
+                      <p>Mobile: {supplier.contactInfo.mobile}</p>
+                      {supplier.user && <p>Email: {supplier.user.email}</p>}
+                      {supplier.contactInfo.whatsapp && <p>WhatsApp: {supplier.contactInfo.whatsapp}</p>}
+                    </div>
+                  ) : (
+                    <p>No contact information provided</p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
         {/* Image Gallery Section */}
         <div className="supplier-gallery">
@@ -129,47 +146,37 @@ const Suppliergig = () => {
             <p>No gallery images available</p>
           )}
         </div>
-
-        <div className="contact-info">
-          <h2>Contact Information</h2>
-          {supplier.contactInfo ? (
-            <div>
-              <p>Mobile: {supplier.contactInfo.mobile}</p>
-              {supplier.user && <p>Email: {supplier.user.email}</p>}
-              {supplier.contactInfo.whatsapp && <p>WhatsApp: {supplier.contactInfo.whatsapp}</p>}
-            </div>
-          ) : (
-            <p>No contact information provided</p>
-          )}
-        </div>
-        <div className="chat-now-wrapper">
-          <button className="chat-now-btn" onClick={handleChat}>Chat Now</button>
-        </div>
       </div>
 
       <div className="supplier-right">
         <div className="materials-pricing">
           <h2>Available Materials and Prices</h2>
+          {console.log("Materials data:", supplier.materials)}
           {supplier.materials && Array.isArray(supplier.materials) && supplier.materials.length > 0 ? (
-            <ul className="materials-list">
-              <div className='desc'>
-                <span className='text2'>Materials</span>
-                <span className='text3'>prices for 1 meter</span>
-              </div>
-              {supplier.materials.map((material, index) => (
-                <li key={index} className="material-item">
-                  {material.type && (
-                    <span className="material-name">{material.type}</span>
-                  )}
-                  {material.price && (
-                    <span className="material-price">Rs. {material.price}</span>
-                  )}
-                </li>
-              ))}
-            </ul>
+            <table className="materials-table">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Quantity Type</th>
+                  <th>Unit Price (LKR)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {supplier.materials.map((material, index) => (
+                  <tr key={index}>
+                    <td>{material.type || 'N/A'}</td>
+                    <td>{material.unit || 'per meter'}</td>
+                    <td>Rs. {material.price}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           ) : (
             <p>No materials available at the moment</p>
           )}
+        </div>
+        <div className="chat-now-wrapper">
+          <button className="chat-now-btn" onClick={handleChat}>Chat Now</button>
         </div>
       </div>
     </div>

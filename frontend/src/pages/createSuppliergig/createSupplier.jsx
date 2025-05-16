@@ -13,7 +13,7 @@ const CreateSupplier = () => {
         ShopName: '',
         shopDescription: '',
         materialOffered: [],
-        materials: [{ type: '', price: '' }],
+        materials: [{ type: '',unit:'', price: '' }],
         cover: '',
         contactInfo: {
             mobile: '',
@@ -78,14 +78,21 @@ const CreateSupplier = () => {
 
   const handleMaterialChange = (index, field, value) => {
     const updated = [...formData.materials];
-    updated[index][field] = field === 'price' ? Number(value) : value;
+    /*updated[index][field] = field === 'price' ? Number(value) : value;*/
+    // Special handling for price field
+    if (field === 'price') {
+    // Only convert to Number if the value is not empty
+      updated[index][field] = value === '' ? '' : Number(value);
+    } else {
+      updated[index][field] = value;
+    }
     setFormData((prev) => ({ ...prev, materials: updated }));
   };
 
   const handleAddMaterial = () => {
     setFormData((prev) => ({
       ...prev,
-      materials: [...prev.materials, { type: '', price: '' }],
+      materials: [...prev.materials, { type: '',unit:'', price: '' }],
     }));
   };
 
@@ -201,6 +208,7 @@ const CreateSupplier = () => {
           shopImages: formData.shopImages,
           materials: formData.materials.map(m => ({
             type: m.type,
+            unit:m.unit,
             price: Number(m.price)
           }))
         };
@@ -268,13 +276,25 @@ const CreateSupplier = () => {
       />
 
       <label>Materials & Prices</label>
+      <div className="material-labels-row">
+        <label className='mat-label'>Material Type</label>
+        <label className='mat-label'>Quantity Type</label>
+        <label className='mat-label'>Unit Price</label>
+      </div>
       {formData.materials.map((mat, index) => (
         <div key={index} className="material-row">
           <input
             type="text"
-            placeholder="Material Type"
+            placeholder="ex: Cotton Fabric (Blue)"
             value={mat.type}
             onChange={(e) => handleMaterialChange(index, 'type', e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="ex: Per meter"
+            value={mat.unit}
+            onChange={(e) => handleMaterialChange(index, 'unit', e.target.value)}
             required
           />
           <input

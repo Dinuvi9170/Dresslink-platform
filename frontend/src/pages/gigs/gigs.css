@@ -70,27 +70,7 @@
     border-radius: 50%;
     object-fit: cover;
   }
-  
-  .tailoring-info {
-    background: #f9f9f9;
-    padding: 1.2rem;
-    border-radius: 12px;
-    border: 1px solid #e0e0e0;
-  }
-  
-  .tailoring-info h3 {
-    margin-bottom: 1rem;
-    color: #2c3e50;
-  }
-  
-  .tailoring-info ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .tailoring-info li {
-    margin: 0.5rem 0;
-  }
+     
   .gig-images h3{
     color:#2c3e50;
     text-align: center;

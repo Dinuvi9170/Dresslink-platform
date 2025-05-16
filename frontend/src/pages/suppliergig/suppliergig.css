@@ -1,92 +1,187 @@
-/* Container Layout */
 .single-supplier-container {
     display: flex;
-    flex-direction: row;
-    gap: 40px;
-    padding: 40px;
-    background: #f4f6f8;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin:auto;
     font-family: 'Segoe UI', sans-serif;
     flex-wrap: wrap;
   }
   
-  /* Left Column */
+  /* Left side */
   .supplier-left {
     flex: 2;
-    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 10px;
+  }
+
+  .supplier-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .supplier-header h1 {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    color: #2c3e50;
+    font-size: 2rem;
   }
   
+  .shop-cover {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 15px;
+  }
+  .shop-desc {
+    padding: 1.2rem;
+    border-radius: 12px;
+    color: #333;
+  }
+  
+  .supplier-info {
+    padding: 1rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    background: #f7f7f7;
+    border-radius: 12px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+  }
+
+  .supplier-owner {
+    display:flex;
+    align-items:center;
+    width: 100%;
+  }
+  .owner-line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .owner-line h4 {
+    margin: 0 0 5px 0;
+    color: #333;
+    font-size: 1.1rem;
+    
+  }
+
+  .owner-line span {
+    
+    font-size: 1rem;
+    color: #666;
+  }
+
+  .supplier-owner img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+  }
+
+  /* Contact Info */
+  .contact-info {
+    border-radius: 12px;
+    margin-bottom: 20px;
+    margin-top: -10px;
+    color: #666;
+  }
+  
+  .contact-info h4 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: #2C3E50;
+  }
+  .contact-info p {
+    margin: 5px 15px;
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  /* Gallery styles */
+  .supplier-gallery {
+    margin: 30px 0;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    
+  }
+
+  .gallery-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+  }
+
+  .gallery-main-image {
+    width: 100%;
+    height: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+
+  .gallery-active-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    max-height: 350px;
+    transition: transform 0.3s ease;
+  }
+
+  .gallery-active-image:hover {
+    transform: scale(1.03);
+  }
+
+  .gallery-thumbnails {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .gallery-thumbnail {
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s ease;
+  }
+
+  .gallery-thumbnail.active {
+    border-color: #4f46e5;
+  }
+
+  .gallery-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .supplier-gallery h2 {
+    color: #333;
+    font-size: 1.25rem;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
   /* Right Column */
   .supplier-right {
     flex: 1;
     min-width: 280px;
   }
-  
-  /* Header Section */
-  .supplier-header {
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    overflow: hidden;
-    margin-bottom: 30px;
-  }
-  
-  .shop-cover {
-    width: 100%;
-    height: 240px;
-    object-fit: cover;
-  }
-  
-  .supplier-info {
-    padding: 20px;
-  }
-  
-  .supplier-info h1 {
-    font-size: 1.8rem;
-    color: #2C3E50;
-    margin-bottom: 8px;
-  }
-  
-  .supplier-info p {
-    color: #666;
-    margin-bottom: 12px;
-  }
-  
-  /* Supplier Owner Info */
-  .supplier-owner {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-top: 16px;
-  }
-
-  .supplier-owner h4{
-    color: #333;
-  }
-  
-  .supplier-avatar {
-    width: 65px;
-    height: 65px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 3px solid #1abc9c;
-  }
-  
-  /* Contact Info */
-  .contact-info {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    margin-bottom: 20px;
-    color: #666;
-  }
-  
-  .contact-info h2 {
-    font-size: 1.3rem;
-    margin-bottom: 10px;
-    color: #2C3E50;
-  }
-  
   /* Chat Now */
   .chat-now-wrapper {
     text-align: center;
@@ -125,8 +220,32 @@
     margin-bottom: 12px;
     color: #2C3E50;
   }
-  
-  .materials-list {
+
+  .materials-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+
+  .materials-table th,
+  .materials-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .materials-table th {
+    background-color: #f4f4f4;
+    color: #333;
+  }
+
+  .materials-table td {
+    font-size: 14px;
+    color: black;
+  }
+
+  /*
+  .materials-table {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -164,7 +283,7 @@
     color: #1abc9c;
     font-weight: bold;
   }
-  
+  */
   /* Loading & Error */
   .single-supplier-loading,
   .single-supplier-error {
@@ -173,74 +292,6 @@
     font-size: 1.4rem;
     color: #777;
   }
-
-  /* Gallery styles */
-.supplier-gallery {
-  margin: 30px 0;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.gallery-container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.gallery-main-image {
-  width: 100%;
-  height: 300px;
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-  border-radius: 8px;
-}
-
-.gallery-active-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.gallery-active-image:hover {
-  transform: scale(1.03);
-}
-
-.gallery-thumbnails {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-
-.gallery-thumbnail {
-  width: 80px;
-  height: 80px;
-  border-radius: 4px;
-  overflow: hidden;
-  cursor: pointer;
-  border: 2px solid transparent;
-  transition: border-color 0.2s ease;
-}
-
-.gallery-thumbnail.active {
-  border-color: #4f46e5;
-}
-
-.gallery-thumbnail img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.supplier-gallery h2 {
-  margin-bottom: 15px;
-  color: #333;
-  font-size: 1.5rem;
- }
   
   /* Responsive Design */
   @media (max-width: 768px) {

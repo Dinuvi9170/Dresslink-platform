@@ -55,9 +55,17 @@
 .material-row {
   display: flex;
   gap: 10px;
-  margin-top: 10px;
+  
 }
-
+.material-labels-row {
+  display: flex;
+  gap: 10px;
+}
+.material-labels-row .mat-label {
+  flex: 1;
+  font-weight: 400;
+  color: #333;
+}
 .material-row input {
   flex: 1;
 }
