@@ -181,4 +181,108 @@ export async function findSupplier(req, res) {
     });
   }
 }
+// Get all gigs for the currently authenticated user
+export const getUserSupplierGigs = async (req, res) => {
+    try {
+        // Check if user is authenticated
+        if (!req.isAuthenticated || !req.user || !req.user._id) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+        
+        const userGigs = await SupplierGig.find({ user: req.user._id });
+        console.log("Found user gigs:", userGigs);
+        res.status(200).json(userGigs);
+    } catch (error) {
+        console.error("Error fetching user's supplier gigs:", error);
+        res.status(500).json({ 
+            error: 'Failed to fetch your gigs', 
+            details: error.message 
+        });
+    }
+};
 
+// Update a supplier gig
+export const updateSupplierGig = async (req, res) => {
+    try {
+        // Check if user is authenticated
+        if (!req.isAuthenticated || !req.user || !req.user._id) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+
+        const gigId = req.params._id;
+        
+        // First, check if the gig exists and belongs to the user
+        const existingGig = await SupplierGig.findById(gigId);
+        
+        if (!existingGig) {
+            return res.status(404).json({ message: 'Supplier gig not found' });
+        }
+        
+        if (existingGig.user.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: 'You can only update your own gigs' });
+        }
+        
+        // Update the gig with new data
+        const updatedGig = await SupplierGig.findByIdAndUpdate(
+            gigId, 
+            {
+                ShopName: req.body.ShopName,
+                shopDescription: req.body.shopDescription,
+                materialOffered: req.body.materialOffered,
+                title: req.body.title,
+                cover: req.body.cover,
+                shopImages: req.body.shopImages,
+                contactInfo: req.body.contactInfo,
+                materials: req.body.materials
+            }, 
+            { new: true, runValidators: true }
+        );
+        
+        res.status(200).json({ 
+            message: 'Supplier gig updated successfully', 
+            gig: updatedGig 
+        });
+    } catch (error) {
+        console.error("Error updating supplier gig:", error);
+        res.status(500).json({ 
+            error: 'Failed to update supplier gig', 
+            details: error.message 
+        });
+    }
+};
+
+// Delete a supplier gig
+export const deleteSupplierGig = async (req, res) => {
+    try {
+        // Check if user is authenticated
+        if (!req.isAuthenticated || !req.user || !req.user._id) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+
+        const gigId = req.params._id;
+        
+        // First, check if the gig exists and belongs to the user
+        const existingGig = await SupplierGig.findById(gigId);
+        
+        if (!existingGig) {
+            return res.status(404).json({ message: 'Supplier gig not found' });
+        }
+        
+        if (existingGig.user.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: 'You can only delete your own gigs' });
+        }
+        
+        // Delete the gig
+        await SupplierGig.findByIdAndDelete(gigId);
+        
+        res.status(200).json({ 
+            message: 'Supplier gig deleted successfully'
+        });
+    } catch (error) {
+        console.error("Error deleting supplier gig:", error);
+        res.status(500).json({ 
+            error: 'Failed to delete supplier gig', 
+            details: error.message 
+        });
+    }
+};

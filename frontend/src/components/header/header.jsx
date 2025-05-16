@@ -9,6 +9,8 @@ const Header = ({ currentUser, setCurrentUser }) => {
   const navigate = useNavigate();
 
   const isUser = currentUser && currentUser.email;
+  const roles = currentUser?.role || [];
+
   
   const handleSignIn = (e) => {
     e.preventDefault();
@@ -61,7 +63,27 @@ const Header = ({ currentUser, setCurrentUser }) => {
               <span>{currentUser.lname}</span>
               {open && (
                 <div className="options">
-                  <span>My Products</span>
+                  <Link to="/profile"><span>My Profile</span></Link>
+                  <Link to="/chat"><span>Messages</span></Link>
+                  {/* Role-Based Options */}
+                  {roles.includes("professional") && (
+                    <>
+                      <Link to="/createProfessioonalgig"><span>Create Gig</span></Link>
+                      <Link to="/manageProfessionalGigs"><span>My Gigs</span></Link>
+                    </>
+                  )}
+                  {roles.includes("supplier") && (
+                    <>
+                      <Link to="/createSuppliergig"><span>Create Gig</span></Link>
+                      <Link to="/manageSupplierGigs"><span>My gigs</span></Link>
+                    </>
+                  )}
+                  {roles.includes("customer") && (
+                    <>
+                      <Link to="/appointments"><span>Appointments</span></Link>
+                      <Link to="/orders"><span>My Orders</span></Link>
+                    </>
+                  )}
                   <Link to= "/becomeSeller"><span>Become Seller</span></Link>
                   <span onClick={handleLogout}>Logout</span>
                 </div>

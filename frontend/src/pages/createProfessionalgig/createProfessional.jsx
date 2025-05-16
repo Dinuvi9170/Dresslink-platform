@@ -108,7 +108,7 @@ const CreateProfessional = () => {
           // Special handling for shopImages field to support multiple images
           if (statefield === 'images') {
             setFormData((prev) => {
-              const updatedFormData={
+              const updatedFormData = {
                 ...prev,
                 images: [...prev.images, publicUrl.publicUrl],
               };
@@ -130,7 +130,6 @@ const CreateProfessional = () => {
           setTimeout(() => setError(null), 5000);
         }
     };
-    
     const handleRemoveImage = (field, index) => {
         if (field === 'images') {
           setFormData((prev) => ({
