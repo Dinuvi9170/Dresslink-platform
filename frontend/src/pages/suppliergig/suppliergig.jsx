@@ -84,7 +84,7 @@ const Suppliergig = () => {
         <div className="supplier-header">
           <h1>{supplier.ShopName}</h1>
           <img src={supplier.cover} alt="Shop Cover" className="shop-cover" />
-          <p className='shop-desc'>{supplier.shopDescription}</p>
+          <div className='shop-desc' dangerouslySetInnerHTML={{ __html: supplier.shopDescription }} />
         </div>
 
         <div className="supplier-info">

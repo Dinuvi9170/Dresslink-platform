@@ -30,7 +30,7 @@ const gigSchema = mongoose.Schema({
     },
     category:{
         type:String,
-        enum:['tailoring','designing'],
+        enum:['Tailoring','Designing'],
         required:true,
     },
     cover:{

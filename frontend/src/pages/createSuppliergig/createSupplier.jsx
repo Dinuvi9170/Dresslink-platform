@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../utils/supabaseClient'; 
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
 import axios from 'axios';
 import './createSupplier.css';
 
@@ -22,6 +24,20 @@ const CreateSupplier = () => {
         },
         title: '',
         shopImages: [],
+    });
+
+    // Initialize TipTap editor
+    const editor = useEditor({
+      extensions: [
+        StarterKit,
+      ],
+      content: formData.shopDescription,
+      onUpdate: ({ editor }) => {
+        setFormData(prev => ({
+          ...prev,
+          shopDescription: editor.getHTML()
+        }));
+      },
     });
 
     // Check authentication
@@ -258,7 +274,71 @@ const CreateSupplier = () => {
       <input type="text" name="title" className='shoptitle' value={formData.title} onChange={handleChange} required />
 
       <label>Shop Description</label>
-      <textarea name="shopDescription" className='shopDescription' value={formData.shopDescription} onChange={handleChange} />
+      <div className="rich-text-editor">
+        {editor && (
+          <>
+            <div className="editor-menu">
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+                className={editor.isActive('heading', { level: 1 }) ? 'is-active' : ''}
+              >
+              H1
+              </button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+                className={editor.isActive('heading', { level: 2 }) ? 'is-active' : ''}
+              >
+              H2
+              </button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+                className={editor.isActive('heading', { level: 3 }) ? 'is-active' : ''}
+              >
+              H3
+              </button>
+              <button
+              type="button"
+              onClick={() => editor.chain().focus().toggleBold().run()}
+              className={editor.isActive('bold') ? 'is-active' : ''}
+              >
+              Bold
+              </button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().toggleItalic().run()}
+                className={editor.isActive('italic') ? 'is-active' : ''}
+              >
+              Italic
+              </button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().toggleBulletList().run()}
+                className={editor.isActive('bulletList') ? 'is-active' : ''}
+              >
+              • List
+              </button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().toggleOrderedList().run()}
+                className={editor.isActive('orderedList') ? 'is-active' : ''}
+              >
+              1. List
+              </button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().setParagraph().run()}
+                className={editor.isActive('paragraph') ? 'is-active' : ''}
+              >
+              Paragraph
+              </button>
+            </div>
+            <EditorContent editor={editor} />
+          </>
+        )}
+      </div>
 
       <label>Materials (comma-separated)</label>
       <input

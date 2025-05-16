@@ -20,6 +20,10 @@ export async function creategig(req, res) {
               details: 'User information is missing from the request'
           });
       }
+      // Check if user has the professional role
+      if (!req.user.role || req.user.role !== 'professional') {
+        return res.status(403).json({ message: 'Access denied. Only professionals can create shop profiles.' });
+      }
       
       // Create the gig object without files
       const gig = new Gig({
