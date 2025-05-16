@@ -70,7 +70,7 @@ const Suppliergig = () => {
   // Calculate these variables after supplier data is confirmed available
   const fullName = supplier.user ? `${supplier.user.fname} ${supplier.user.lname}` : 'Unknown';
   const address = supplier.user && supplier.user.address
-    ? `${supplier.user.address.number || ''} ${supplier.user.address.street || ''}, ${supplier.user.address.city || ''}, ${supplier.user.address.district || ''}`
+    ? `${supplier.user.address.number || ''}, ${supplier.user.address.street || ''}, ${supplier.user.address.city || ''}, ${supplier.user.address.district || ''}`
     : 'Address not available';
 
   // Use supplier.images or default to an array with the cover image

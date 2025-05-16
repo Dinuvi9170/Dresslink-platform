@@ -94,8 +94,6 @@ const CreateSupplier = () => {
 
   const handleMaterialChange = (index, field, value) => {
     const updated = [...formData.materials];
-    /*updated[index][field] = field === 'price' ? Number(value) : value;*/
-    // Special handling for price field
     if (field === 'price') {
     // Only convert to Number if the value is not empty
       updated[index][field] = value === '' ? '' : Number(value);

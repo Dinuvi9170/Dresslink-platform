@@ -9,7 +9,7 @@ const Gigs = () => {
   const [gig, setGig] = useState(null);
   const[loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [activeImage, setActiveImage] = useState(0);
 
   useEffect(() => {
     const fetchGig = async () => {
@@ -46,10 +46,6 @@ const Gigs = () => {
 
   const averageRating = gig.totalStars / (gig.starNumber || 1);
 
-  const handleImageSelect = (img) => {
-    setSelectedImage(img);
-  };
-
   const handleScheduleAppointment = () => {
     navigate(`/scheduleAppoint/${gig._id}`);
   };
@@ -73,69 +69,70 @@ const Gigs = () => {
       } 
     });
   };
+  const address = gig.user && gig.user.address
+    ? `${gig.user.address.number || ''}, ${gig.user.address.street || ''}, ${gig.user.address.city || ''}, ${gig.user.address.district || ''}`
+    : 'Address not available';
 
 
   return (
     <div className="gig-detail-page">
       <div className="gig-left">
-        <h1>{gig.title}</h1>
-        <img src={gig.cover} alt="Gig Cover" />
-        <div className="gig-info">
-          <p className="category">{gig.category}</p>
-          <p className='gigs-desc'>
-            {gig.description.replace(/\\n/g, '\n').split('\n').map((paragraph, i) => (
-              <React.Fragment key={i}>
-                {paragraph}
-                <br />
-              </React.Fragment>
-            ))}
-          </p>
+        <div className="gig-header">
+          <h1>{gig.title}</h1>
+          <img src={gig.cover} alt="Gig Cover" />
+          <div className='gigs-desc' dangerouslySetInnerHTML={{ __html: gig.description }} />
         </div>
 
         <div className="gig-professional">
-          <img src={gig.user.image} alt="User" />
-          
-          <p className="rating">⭐ {averageRating.toFixed(1)} / 5</p>
-          <div>
-            <h3>{gig.user.fname} {gig.user.lname}</h3>
-            <p>{gig.user.address.city}, {gig.user.address.district}</p>
-            <p className="price">Start from: Rs. {gig.price.toFixed(2)}</p>
+          <div className="professional-info">
+            <img src={gig.user.image} alt="User" />
+            <div>
+              <div className='pro-line'>
+                <h4>Name:</h4><span >{gig.user.fname} {gig.user.lname}</span>
+              </div>
+              <div className='pro-line'>
+                <h4>Category:</h4><span >{gig.category}</span>
+              </div>
+              <div className='pro-line'>
+                <h4>Address:</h4><span >{address}</span>
+              </div>
+              <div className='pro-line'>
+                <h4>Start from:</h4><span >Rs. {gig.price.toFixed(2)}</span>
+              </div>
+              <p className="rating">⭐ {averageRating.toFixed(1)} / 5</p>
+            </div>
           </div>
         </div>
 
+        {/* Work Showcase Section */}
         <div className="gig-images">
-          <h3>My Work Showcase</h3>
-          <p>Click on the images to view them in full size.</p>
-        <div className="gig-main-image">
-          {/* Display selected image or cover image if none selected */}
-          <img 
-            src={selectedImage || gig.cover} 
-            alt={gig.title} 
-            className="main-image" 
-          />
-        </div>
-
-          {gig.images && gig.images.length > 0 && (
-            <div className="gig-thumbnails">
-              {/* Add cover as first image */}
-              <div 
-                className={`thumbnail ${selectedImage === gig.cover ? 'active' : ''}`} 
-                onClick={() => handleImageSelect(gig.cover)}
-              >
-                <img src={gig.cover} alt="Cover" />
+          <h2>My Work Showcase</h2>
+          {gig.images.length > 0 ? (
+            <div className="gallery-container">
+              <div className="gallery-main-image">
+                <img 
+                  src={gig.images[activeImage]} 
+                  alt={`Gallery image ${activeImage + 1}`}
+                  className="gallery-active-image"
+                />
               </div>
-            
-              {/* Display additional images */}
-              {gig.images.map((img, index) => (
-                <div 
-                  key={index} 
-                  className={`thumbnail ${selectedImage === img ? 'active' : ''}`} 
-                  onClick={() => handleImageSelect(img)}
-                >
-                  <img src={img} alt={`Image ${index + 1}`} />
+              
+              {gig.images.length > 1 && (
+                <div className="gallery-thumbnails">
+                  {gig.images.map((image, index) => (
+                    <div 
+                      key={index} 
+                      className={`gallery-thumbnail ${index === activeImage ? 'active' : ''}`}
+                      onClick={() => setActiveImage(index)}
+                    >
+                      <img src={image} alt={`Thumbnail ${index + 1}`} />
+                    </div>
+                  ))}
                 </div>
-              ))}
+              )}
             </div>
+          ) : (
+            <p>No gallery images available</p>
           )}
         </div> 
 
