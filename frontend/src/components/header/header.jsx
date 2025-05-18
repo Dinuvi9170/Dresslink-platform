@@ -84,8 +84,7 @@ const Header = ({ currentUser, setCurrentUser }) => {
                       <Link to="/orders"><span>My Orders</span></Link>
                     </>
                   )}
-                  <Link to= "/becomeSeller"><span>Become Seller</span></Link>
-                  <span onClick={handleLogout}>Logout</span>
+                  <span className="logout" onClick={handleLogout}>Logout</span>
                 </div>
               )}
             </div>

@@ -134,7 +134,10 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 180px;
 }
-
+.logout {
+  font-weight:500;
+  color: #2C3E50;
+}
 
 @media (max-width: 768px) {
   .container {
