@@ -47,12 +47,12 @@ const Register = () => {
 
   const handleAdressChange = (e) => {
     const { name, value } = e.target;
-    if (["number", "street", "lane", "city", "district", "province"].includes(name)) {
+    if (["number", "street", "city", "district", "province"].includes(name)) {
       setFormData((prev) => ({
         ...prev,
         address: {
           ...prev.address,
-          [name]: value
+          [name]: capitalize(value)
         }
       }));
     } else {
@@ -89,7 +89,7 @@ const Register = () => {
       if (error) {
         console.error("Error uploading file:", error.message);
         
-        // If it's a permissions issue, provide clearer feedback
+        // Handle error messages
         if (error.message.includes("security policy")) {
           alert("Permission denied to upload files. Please contact admin to update storage permissions.");
         } else {
@@ -137,7 +137,7 @@ const Register = () => {
         if (uploadedUrl) {
           imageUrl = uploadedUrl;
         }
-        // If upload fails,use the default image
+       
       }
   
       // Create user data with image URL
@@ -163,8 +163,8 @@ const Register = () => {
       
       if (response.status === 201) {
         alert("Registration successful!");
-        // Reset form or redirect user
-        window.location.href = "/login"; // Redirect to login page after successful registration
+        // redirect user
+        window.location.href = "/login"; 
       } else {
         alert("Registration failed. Please try again.");
       }

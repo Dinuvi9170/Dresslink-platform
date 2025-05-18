@@ -111,7 +111,7 @@ const Profile = ({ currentUser, setCurrentUser }) => {
         const capitalizeWords = (str) => {
             return str.replace(/\b\w/g, char => char.toUpperCase());
         };
-         const formattedValue = ["fname", "lname","address.number", "address.city", "address.street"].includes(name) 
+        const formattedValue = ["fname", "lname","address.number", "address.city", "address.street"].includes(name) 
         ? capitalizeWords(value)
         : value;
         
