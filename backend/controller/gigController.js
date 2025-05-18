@@ -182,3 +182,38 @@ export const getUserProfessionalGigs = async (req, res) => {
     }
 };
 
+// Delete a professional gig
+export const deleteGig = async (req, res) => {
+    try {
+        // Check if user is authenticated
+        if (!req.isAuthenticated || !req.user || !req.user._id) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+
+        const gigId = req.params._id;
+        
+        // First, check if the gig exists and belongs to the user
+        const existingGig = await Gig.findById(gigId);
+        
+        if (!existingGig) {
+            return res.status(404).json({ message: 'Professional gig not found' });
+        }
+        
+        if (existingGig.user.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: 'You can only delete your own gigs' });
+        }
+        
+        // Delete the gig
+        await Gig.findByIdAndDelete(gigId);
+        
+        res.status(200).json({ 
+            message: 'Professional gig deleted successfully'
+        });
+    } catch (error) {
+        console.error("Error deleting professional gig:", error);
+        res.status(500).json({ 
+            error: 'Failed to delete professional gig', 
+            details: error.message 
+        });
+    }
+};
