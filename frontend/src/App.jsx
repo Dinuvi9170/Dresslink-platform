@@ -19,6 +19,7 @@ import {jwtDecode} from "jwt-decode";
 import ManageGigs from "./pages/manageGigs/manageGigs";
 import EditSupplier from "./pages/editSupplierGig/editSupplier";
 import EditProf from "./pages/editProfessionalGig/editprof";
+import Profile from "./pages/profile/profile";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -39,6 +40,11 @@ const App = () => {
             localStorage.removeItem('token');
             return;
           }
+          // Add timestamp to image URL to prevent caching
+          const imageUrl = decodedUser.image ? 
+            `${decodedUser.image.split('?')[0]}?t=${Date.now()}` : 
+            decodedUser.image;
+        
           
           // Set the current user from token data
           setCurrentUser({
@@ -47,7 +53,7 @@ const App = () => {
             lname: decodedUser.lname,
             email: decodedUser.email,
             role: decodedUser.role,
-            image: decodedUser.image,
+            image: imageUrl,
             address: decodedUser.address
           });
         } catch (error) {
@@ -80,8 +86,8 @@ const App = () => {
         <Route path="manageGigs" element={<ManageGigs />} />
         <Route path="editSupplierGig/:profileId" element={<EditSupplier />} />
         <Route path="editProfessionalGig/:profileId" element={<EditProf/>} />
-        
-        
+        <Route path="profile" element={<Profile currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
+          
       </Route>
         
     </Routes>

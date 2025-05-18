@@ -59,8 +59,7 @@ const Header = ({ currentUser, setCurrentUser }) => {
                 alt="User"
                 className="header__user-icon"
               />
-              <span>{currentUser.fname}</span>
-              <span>{currentUser.lname}</span>
+              <span>{currentUser.fname} {currentUser.lname}</span>
               {open && (
                 <div className="options">
                   <Link to="/profile"><span>My Profile</span></Link>
