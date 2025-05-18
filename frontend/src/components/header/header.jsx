@@ -69,13 +69,13 @@ const Header = ({ currentUser, setCurrentUser }) => {
                   {roles.includes("professional") && (
                     <>
                       <Link to="/createProfessioonalgig"><span>Create Gig</span></Link>
-                      <Link to="/manageProfessionalGigs"><span>My Gigs</span></Link>
+                      <Link to="/manageGigs"><span>My Gigs</span></Link>
                     </>
                   )}
                   {roles.includes("supplier") && (
                     <>
                       <Link to="/createSuppliergig"><span>Create Gig</span></Link>
-                      <Link to="/manageSupplierGigs"><span>My gigs</span></Link>
+                      <Link to="/manageGigs"><span>My gigs</span></Link>
                     </>
                   )}
                   {roles.includes("customer") && (

@@ -16,8 +16,7 @@ import Suppliergig from "./pages/suppliergig/suppliergig";
 import CreateProfessional from "./pages/createProfessionalgig/createProfessional";
 import CreateSupplier from "./pages/createSuppliergig/createSupplier";
 import {jwtDecode} from "jwt-decode";
-import ManageProfGigs from "./pages/manageProfessionalGigs/managegigs";
-import ManageSupplierGigs from "./pages/manageSupplierGigs/manageSupplier";
+import ManageGigs from "./pages/manageGigs/manageGigs";
 import EditSupplier from "./pages/editSupplierGig/editSupplier";
 
 const App = () => {
@@ -77,8 +76,7 @@ const App = () => {
         <Route path="suppliers/:supplierId" element={<Suppliergig />} /> 
         <Route path="createProfessioonalgig" element={<CreateProfessional />} />
         <Route path="createSuppliergig" element={<CreateSupplier />} />
-        <Route path="manageProfessionalGigs" element={<ManageProfGigs />} />
-        <Route path="manageSupplierGigs" element={<ManageSupplierGigs />} />
+        <Route path="manageGigs" element={<ManageGigs />} />
         <Route path="editSupplierGig/:profileId" element={<EditSupplier />} />
         
         
