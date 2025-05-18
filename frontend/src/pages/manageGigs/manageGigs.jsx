@@ -24,7 +24,18 @@ const ManageSupplierGigs = () => {
 
       try {
         // Decode token to get user role
-        const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+        let tokenPayload;
+        try {
+          const base64Url = token.split('.')[1];
+          const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+          tokenPayload = JSON.parse(window.atob(base64));
+        } catch (tokenError) {
+          console.error('Error decoding token:', tokenError);
+          // Token is invalid, redirect to login
+          localStorage.removeItem('token');
+          navigate('/login', { state: { from: '/manageSupplierGigs' } });
+          return;
+        }
         const role = tokenPayload.role;
         setUserRole(role);
         
