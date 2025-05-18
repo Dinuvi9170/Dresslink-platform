@@ -211,7 +211,7 @@ export const updateSupplierGig = async (req, res) => {
 
         const gigId = req.params._id;
         
-        // First, check if the gig exists and belongs to the user
+        // Check if the gig exists and belongs to the user
         const existingGig = await SupplierGig.findById(gigId);
         
         if (!existingGig) {
@@ -261,7 +261,7 @@ export const deleteSupplierGig = async (req, res) => {
 
         const gigId = req.params._id;
         
-        // First, check if the gig exists and belongs to the user
+        // Check if the gig exists and belongs to the user
         const existingGig = await SupplierGig.findById(gigId);
         
         if (!existingGig) {

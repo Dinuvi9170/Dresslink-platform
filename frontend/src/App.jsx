@@ -18,6 +18,7 @@ import CreateSupplier from "./pages/createSuppliergig/createSupplier";
 import {jwtDecode} from "jwt-decode";
 import ManageGigs from "./pages/manageGigs/manageGigs";
 import EditSupplier from "./pages/editSupplierGig/editSupplier";
+import EditProf from "./pages/editProfessionalGig/editprof";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -78,6 +79,7 @@ const App = () => {
         <Route path="createSuppliergig" element={<CreateSupplier />} />
         <Route path="manageGigs" element={<ManageGigs />} />
         <Route path="editSupplierGig/:profileId" element={<EditSupplier />} />
+        <Route path="editProfessionalGig/:profileId" element={<EditProf/>} />
         
         
       </Route>

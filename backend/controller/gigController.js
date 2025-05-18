@@ -182,6 +182,56 @@ export const getUserProfessionalGigs = async (req, res) => {
     }
 };
 
+// Update a professional gig
+export const updateProfessionalGig = async (req, res) => {
+  try {
+    // Check if user is authenticated
+    if (!req.isAuthenticated || !req.user || !req.user._id) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const gigId = req.params._id;
+        
+    // Check if the gig exists and belongs to the user
+    const existingGig = await Gig.findById(gigId);
+        
+    if (!existingGig) {
+      return res.status(404).json({ message: 'Professional gig not found' });
+    }
+        
+    if (existingGig.user.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'You can only update your own gigs' });
+    }
+        
+    // Update the gig with new data
+    const updatedGig = await Gig.findByIdAndUpdate(
+      gigId, 
+      {
+        user: req.user._id,
+        title: req.body.title || '',
+        description: req.body.description || '',
+        shorttitle: req.body.shorttitle || '',
+        shortdesc: req.body.shortdesc || '',
+        price: parseInt(req.body.price) || 0,
+        category: req.body.category || 'tailoring',
+        cover: req.body.cover || '',
+        images: req.body.images || [],
+      }, 
+      { new: true, runValidators: true }
+      );
+      res.status(200).json({ 
+        message: 'Professional gig updated successfully', 
+        gig: updatedGig 
+      });
+  } catch (error) {
+    console.error("Error updating professional gig:", error);
+    res.status(500).json({ 
+      error: 'Failed to update professiona gig', 
+      details: error.message 
+    });
+  }
+};
+
 // Delete a professional gig
 export const deleteGig = async (req, res) => {
     try {

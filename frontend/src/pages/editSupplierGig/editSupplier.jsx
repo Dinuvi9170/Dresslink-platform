@@ -495,10 +495,10 @@ const EditSupplier = () => {
             />
 
             <div className="form-actions">
-                <button type="button" className="cancel-btn" onClick={() => navigate('/manageSupplierGigs')}>
+                <button type="button" className="cancelbtn" onClick={() => navigate('/manageGigs')}>
                     Cancel
                 </button>
-                <button type="submit" className="submit-btn" disabled={loading}>
+                <button type="submit" className="submitbtn" disabled={loading}>
                     {loading ? 'Updating...' : 'Update Profile'}
                 </button>
             </div>

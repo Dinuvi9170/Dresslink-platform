@@ -4,7 +4,7 @@
   padding: 30px;
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 20px rgba(16, 181, 167, 0.4);
 }
 
 .supplier-form h2 {
@@ -164,24 +164,31 @@
   margin-top: 30px;
 }
 
-.cancel-btn {
-  background-color: #e0e0e0;
-  color: #333;
-  border: none;
-  padding: 12px 25px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.submit-btn {
-  background-color: #4CAF50;
+.cancelbtn {
+  background-color: red !important;
   color: white;
   border: none;
-  padding: 12px 25px;
+  padding: 10px 20px !important;
   border-radius: 4px;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600 ;
+  height: 50px;
+  margin-left:250px;
+  border-radius: 4px;
+  font-size: medium;
+}
+
+.submitbtn {
+  background-color: #2C3E50 !important;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px !important;
+  cursor: pointer;
+  font-weight: 600 !important;
+  height:50px;
+  width: 200px !important;
+  margin-right:250px;
 }
 
 .submit-btn:disabled {

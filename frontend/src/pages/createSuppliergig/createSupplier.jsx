@@ -391,7 +391,7 @@ const CreateSupplier = () => {
           </button>
         </div>
       ))}
-      <button type="button" onClick={handleAddMaterial}>+ Add Material</button>
+      <button className='add' type="button" onClick={handleAddMaterial}>+ Add Material</button>
 
       <label>Cover Image</label>
       <input type="file" accept="image/*" className='coverimage' onChange={(e) => handleImageUpload(e, 'cover')} />

@@ -1,0 +1,169 @@
+.edit-gig-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(16, 181, 167, 0.4); 
+    margin-top: 50px !important;
+    margin-bottom: 50px !important;
+}
+
+.edit-gig-container h1 {
+    margin-bottom: 25px;
+    color: #333;
+    text-align: center;
+}
+
+.edit-gig-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.edit-gig-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.edit-gig-form input,
+.edit-gig-form textarea,
+.edit-gig-form select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.edit-gig-form input[type="file"] {
+    padding: 10px 0;
+}
+
+.rich-text-editor {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.editor-menu {
+    display: flex;
+    flex-wrap: wrap;
+    background: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+    padding: 5px;
+}
+
+.editor-menu button {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 5px 10px;
+    margin: 2px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.editor-menu button.is-active {
+    background: #e6f7ff;
+    border-color: #91d5ff;
+}
+
+.editor-content {
+    padding: 15px;
+    min-height: 200px;
+}
+
+.ProseMirror {
+    padding: 15px;
+    min-height: 200px;
+    outline: none;
+}
+
+.ProseMirror p {
+    margin-bottom: 1em;
+}
+
+.image-previews-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.image-preview {
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.remove-image-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(0, 0, 0, 0.5) !important;
+    color: white;
+    border: none;
+    border-radius: 50% !important;
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-message {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.upload-status {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.cancel-btn {
+    background-color: red;
+    color: #ffffff;
+    font-weight: bold;
+    border: 1px solid #ddd;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: medium;
+    margin-left: 250px;;
+}
+
+.save-btn {
+    background-color: #2C3E50 !important;
+    color: white;
+    border: none;
+    width:150px !important;
+    padding: 10px 20px;
+    border-radius: 4px !important;
+    cursor: pointer;
+    margin-right: 300px;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    font-size: 18px;
+    color: #666;
+}

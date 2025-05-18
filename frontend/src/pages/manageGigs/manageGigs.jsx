@@ -236,16 +236,6 @@ const ManageSupplierGigs = () => {
                 >
                   Delete
                 </button>
-                <button 
-                  className="view-btn" 
-                  onClick={() => navigate(
-                    userRole === 'supplier' 
-                      ? `/supplierProfile/${profile._id}` 
-                      : `/professionalProfile/${profile._id}`
-                  )}
-                >
-                  View Profile
-                </button>
               </div>
             </div>
           ))}
