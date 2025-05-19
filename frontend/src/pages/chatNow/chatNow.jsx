@@ -89,7 +89,7 @@ const ChatNow = () => {
             setError("Authentication failed. Please login again.");
             navigate(`/login`, { state: { from: `/chat/${participantId}` } });
         }
-    }, [professionalId, navigate]);
+    }, [professionalId, navigate, participantId]);
 
     // Fetch previous messages
     useEffect(() => {
@@ -113,7 +113,11 @@ const ChatNow = () => {
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
 
-                setMessages(messagesResponse.data.messages || []);
+                // Sort messages to ensure newest are at the bottom
+                const sortedMessages = (messagesResponse.data.messages || [])
+                    .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+                
+                setMessages(sortedMessages);
                 setError(null);
             } catch (err) {
                 console.error("Error fetching messages:", err);
@@ -126,37 +130,55 @@ const ChatNow = () => {
         if (user) {
             fetchMessages();
         }
-    }, [professionalId, user]);
+    }, [professionalId, user, participantId]);
 
     // Listen for real-time incoming messages
     useEffect(() => {
         if (!socket || !user) return;
 
         socket.on('getMessage', (data) => {
-            if (
-                (data.senderId === professionalId && data.receiverId === user._id) ||
-                (data.senderId === user._id && data.receiverId === professionalId)
-            ) {
-                setMessages(prev => [...prev, {
-                    _id: Date.now().toString(),
-                    sender: data.senderId,
-                    content: data.content,
-                    createdAt: new Date().toISOString()
-                }]);
+            if (data.senderId === participantId && data.receiverId === user._id) {
+                setMessages(prevMessages => {
+                    // Check if the message already exists in the state
+                    const messageIndex = prevMessages.findIndex(msg => msg._id === data._id);
+
+                    if (messageIndex === -1) {
+                        // Message doesn't exist, add it at the end to maintain chronology
+                        return [...prevMessages, {
+                            _id: data._id || Date.now().toString(), 
+                            sender: data.senderId,
+                            content: data.content,
+                            createdAt: new Date().toISOString()
+                        }];
+                    } else {
+                        // Message exists, update it
+                        const updatedMessages = [...prevMessages];
+                        updatedMessages[messageIndex] = {
+                            _id: data._id,
+                            sender: data.senderId,
+                            content: data.content,
+                            createdAt: new Date().toISOString()
+                        };
+                        return updatedMessages;
+                    }
+                });
             }
         });
 
         return () => {
             socket.off('getMessage');
         };
-    }, [socket, user, professionalId]);
+    }, [socket, user, participantId]);
 
+    // Scroll to bottom when messages change
     useEffect(() => {
         messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
     const handleSendMessage = async (e) => {
-        if (e) e.preventDefault();
+        if (e) {
+            e.preventDefault();
+        }
     
         // Check for valid message and socket connection
         if (!newMessage.trim() || !socket) {
@@ -177,45 +199,55 @@ const ChatNow = () => {
             // Save content before clearing the input
             const messageContent = newMessage;
             
-            // Add to UI immediately
+            // Add to UI immediately at the end of the list
             setMessages(prev => [...prev, tempMessage]);
             
-            // Clear input
+            // Clear input right away for better UX
             setNewMessage('');
-    
+
             // Emit to socket for real-time updates
             socket.emit('sendMessage', {
                 senderId: user._id,
-                receiverId: professionalId,
+                receiverId: participantId,
                 content: messageContent
             });
-    
+
             // Send to server via API
             const token = localStorage.getItem('token');
             if (!token) throw new Error("No authentication token found");
-    
-            const response = await axios.post(
-                'http://localhost:3000/messages',
-                {
-                    receiverId: professionalId,
-                    content: messageContent
-                },
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
-    
-            console.log("Message sent successfully:", response.data);
-    
-            // Replace temp message with real message from server
-            setMessages(prev => 
-                prev.filter(msg => msg._id !== tempMessage._id)
-                    .concat(response.data.message || response.data)
-            );
-    
+
+            try {
+                const response = await axios.post(
+                    'http://localhost:3000/messages',
+                    {
+                        receiverId: participantId,
+                        content: messageContent
+                    },
+                    { headers: { Authorization: `Bearer ${token}` } }
+                );
+
+                console.log("Message sent successfully:", response.data);
+
+                // Replace temp message with real message from server
+                setMessages(prev => {
+                    const withoutTemp = prev.filter(msg => msg._id !== tempMessage._id);
+                    const serverMessage = response.data.message || response.data;
+                    return [...withoutTemp, serverMessage];
+                });
+
+            } catch (err) {
+                console.error("Error sending message:", err);
+                // Show the error in the UI
+                setError(`Failed to send message: ${err.message}. Please try again.`);
+                // Remove the temp message after short delay
+                setTimeout(() => {
+                    setMessages(prev => prev.filter(msg => !msg.isTemp));
+                }, 2000);
+            }
+
         } catch (err) {
-            console.error("Error sending message:", err);
-            // Show the error in the UI
+            console.error("Outer error sending message:", err);
             setError(`Failed to send message: ${err.message}. Please try again.`);
-            // Remove the temp message after short delay
             setTimeout(() => {
                 setMessages(prev => prev.filter(msg => !msg.isTemp));
             }, 2000);
@@ -251,20 +283,27 @@ const ChatNow = () => {
                         <p>No messages yet. Start the conversation!</p>
                     </div>
                 ) : (
-                    messages.map((message) => (
-                        <div 
-                            key={message._id}
-                            className={`message ${message.sender === user?._id ? 'sent' : 'received'}`}
-                        >
-                            <div className="message-content">{message.content}</div>
-                            <div className="message-timestamp">
-                                {new Date(message.createdAt).toLocaleTimeString([], {
-                                    hour: '2-digit',
-                                    minute: '2-digit'
-                                })}
+                    messages.map((message) => {
+                        // Convert both IDs to string to ensure proper comparison
+                        const messageId = typeof message.sender === 'object' ? message.sender._id : message.sender;
+                        const userId = user?._id;
+                        const isSentByUser = String(messageId) === String(userId);
+                        
+                        return (
+                            <div 
+                                key={message._id}
+                                className={`message ${isSentByUser ? 'sent' : 'received'}`}
+                            >
+                                <div className="message-content">{message.content}</div>
+                                <div className="message-timestamp">
+                                    {new Date(message.createdAt).toLocaleTimeString([], {
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    })}
+                                </div>
                             </div>
-                        </div>
-                    ))
+                        );
+                    })
                 )}
 
                 <div ref={messageEndRef} />
@@ -273,10 +312,9 @@ const ChatNow = () => {
             <form className="message-form" onSubmit={handleSendMessage}>
                 <textarea
                     value={newMessage}
-                    onChange={(e) => {console.log("Textarea value changing:", e.target.value); setNewMessage(e.target.value)}}
+                    onChange={(e) => setNewMessage(e.target.value)}
                     placeholder="Type your message here..."
                     rows="2"
-                    onFocus={(e) => {console.log("Textarea focused:");}}
                     onKeyDown={(e) => {
                         if (e.key === 'Enter' && !e.shiftKey) {
                             e.preventDefault();
@@ -284,10 +322,7 @@ const ChatNow = () => {
                         }
                     }}
                 />
-                <button type="submit" disabled={!newMessage.trim() || !socket} 
-                onClick={(e) => {
-                    e.preventDefault();
-                    handleSendMessage();}}>Send</button>
+                <button type="submit" disabled={!newMessage.trim() || !socket}>Send</button>
             </form>
         </div>
     );

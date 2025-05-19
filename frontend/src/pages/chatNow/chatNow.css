@@ -121,8 +121,10 @@
     resize: none;
     font-family: inherit;
     font-size: 14px;
-    min-height: 40px;
+    min-height: 30px;
+    height: 30px;
     outline: none;
+    width:100%;
   }
   
   .message-form button {
@@ -134,6 +136,9 @@
     cursor: pointer;
     font-weight: 600;
     transition: background-color 0.2s;
+    width: 10%;
+    height: 60%;
+    margin-top: 5px;
   }
   
   .message-form button:hover {
