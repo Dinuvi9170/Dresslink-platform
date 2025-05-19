@@ -1,5 +1,5 @@
 import express from 'express';
-import { createAppointment, getUserAppointments, updateAppointmentStatus, cancelAppointment } from '../controller/appointmentController.js';
+import { createAppointment, getUserAppointments, updateAppointmentStatus, cancelAppointment, provideMeetingId } from '../controller/appointmentController.js';
 import authenticate from '../Middleware/authMiddleware.js';
 
 const appointmentRouter = express.Router();
@@ -15,5 +15,8 @@ appointmentRouter.patch('/status', authenticate, updateAppointmentStatus);
 
 // Cancel an appointment
 appointmentRouter.patch('/:appointmentId/cancel', authenticate, cancelAppointment);
+
+// Provide meeting details for an appointment
+appointmentRouter.patch('/meeting', authenticate, provideMeetingId);
 
 export default appointmentRouter;

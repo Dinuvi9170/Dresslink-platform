@@ -36,6 +36,11 @@ const appointmentSchema = mongoose.Schema({
     type: String,
     required: false,
   },
+  meetingDetails: {
+    link: String,
+    password: String,
+    notes: String
+  },
   createdAt: {
     type: Date,
     default: Date.now,

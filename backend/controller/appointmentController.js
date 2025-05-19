@@ -174,3 +174,33 @@ export const autoUpdateAppointmentStatus = async () => {
     return { success: false, error: error.message };
   }
 };
+
+// provide meeting link and password
+export const provideMeetingId = async (req,res) => {
+    try {
+        const { appointmentId, meetingLink, meetingPassword, meetingNotes } = req.body;
+        
+        const appointment = await Appointment.findById(appointmentId);
+        if (!appointment) {
+            return res.status(404).json({ message: 'Appointment not found' });
+        }
+        
+        // Ensure only the professional can update the meeting
+        if (appointment.professional.toString() !== req.user._id) {
+            return res.status(403).json({ message: 'Unauthorized' });
+        }
+        
+        // Update meeting details
+        appointment.meetingDetails = {
+            link: meetingLink,
+            password: meetingPassword,
+            notes: meetingNotes
+        };
+        
+        await appointment.save();
+        res.status(200).json({ message: 'Meeting details updated successfully' });
+    } catch (error) {
+        console.error('Error updating meeting details:', error);
+        res.status(500).json({ message: 'Failed to update meeting details' });
+    }
+};

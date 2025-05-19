@@ -10,6 +10,13 @@ const ManageAppoints = () => {
     const [filter, setFilter] = useState("all"); 
     const [searchTerm, setSearchTerm] = useState("");
     const [error, setError] = useState(null);
+    
+    // Add these state variables for meeting functionality
+    const [showMeetingModal, setShowMeetingModal] = useState(false);
+    const [selectedAppointment, setSelectedAppointment] = useState(null);
+    const [meetingLink, setMeetingLink] = useState('');
+    const [meetingPassword, setMeetingPassword] = useState('');
+    const [meetingNotes, setMeetingNotes] = useState('');
 
     // Fetch appointments from backend and handle auto-completion
     useEffect(() => {
@@ -227,6 +234,68 @@ const ManageAppoints = () => {
         ).length;
     };
 
+    // NEW CODE: Meeting functionality
+    // Function to open the meeting modal
+    const openMeetingModal = (appointment) => {
+        setSelectedAppointment(appointment);
+        
+        // Pre-fill with existing meeting details if any
+        if (appointment.meetingDetails) {
+            setMeetingLink(appointment.meetingDetails.link || '');
+            setMeetingPassword(appointment.meetingDetails.password || '');
+            setMeetingNotes(appointment.meetingDetails.notes || '');
+        } else {
+            setMeetingLink('');
+            setMeetingPassword('');
+            setMeetingNotes('');
+        }
+        
+        setShowMeetingModal(true);
+    };
+
+    // Function to save meeting details
+    const handleSaveMeeting = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await axios.patch(
+                "http://localhost:3000/appointments/meeting",
+                {
+                    appointmentId: selectedAppointment._id,
+                    meetingLink,
+                    meetingPassword,
+                    meetingNotes
+                },
+                {
+                    headers: { Authorization: `Bearer ${token}` }
+                }
+            );
+            
+            // Update local state
+            setAppointments(prevAppointments => {
+                return prevAppointments.map(appointment => 
+                    appointment._id === selectedAppointment._id 
+                        ? { ...appointment, meetingDetails: {
+                            link: meetingLink,
+                            password: meetingPassword,
+                            notes: meetingNotes
+                          }} 
+                        : appointment
+                );
+            });
+            
+            setShowMeetingModal(false);
+            toast.success("Meeting details saved successfully");
+        } catch (error) {
+            console.error("Error saving meeting details:", error);
+            toast.error("Failed to save meeting details");
+        }
+    };
+
+    // Modal close handler
+    const handleCloseModal = () => {
+        setShowMeetingModal(false);
+    };
+
     return (
         <div className="appointments-manager">
             <div className="appointments-header">
@@ -386,10 +455,20 @@ const ManageAppoints = () => {
                                 </div>
                             </div>
 
-                            {/* Notes (if any) */}
+                            {/* Notes */}
                             {appointment.notes && (
                                 <div className="appointment-notes">
                                     <p>{appointment.notes}</p>
+                                </div>
+                            )}
+
+                            {/* Meeting details */}
+                            {appointment.status === "confirmed" && appointment.meetingDetails && (
+                                <div className="meeting-details">
+                                    <h4>Meeting Details</h4>
+                                    <p><strong>Link:</strong> <a href={appointment.meetingDetails.link} target="_blank" rel="noopener noreferrer">{appointment.meetingDetails.link}</a></p>
+                                    {appointment.meetingDetails.password && <p><strong>Password:</strong> {appointment.meetingDetails.password}</p>}
+                                    {appointment.meetingDetails.notes && <p><strong>Notes:</strong> {appointment.meetingDetails.notes}</p>}
                                 </div>
                             )}
 
@@ -414,6 +493,12 @@ const ManageAppoints = () => {
                                 
                                 {appointment.status === "confirmed" && (
                                     <>
+                                        <button 
+                                            className="meeting-button"
+                                            onClick={() => openMeetingModal(appointment)}
+                                        >
+                                            {appointment.meetingDetails ? "Edit Meeting Link" : "Add Meeting Link"}
+                                        </button>
                                         <button 
                                             className="complete-button"
                                             onClick={() => handleStatusChange(appointment._id, "completed")}
@@ -443,14 +528,80 @@ const ManageAppoints = () => {
                 </div>
             )}
             
-            <div className="refresh-container">
-                <button 
-                    className="refresh-button"
-                    onClick={fetchAppointments}
-                >
-                    Refresh Appointments
-                </button>
-            </div>
+            {/* Meeting Modal */}
+            {showMeetingModal && (
+                <div className="modal-overlay">
+                    <div className="meeting-modal">
+                        <div className="modal-header">
+                            <h2>{selectedAppointment?.meetingDetails ? "Edit Meeting Details" : "Add Meeting Details"}</h2>
+                            <button 
+                                className="close-modal-btn"
+                                onClick={handleCloseModal}
+                            >
+                                ✕
+                            </button>
+                        </div>
+                        
+                        <div className="modal-body">
+                            <div className="form-group">
+                                <label htmlFor="meetingLink">Meeting Link</label>
+                                <input 
+                                    id="meetingLink"
+                                    type="url" 
+                                    value={meetingLink}
+                                    onChange={(e) => setMeetingLink(e.target.value)}
+                                    placeholder="https://zoom.us/j/123456789"
+                                    className="form-input"
+                                    required
+                                />
+                                <small className="form-text">
+                                    Enter your Zoom, Google Meet, or other video meeting URL
+                                </small>
+                            </div>
+                            
+                            <div className="form-group">
+                                <label htmlFor="meetingPassword">Meeting Password (Optional)</label>
+                                <input 
+                                    id="meetingPassword"
+                                    type="text"
+                                    value={meetingPassword}
+                                    onChange={(e) => setMeetingPassword(e.target.value)}
+                                    placeholder="Enter meeting password if required"
+                                    className="form-input"
+                                />
+                            </div>
+                            
+                            <div className="form-group">
+                                <label htmlFor="meetingNotes">Additional Instructions (Optional)</label>
+                                <textarea 
+                                    id="meetingNotes"
+                                    rows="3"
+                                    value={meetingNotes}
+                                    onChange={(e) => setMeetingNotes(e.target.value)}
+                                    placeholder="Any additional instructions for joining the meeting"
+                                    className="form-textarea"
+                                ></textarea>
+                            </div>
+                        </div>
+                        
+                        <div className="modal-footer">
+                            <button 
+                                className="cancel-button"
+                                onClick={handleCloseModal}
+                            >
+                                Cancel
+                            </button>
+                            <button 
+                                className="save-button"
+                                onClick={handleSaveMeeting}
+                                disabled={!meetingLink}
+                            >
+                                Save Meeting Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
