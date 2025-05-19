@@ -1,0 +1,272 @@
+.appointments-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.appointments-container h1 {
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #2c3e50;
+  font-size: 2.2rem;
+}
+
+
+.appointments.loading,
+.appointments.error,
+.no-appointments {
+  text-align: center;
+  padding: 3rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-top: 2rem;
+}
+
+.appointments.error {
+  color: #dc3545;
+  border-left: 4px solid #dc3545;
+}
+
+.no-appointments {
+  color: #6c757d;
+  font-size: 1.1rem;
+}
+
+.no-appointments p:first-child {
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+
+.appointments-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+
+.appointment-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+
+.appointment-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+
+.appointment-card.pending {
+  border-top: 4px solid #ffc107;
+}
+
+.appointment-card.confirmed {
+  border-top: 4px solid #28a745;
+}
+
+.appointment-card.cancelled {
+  border-top: 4px solid #dc3545;
+  opacity: 0.8;
+}
+
+.appointment-card.completed {
+  border-top: 4px solid #17a2b8;
+}
+
+
+.appointment-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #eee;
+  position: relative;
+  background-color: #f8f9fa;
+}
+
+.appointment-header h3 {
+  margin: 0;
+  padding-right: 80px;
+  font-size: 1.2rem;
+  color: #343a40;
+}
+
+
+.status-badge {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.5rem;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 30px;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-warning {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.badge-success {
+  background-color: #28a745;
+}
+
+.badge-danger {
+  background-color: #dc3545;
+}
+
+.badge-info {
+  background-color: #17a2b8;
+}
+
+.badge-secondary {
+  background-color: #6c757d;
+}
+
+
+.appointment-details {
+  padding: 1.5rem;
+}
+
+.appointment-info p {
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.appointment-info strong {
+  font-weight: 600;
+  color: #495057;
+}
+
+
+.meeting-details {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #e8f4f8;
+  border-radius: 8px;
+  border-left: 4px solid #17a2b8;
+}
+
+.meeting-details h4 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  color: #17a2b8;
+  font-size: 1.1rem;
+}
+
+.meeting-details a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.meeting-details a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+
+.appointment-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+
+.appointment-actions button {
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.btn-confirm {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-confirm:hover {
+  background-color: #218838;
+}
+
+.btn-reject, .btn-cancel {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-reject:hover, .btn-cancel:hover {
+  background-color: #c82333;
+}
+
+.btn-meeting {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.btn-meeting:hover {
+  background-color: #138496;
+}
+
+/* Responsive UI */
+@media (max-width: 768px) {
+  .appointments-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .appointment-header h3 {
+    font-size: 1.1rem;
+    padding-right: 0;
+    padding-bottom: 2rem;
+  }
+  
+  .status-badge {
+    top: auto;
+    bottom: 1rem;
+    right: 1.5rem;
+  }
+  
+  .appointment-actions {
+    flex-direction: column;
+  }
+  
+  .appointment-actions button {
+    width: 100%;
+  }
+}
+
+/* For very small screens */
+@media (max-width: 400px) {
+  .appointment-card {
+    min-width: 280px;
+  }
+  
+  .appointments-container {
+    padding: 1rem 0.5rem;
+  }
+}
+
+/* For cancelled appointments, reduce opacity */
+.appointment-card.cancelled .appointment-info,
+.appointment-card.cancelled .appointment-actions {
+  opacity: 0.7;
+}
+
+/* For completed appointments */
+.appointment-card.completed .appointment-info {
+  opacity: 0.8;
+}

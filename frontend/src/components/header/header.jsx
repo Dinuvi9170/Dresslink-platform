@@ -74,6 +74,7 @@ const Header = ({ currentUser, setCurrentUser }) => {
                   )}
                   {roles.includes("supplier") && (
                     <>
+                      <Link to="/appointments"><span>Appointments</span></Link>
                       <Link to="/createSuppliergig"><span>Create Gig</span></Link>
                       <Link to="/manageGigs"><span>My gigs</span></Link>
                     </>

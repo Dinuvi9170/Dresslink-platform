@@ -7,16 +7,21 @@ import { toast } from "react-toastify";
 const ManageAppoints = () => {
     const [appointments, setAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [filter, setFilter] = useState("all"); 
+    const [filter, setFilter] = useState("all");
+    const [searchQuery, setSearchQuery] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
     const [error, setError] = useState(null);
-    
-    // Add these state variables for meeting functionality
+
+    const handleSearch = () => {
+        setSearchTerm(searchQuery);
+    };
+
+    // meeting functionality
     const [showMeetingModal, setShowMeetingModal] = useState(false);
     const [selectedAppointment, setSelectedAppointment] = useState(null);
-    const [meetingLink, setMeetingLink] = useState('');
-    const [meetingPassword, setMeetingPassword] = useState('');
-    const [meetingNotes, setMeetingNotes] = useState('');
+    const [meetingLink, setMeetingLink] = useState("");
+    const [meetingPassword, setMeetingPassword] = useState("");
+    const [meetingNotes, setMeetingNotes] = useState("");
 
     // Fetch appointments from backend and handle auto-completion
     useEffect(() => {
@@ -239,7 +244,7 @@ const ManageAppoints = () => {
     const openMeetingModal = (appointment) => {
         setSelectedAppointment(appointment);
         
-        // Pre-fill with existing meeting details if any
+        // Pre-fill with existing meeting details
         if (appointment.meetingDetails) {
             setMeetingLink(appointment.meetingDetails.link || '');
             setMeetingPassword(appointment.meetingDetails.password || '');
@@ -350,20 +355,33 @@ const ManageAppoints = () => {
                     <input
                         type="text"
                         placeholder="Search by client or service..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                         className="search-input"
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                handleSearch();
+                            }
+                        }}
                     />
-                    {searchTerm && (
+                    <button 
+                        className="search-button"
+                        onClick={() => handleSearch()}
+                    >
+                        Search
+                    </button>
+                    {searchQuery && (
                         <button 
                             className="clear-search"
-                            onClick={() => setSearchTerm("")}
+                            onClick={() => setSearchQuery("")}
                         >
-                            ✕
+                        ✕
                         </button>
                     )}
                 </div>
             </div>
+
+            
 
             {/* Loading state */}
             {loading && (
@@ -393,11 +411,11 @@ const ManageAppoints = () => {
                             <button 
                                 className="clear-filters-button"
                                 onClick={() => {
-                                    setSearchTerm("");
-                                    setFilter("all");
-                                }}
-                            >
-                                Clear Filters
+                                 setSearchTerm("");
+                                 setFilter("all");
+                             }}
+                         >
+                             Clear Filters
                             </button>
                         </>
                     ) : (
@@ -412,9 +430,9 @@ const ManageAppoints = () => {
             {/* Appointments list */}
             {!loading && !error && filteredAppointments.length > 0 && (
                 <div className="appointments-list">
-                    {filteredAppointments.map(appointment => (
-                        <div 
-                            key={appointment._id} 
+                    {filteredAppointments.map((appointment) => (
+                        <div
+                            key={appointment._id}
                             className={`appointment-card ${appointment.status}`}
                         >
                             {/* Status badge */}
@@ -433,9 +451,9 @@ const ManageAppoints = () => {
 
                             {/* Client info */}
                             <div className="client-info">
-                                <h3>
-                                    {appointment.user ? 
-                                        `${appointment.user.fname} ${appointment.user.lname}` : 
+                                <h3>Client: 
+                                     {appointment.user ? 
+                                        ` ${appointment.user.fname} ${appointment.user.lname}` : 
                                         "Client"}
                                 </h3>
                             </div>

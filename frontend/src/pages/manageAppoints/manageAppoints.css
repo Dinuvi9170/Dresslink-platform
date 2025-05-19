@@ -106,7 +106,7 @@
 }
 
 .search-input {
-  width: 100%;
+  width: 85%;
   padding: 14px 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -118,6 +118,13 @@
   outline: none;
   border-color: #3498db;
   box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+.search-button{
+  background-color: #3498db;
+  margin-left: 5px;
+  padding: 5px 20px;
+  border-radius: 5px;
+  color:white;
 }
 
 .clear-search {

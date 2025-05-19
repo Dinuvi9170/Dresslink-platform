@@ -53,9 +53,9 @@ export const getUserAppointments = async (req, res) => {
 
     // If customer, find appointments they booked
     // If professional, find appointments booked with them
-    if (role === 'customer') {
+    if (role === 'customer'|| role === 'supplier') {
       query.user = req.user._id;
-    } else if (role === 'professional') {
+    } else if (role === 'professional' ) {
       query.professional = req.user._id;
     }
 
@@ -204,3 +204,4 @@ export const provideMeetingId = async (req,res) => {
         res.status(500).json({ message: 'Failed to update meeting details' });
     }
 };
+

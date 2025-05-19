@@ -7,7 +7,7 @@ const appointmentRouter = express.Router();
 // Create a new appointment
 appointmentRouter.post('/', authenticate, createAppointment);
 
-// Get current user's appointments ( customer or professional)
+// Get current user's appointments (for professional)
 appointmentRouter.get('/user', authenticate, getUserAppointments);
 
 // Update appointment status (for professionals)
