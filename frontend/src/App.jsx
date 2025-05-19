@@ -20,6 +20,7 @@ import ManageGigs from "./pages/manageGigs/manageGigs";
 import EditSupplier from "./pages/editSupplierGig/editSupplier";
 import EditProf from "./pages/editProfessionalGig/editprof";
 import Profile from "./pages/profile/profile";
+import ManageAppoints from "./pages/manageAppoints/manageAppoints";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -87,7 +88,7 @@ const App = () => {
         <Route path="editSupplierGig/:profileId" element={<EditSupplier />} />
         <Route path="editProfessionalGig/:profileId" element={<EditProf/>} />
         <Route path="profile" element={<Profile currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
-          
+        <Route path="manageAppoints" element={<ManageAppoints />} />  
       </Route>
         
     </Routes>

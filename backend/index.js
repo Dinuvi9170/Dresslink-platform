@@ -12,7 +12,7 @@ import conversationRouter from './routes/conversationRouter.js';
 import messageRouter from './routes/messageRouter.js';
 import supplierRouter from './routes/supplierRouter.js';
 import myfitRouter from './routes/myfitRouter.js';
-
+import { autoUpdateAppointmentStatus } from './controller/appointmentController.js';
 
 dotenv.config();
 connectDB();
@@ -28,6 +28,13 @@ app.use("/conversations", conversationRouter)
 app.use("/messages", messageRouter)
 app.use("/suppliers",supplierRouter)
 app.use("/myfit", myfitRouter)
+
+// Run auto-update every hour
+setInterval(async () => {
+  console.log('Running scheduled appointment status update');
+  const result = await autoUpdateAppointmentStatus();
+  console.log(`Auto-update completed: ${result.count} appointments updated`);
+}, 60 * 60 * 1000);
 
 const server = http.createServer(app);
 const io = new Server(server, {

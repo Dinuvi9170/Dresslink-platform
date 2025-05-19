@@ -141,3 +141,36 @@ export const cancelAppointment = async (req, res) => {
     res.status(500).json({ message: 'Failed to cancel appointment', error: error.message });
   }
 };
+
+// Update status automatically for completed appointments
+export const autoUpdateAppointmentStatus = async () => {
+  try {
+    const currentDate = new Date();
+    
+    // Find confirmed appointments where date and time have passed
+    const pastAppointments = await Appointment.find({
+      status: "confirmed",
+      date: { $lt: currentDate }
+    });
+    
+    // Update all past appointments to completed status
+    for (const appointment of pastAppointments) {
+      // Parse appointment time and date to create a complete datetime
+      const [hours, minutes] = appointment.time.split(':');
+      const appointmentDateTime = new Date(appointment.date);
+      appointmentDateTime.setHours(parseInt(hours, 10), parseInt(minutes, 10));
+      
+      // If appointment time has passed, mark as completed
+      if (appointmentDateTime < currentDate) {
+        appointment.status = "completed";
+        await appointment.save();
+        console.log(`Auto-completed appointment ID: ${appointment._id}`);
+      }
+    }
+    
+    return { success: true, count: pastAppointments.length };
+  } catch (error) {
+    console.error('Error in auto-updating appointments:', error);
+    return { success: false, error: error.message };
+  }
+};
