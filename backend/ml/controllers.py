@@ -370,7 +370,7 @@ class try_on_controller:
             # Make sure the new dress width isn't wider than the silhouette
             if dress_width_new > silhouette_width:
                 dress_width_new = silhouette_width
-                dress_height_new = int(dress_height * (dress_width_new / dress_width))
+                dress_height_new = int(dress_height * (dress_width_new / dress_height))
             
             # Resize dress
             try:
@@ -457,23 +457,59 @@ class try_on_controller:
             if not previous_result:
                 return jsonify({"error": "No previous result provided"}), 400
             
+            logger.info(f"Received previous_result: {previous_result}")
+            
             # Handle different path formats
-            if previous_result.startswith('/api/get-image/'):
+            if previous_result.startswith('http://localhost:5000/api/get-image/'):
+                # Extract relative path from full URL
+                relative_path = previous_result.replace('http://localhost:5000/api/get-image/', '')
+                full_path = os.path.join("e:/Induvidual project/Dresslink-platform/backend/data", relative_path)
+            elif previous_result.startswith('/api/get-image/'):
                 # Extract relative path from API URL
                 relative_path = previous_result.replace('/api/get-image/', '')
                 full_path = os.path.join("e:/Induvidual project/Dresslink-platform/backend/data", relative_path)
-                previous_result = full_path
+            else:
+                # Assume it's already a full path or just a filename
+                full_path = previous_result
+
+            logger.info(f"Converted path: {full_path}")
         
-            logger.info(f"Adjusting fit for image at: {previous_result}")
-        
-            if not os.path.exists(previous_result):
-                return jsonify({"error": f"Previous result not found at {previous_result}"}), 404
+            # Check if file exists, try alternative paths if not
+            if not os.path.exists(full_path):
+                # Try with and without results/ prefix
+                basename = os.path.basename(full_path)
+                alt_paths = [
+                    os.path.join("e:/Induvidual project/Dresslink-platform/backend/data/results", basename),
+                    os.path.join("e:/Induvidual project/Dresslink-platform/backend/data/temp", basename),
+                    os.path.join(temp_dir, basename)
+                ]
+                
+                for path in alt_paths:
+                    if os.path.exists(path):
+                        full_path = path
+                        logger.info(f"Found image at alternative path: {full_path}")
+                        break
+                else:
+                    # If none of the alternative paths worked, try extracting just the filename
+                    if '/' in previous_result:
+                        basename = previous_result.split('/')[-1]
+                        result_path = os.path.join("e:/Induvidual project/Dresslink-platform/backend/data/results", basename)
+                        if os.path.exists(result_path):
+                            full_path = result_path
+                            logger.info(f"Found image using basename: {full_path}")
+                        else:
+                            logger.error(f"Previous result not found at {full_path} or any alternative paths")
+                            return jsonify({"error": f"Previous result not found. Please try again with a different image."}), 404
+                    else:
+                        logger.error(f"Previous result not found at {full_path} or any alternative paths")
+                        return jsonify({"error": f"Previous result not found. Please try again with a different image."}), 404
         
             # Load the image
-            img = cv2.imread(previous_result)
+            img = cv2.imread(full_path)
             if img is None:
                 return jsonify({"error": "Could not load previous result image"}), 500
         
+            # Rest of the function remains the same
             h, w = img.shape[:2]
 
             # Convert to HSV for better color detection
@@ -529,7 +565,7 @@ class try_on_controller:
         
             # Apply shoulder width adjustment
             if shoulder_width != 0:
-            # This is a simplistic implementation - in a real app, you'd need more sophisticated warping
+                # This is a simplistic implementation - in a real app, you'd need more sophisticated warping
                 shoulder_y = int(h * 0.2)  # Approximate shoulder position
                 shoulder_height = int(h * 0.1)
             
@@ -559,14 +595,18 @@ class try_on_controller:
             # Generate a fit description based on adjustments
             fit_description = f"Dress fit adjusted with {tightness:+d} tightness, {length:+d} length, and {shoulder_width:+d} shoulder width."
         
+            # Return both the filename and the full API path for flexibility
             return jsonify({
                 "success": True,
-                "result_image": os.path.basename(result_path),
+                "result_image": f"/api/get-image/temp/{os.path.basename(result_path)}",
+                "result_filename": os.path.basename(result_path),
                 "fit_description": fit_description
             })
         
         except Exception as e:
             logger.error(f"Error adjusting fit: {str(e)}")
+            import traceback
+            logger.error(traceback.format_exc())
             return jsonify({"error": str(e)}), 500
         
 # Visualization controller

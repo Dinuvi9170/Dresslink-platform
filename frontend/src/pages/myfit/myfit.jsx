@@ -223,7 +223,7 @@ const Myfit = () => {
     }
   };
 
-  const handleAdjustFit = async () => {
+    const handleAdjustFit = async () => {
     // Check if user is authenticated
     if (isAuthenticated === false) {
       navigate('/login');
@@ -238,21 +238,17 @@ const Myfit = () => {
     setError(null);
 
     try {
-
-      const imagePath = tryOnResult.result_image;
-
-      let filePath = imagePath;
-      if (imagePath.startsWith('/api/get-image/results/')) {
-        filePath = `e:/Induvidual project/Dresslink-platform/backend/data/results/${imagePath.split('/').pop()}`;
-      }
-
-      const response = await fetch(`${API_BASE_URL}/adjust-fit`, {
+      // Get proper URL for the previous result
+      let previousResult = tryOnResult.result_image;
+      
+      // Make sure we're sending the correct image path to the API
+      const response = await fetch(`${API_BASE_URL}/api/adjust-fit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          previous_result: tryOnResult.result_image,
+          previous_result: previousResult,
           tightness: adjustments.tightness,
           length: adjustments.length,
           shoulder_width: adjustments.shoulder_width
@@ -260,17 +256,15 @@ const Myfit = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to adjust fit');
+        const errorData = await response.text();
+        console.error('Adjust fit error response:', errorData);
+        throw new Error(`Failed to adjust fit: ${response.status}`);
       }
 
       const data = await response.json();
       setTryOnResult({
         ...tryOnResult,
-        result_image: data.result_image.startsWith('/api/') 
-          ? data.result_image 
-          : data.result_image.startsWith('/') 
-            ? data.result_image 
-            : `/${data.result_image}`
+        result_image: data.result_image
       });
     } catch (error) {
       console.error('Error:', error);
