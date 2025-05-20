@@ -51,6 +51,28 @@ const gigSchema = mongoose.Schema({
         required:false,
         }
     ,
+    services:[{
+        type:{
+            name:{
+                type: String,
+                required: true,
+            },
+            description:{
+                type: String,
+                required: true,
+            },
+            deliveryTime:{
+                type: Number,
+                required: true,
+            },
+            price:{
+                type: Number,
+                required: true,
+            }
+        },
+        required: false,
+        default:[]
+    }],
     createdAt:{
         type: Date,
         default: Date.now,

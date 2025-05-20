@@ -1,4 +1,5 @@
 import Gig from "../models/gig.js";
+import Order from "../models/ordermodel.js";
 
 //create professional gig
 export async function creategig(req, res) {
@@ -74,7 +75,22 @@ export async function getgig (req,res){
     if (!gigs) {
       return res.status(404).json({ message: 'Gig not found' });
     }
-    return res.status(200).json(gigs);
+    // Fetch related orders with initialReviews for this gig
+    const orders = await Order.find({
+      gig: _id,
+      'initialReview.rating': { $exists: true }
+    }).populate('client', 'fname lname image');
+    
+    // Format the reviews data from orders
+    const initialReviews = orders.map(order => ({
+      clientName: order.client ? `${order.client.fname} ${order.client.lname}` : 'Anonymous',
+      clientImage: order.client?.image || null,
+      rating: order.initialReview.rating,
+      comment: order.initialReview.comment,
+      givenAt: order.initialReview.givenAt,
+      professionalResponse: order.professionalResponse?.comment
+    }));
+    return res.status(200).json({...gigs.toObject(), initialReviews});
   }
     
   catch (error) {

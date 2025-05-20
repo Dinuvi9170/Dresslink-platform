@@ -1,0 +1,332 @@
+/* hireMe.css */
+
+.hire-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  background-color: #f9fafa;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.hire-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.hire-header h1 {
+  color: #2c3e50;
+  font-size: 2rem;
+}
+
+.professional-summary {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.professional-summary img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.professional-summary h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.starting-price {
+  color: #1abc9c;
+  font-weight: bold;
+}
+
+.hire-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #34495e;
+}
+
+textarea,
+select,
+input[type="file"] {
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background-color: #fff;
+  resize: vertical;
+  width:95%;
+}
+
+textarea:focus,
+select:focus,
+input[type="file"]:focus {
+  outline: none;
+  border-color: #1abc9c;
+}
+
+.service-dropdown {
+  width: 100%;
+}
+
+.completion-date-display {
+  padding: 0.75rem;
+  background-color: #eef6f5;
+  border-radius: 8px;
+  border: 1px solid #dfecec;
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+.date-note {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin-top: 0.5rem;
+}
+
+.image-previews-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.image-preview {
+  position: relative;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  
+}
+.image-preview img{
+  width:50%;
+}
+
+.remove-image-btn {
+  position: absolute ;
+  top: 10px ;
+  right: 10px;
+  background-color: #ff4d4f !important;
+  color: white;
+  border: none;
+  border-radius: 50% ;
+  width: 25px !important;
+  height: 25px !important;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.remove-image-btn:hover {
+  background-color: #ff7875;
+}
+
+.pdf-indicator {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #34495e;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pdf-icon {
+  font-size: 1.5rem;
+}
+
+.bank-slip-instructions {
+  font-size: 0.85rem;
+  color: #7f8c8d;
+  margin-top: 0.5rem;
+}
+
+.form-actions {
+  justify-content: center;
+
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"] {
+  background-color: #1abc9c;
+  color: white;
+  margin-right: 300px;
+  margin-left:-10px;
+  margin-top:-10px;
+  height: 50px;
+}
+
+button[type="submit"]:hover {
+  background-color: #16a085;
+}
+
+.cancel-btn {
+  background-color: red;
+  color: white;
+  height: 50px;
+  margin-top: -10px;
+  font-weight: bold;
+}
+
+.cancel-btn:hover {
+  background-color: #95a5a6;
+}
+
+.error-message {
+  background-color: #ffe6e6;
+  color: #c0392b;
+  padding: 0.75rem 1rem;
+  border-left: 5px solid #e74c3c;
+  border-radius: 6px;
+}
+
+.success-container {
+  text-align: center;
+  background-color: #e8f8f5;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid #1abc9c;
+}
+
+.success-container h2 {
+  color: #1abc9c;
+}
+
+.loading-text,
+.error-text {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+/* Review Modal */
+.review-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.review-modal {
+  background: white;
+  border-radius: 8px;
+  padding: 30px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  animation: modal-appear 0.3s ease-out;
+}
+
+@keyframes modal-appear {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.review-modal h3 {
+  margin-top: 0;
+  color: #333;
+  font-size: 22px;
+}
+
+.star-rating {
+  margin: 20px 0;
+  font-size: 32px;
+}
+
+.star {
+  color: #ddd;
+  cursor: pointer;
+  transition: color 0.2s;
+  margin-right: 5px;
+}
+
+.star:hover,
+.star.active {
+  color: #ffb400;
+}
+
+.review-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  resize: vertical;
+}
+
+.review-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.submit-review-btn {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.submit-review-btn:hover {
+  background-color: #43a047;
+}
+
+.skip-btn {
+  background-color: #f5f5f5;
+  color: #555;
+  padding: 10px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.skip-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.submit-review-btn:disabled,
+.skip-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

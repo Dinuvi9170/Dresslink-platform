@@ -23,6 +23,7 @@ import Profile from "./pages/profile/profile";
 import ManageAppoints from "./pages/manageAppoints/manageAppoints";
 import Appointments from "./pages/appointments/appointments";
 import Messages from "./pages/messages/messages";
+import HireForm from "./pages/hireMe/hireMe";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -93,6 +94,7 @@ const App = () => {
         <Route path="manageAppoints" element={<ManageAppoints />} /> 
         <Route path="appointments" element={<Appointments />} /> 
         <Route path="messages" element={<Messages/>} />
+        <Route path="hireMe/:gigId" element={<HireForm currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
       </Route>
         
     </Routes>
