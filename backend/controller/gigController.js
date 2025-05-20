@@ -283,3 +283,67 @@ export const deleteGig = async (req, res) => {
         });
     }
 };
+
+// search by name
+export async function searchGigs(req, res) {
+  const { search } = req.query;
+  
+  try {
+    if (!search || search.trim() === '') {
+      // Fall back to regular filtering if no search term
+      return await findgig(req, res);
+    }
+
+    const searchRegex = new RegExp(search.trim(), 'i');
+    
+    // Use aggregation for searching by professional name or gig title
+    const pipeline = [
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'user',
+          foreignField: '_id',
+          as: 'userData'
+        }
+      },
+      {
+        $unwind: '$userData'
+      },
+      {
+        $match: {
+          $or: [
+            { title: { $regex: searchRegex } },
+            { description: { $regex: searchRegex } },
+            { category: { $regex: searchRegex } },
+            { 'userData.fname': { $regex: searchRegex } },
+            { 'userData.lname': { $regex: searchRegex } }
+          ]
+        }
+      }
+    ];
+    
+    // Execute the aggregation
+    const results = await Gig.aggregate(pipeline);
+    
+    // Format the results
+    const formattedResults = results.map(gig => ({
+      ...gig,
+      user: {
+        _id: gig.userData._id,
+        fname: gig.userData.fname,
+        lname: gig.userData.lname,
+        image: gig.userData.image,
+        role: gig.userData.role,
+        address: gig.userData.address
+      }
+    }));
+    
+    return res.status(200).json(formattedResults);
+  } catch (error) {
+    console.error("Error searching gigs:", error);
+    return res.status(500).json({
+      error: true,
+      message: error.message || 'Internal server error while searching gigs'
+    });
+  }
+}

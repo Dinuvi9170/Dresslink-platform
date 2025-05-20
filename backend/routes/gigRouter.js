@@ -1,8 +1,11 @@
 import express from 'express';
-import { creategig, getgig, findgig, getAllgigs, getUserProfessionalGigs ,deleteGig} from '../controller/gigController.js';
+import { creategig, getgig, findgig, getAllgigs, getUserProfessionalGigs, searchGigs ,deleteGig} from '../controller/gigController.js';
 import authenticate from '../Middleware/authMiddleware.js';
 
 const gigRouter = express.Router();
+
+//search by name
+gigRouter.get('/searchByName', searchGigs);
 
 //get filtered gigs
 gigRouter.get('/search',findgig);

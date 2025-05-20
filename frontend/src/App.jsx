@@ -75,8 +75,8 @@ const App = () => {
     <Routes>
       <Route path="/" element={<Layout currentUser={currentUser} setCurrentUser={setCurrentUser} />}>
         <Route index element={<Home />} />
-        <Route path="professionals" element={<Professionals />} />
-        <Route path="fabrics" element={<Fabrics />} /> 
+        <Route path="professionals" element={<Professionals />} />        
+        <Route path="fabrics" element={<Fabrics />} />
         <Route path="myfit" element={<Myfit />} />
         <Route path="becomeSeller" element={<BecomeSeller />} />
         <Route path="login" element={<Login setCurrentUser={setCurrentUser}/>}/>

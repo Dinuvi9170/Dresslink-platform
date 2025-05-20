@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./header.css";
+import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Logo from "../../assets/logo.png";
 
 const Header = ({ currentUser, setCurrentUser }) => {
+  const [gigs, setGigs] = useState([]);
   const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const searchQuery = searchParams.get('search') || '';
 
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -12,8 +16,20 @@ const Header = ({ currentUser, setCurrentUser }) => {
 
   const isUser = currentUser && currentUser.email;
   const roles = currentUser?.role || [];
+ 
+  useEffect(() => {
+    const fetchGigs = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/gigs");
+        setGigs(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchGigs();
+  }, []);
 
-  
+
   const handleSignIn = (e) => {
     e.preventDefault();
     navigate("/login");
@@ -23,6 +39,64 @@ const Header = ({ currentUser, setCurrentUser }) => {
     setCurrentUser(null);
     localStorage.removeItem("token");
     navigate("/");
+  };
+
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      const searchTermLower = searchTerm.trim().toLowerCase();
+      
+      // First, check if gigs is an array and has length
+      if (Array.isArray(gigs) && gigs.length > 0) {
+        // Look for a professional by name
+        const foundGig = gigs.find(gig => {
+          // Check professional name (safely)
+          if (gig?.userId) {
+            const fname = gig.userId.fname || "";
+            const lname = gig.userId.lname || "";
+            const fullName = (fname + " " + lname).toLowerCase();
+            return fullName.includes(searchTermLower);
+          } 
+          // If the user data isn't in userId but directly in 'user'
+          else if (gig?.user) {
+            const fname = gig.user.fname || "";
+            const lname = gig.user.lname || "";
+            const fullName = (fname + " " + lname).toLowerCase();
+            return fullName.includes(searchTermLower);
+          }
+          return false;
+        });
+
+        // If a match is found, navigate directly to the gig page
+        if (foundGig) {
+          console.log("Found gig by professional name:", foundGig);
+          navigate(`/gigs/${foundGig._id}`);
+          return;
+        }
+
+        // If no professional name match, look for a gig by title or description
+        const foundGigByTitleOrDesc = gigs.find(gig => {
+          // Check gig title
+          const titleMatch = (gig?.title || "").toLowerCase();
+          // Check description
+          const descMatch = (gig?.description || gig?.desc || "").toLowerCase();
+          
+          return titleMatch.includes(searchTermLower) || descMatch.includes(searchTermLower);
+        });
+
+        if (foundGigByTitleOrDesc) {
+          console.log("Found gig by title/desc:", foundGigByTitleOrDesc);
+          
+          navigate(`/gigs/${foundGigByTitleOrDesc._id}`);
+          return;
+        }
+      }
+      
+      // If no direct match found, search via API
+      const searchPath = '/professionals';
+      const searchParams = new URLSearchParams();
+      searchParams.append('search', searchTerm.trim());
+      navigate(`${searchPath}?${searchParams.toString()}`);
+    }
   };
 
   return (
@@ -43,9 +117,14 @@ const Header = ({ currentUser, setCurrentUser }) => {
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearch();
+              }
+            }}
             />
           </div>
-          <button className="search_button" onClick={() => navigate(`/search?q=${searchTerm}`)}>Search</button>
+          <button className="search_button" onClick= {handleSearch}>Search</button>
         </div>
 
         {/* Right-side links */}
