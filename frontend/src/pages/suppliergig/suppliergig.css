@@ -195,10 +195,11 @@
     color: white;
     font-size: 1rem;
     font-weight: 600;
-    border-radius: 30px;
+    border-radius: 12px;
     cursor: pointer;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
+    width: 300px;
   }
   
   .chat-now-btn:hover {

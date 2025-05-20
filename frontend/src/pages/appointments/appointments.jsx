@@ -118,7 +118,7 @@ const Appointments = () => {
 
   return (
     <div className="appointments-container">
-      <h1>My Tailoring Appointments</h1>
+      <h1>My Appointments</h1>
       
       {!Array.isArray(appointments) || appointments.length === 0 ? (
         <div className="no-appointments">

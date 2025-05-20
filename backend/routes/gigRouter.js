@@ -1,5 +1,5 @@
 import express from 'express';
-import { creategig, getgig, findgig, getAllgigs, getUserProfessionalGigs, searchGigs ,deleteGig} from '../controller/gigController.js';
+import { creategig, getgig, findgig, getAllgigs,updateProfessionalGig , getUserProfessionalGigs, searchGigs ,deleteGig} from '../controller/gigController.js';
 import authenticate from '../Middleware/authMiddleware.js';
 
 const gigRouter = express.Router();
@@ -24,5 +24,8 @@ gigRouter.post('/creategig',authenticate,creategig);
 
 //delete gig
 gigRouter.delete('/:_id',authenticate,deleteGig);
+
+//update gig
+gigRouter.put('/:_id',authenticate,updateProfessionalGig );
 
 export default gigRouter;

@@ -249,7 +249,7 @@ const EditProf = () => {
             
             // Navigate to manage gigs page 
             setTimeout(() => {
-                navigate('/manageSupplierGigs');
+                navigate('/manageGigs');
             }, 1500);
             
         } catch (err) {

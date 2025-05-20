@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import "./App.css";
 import Layout from "./layout";
 import Home from "./pages/home/home";
@@ -29,6 +29,8 @@ import MyOrder from "./pages/myOrder/myOrder";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
+  const location = useLocation();
+  
 
   // Restore user from token when app loads or refreshes
   useEffect(() => {
@@ -71,6 +73,30 @@ const App = () => {
     
     restoreUser();
   }, []);
+
+  useEffect(() => {
+    // Skip automatic scrolling to top on page changes
+    window.history.scrollRestoration = "manual";
+    const savedScrollPosition = sessionStorage.getItem(`scroll-${location.pathname}`);
+    if (savedScrollPosition) {
+      window.scrollTo(0, parseInt(savedScrollPosition));
+    } else {
+      // For new page visits, scroll to top
+      window.scrollTo(0, 0);
+    }
+  }, [location.pathname]);
+
+  // Save scroll position when navigating between pages
+  useEffect(() => {
+    const handleSaveScroll = () => {
+      sessionStorage.setItem(`scroll-${location.pathname}`, window.scrollY.toString());
+    };
+
+    // Save scroll position when user navigates within the app
+    return () => {
+      handleSaveScroll();
+    };
+  }, [location.pathname]);
 
   return (
     <Routes>

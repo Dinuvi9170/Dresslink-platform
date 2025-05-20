@@ -322,10 +322,7 @@ const HireForm = () => {
       // Close modal and redirect
       setShowReviewModal(false);
       
-      // Redirect after successful submission
-      setTimeout(() => {
-        navigate('/');
-      }, 1000);
+     
       
     } catch (err) {
       console.error("Error submitting review:", err);
@@ -371,8 +368,7 @@ const HireForm = () => {
       {success ? (
         <div className="success-container">
           <h2>Request Submitted Successfully!</h2>
-          <p>Your hiring request has been sent to {professionalName}.</p>
-          {!showReviewModal && <p>You'll be redirected to the homepage in a few seconds...</p>}
+          {!showReviewModal}
         </div>
       ) : (
         <>

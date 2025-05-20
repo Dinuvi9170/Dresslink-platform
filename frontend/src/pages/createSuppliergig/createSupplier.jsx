@@ -125,7 +125,7 @@ const CreateSupplier = () => {
     try {
       setUploadStatus(`Uploading ${field} image...`);
       
-      if (file.size > 2 * 1024 * 1024) {
+      if (file.size > 5 * 1024 * 1024) {
         throw new Error("File size exceeds 2MB limit. Please choose a smaller file.");
       }
       

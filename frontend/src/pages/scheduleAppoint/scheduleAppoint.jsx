@@ -136,7 +136,7 @@ const ScheduleAppoint = () => {
             <label htmlFor="time">Select Time:</label>
             <input type="time" id="time" value={selectedTime} onChange={handleTimeChange} required />
 
-            <label htmlFor="notes">Additional Notes (optional):</label>
+            <label htmlFor="notes">Add Notes :</label>
                 <textarea id="notes" value={notes}onChange={handleNotesChange}
                     placeholder="Special requests or information for the professional"
                     rows="4"

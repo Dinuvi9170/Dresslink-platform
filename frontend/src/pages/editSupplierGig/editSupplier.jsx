@@ -93,7 +93,7 @@ const EditSupplier = () => {
                 
                 if (err.response?.status === 401 || err.response?.status === 403) {
                     localStorage.removeItem('token');
-                    navigate('/login', { state: { from: `/editSupplierGig/${ProfileId}` } });
+                    navigate('/login', { state: { from: `/editSupplierGig/${profileId}` } });
                     return;
                 }
                 
@@ -273,10 +273,11 @@ const EditSupplier = () => {
 
             setLoading(false);
             setUploadStatus('Supplier profile updated successfully!');
+            alert("Supplier profile updated successfully!");
             
             // Navigate to manage gigs page after a short delay
             setTimeout(() => {
-                navigate('/manageSupplierGigs');
+                navigate('/manageGigs');
             }, 1500);
             
         } catch (err) {

@@ -21,6 +21,7 @@ const CreateProfessional = () => {
         category: 'tailoring',
         cover: null,
         images: [],
+        services: [{name:'', description:'', deliveryTime:'', price:''}],
     });
 
     // Initialize TipTap editor
@@ -173,6 +174,7 @@ const CreateProfessional = () => {
               description: formData.description,
               price: Number(formData.price),
               category: formData.category,
+              services: formData.services,
               cover: formData.cover, 
               images: formData.images || []
             };
@@ -201,6 +203,32 @@ const CreateProfessional = () => {
             setLoading(false);
             setUploadStatus('');
         }
+    };
+
+    const handleMaterialChange = (index, field, value) => {
+      const updated = [...formData.services];
+      if (field === 'price') {
+      // Only convert to Number if the value is not empty
+        updated[index][field] = value === '' ? '' : Number(value);
+      } else {
+        updated[index][field] = value;
+      }
+      setFormData((prev) => ({ ...prev, services: updated }));
+    };
+
+    const handleAddMaterial = () => {
+      setFormData((prev) => ({
+        ...prev,
+        services: [...prev.services, { name: '',description:'', deliveryTime:'', price: '' }],
+      }));
+    };
+
+    const handleRemoveMaterial = (index) => {
+      if (formData.services.length > 1) {
+        const updated = [...formData.services];
+        updated.splice(index, 1);
+        setFormData((prev) => ({ ...prev, services: updated }));
+      }
     };
 
     return (
@@ -292,7 +320,57 @@ const CreateProfessional = () => {
               <option value="tailoring">Tailoring</option>
               <option value="designing">Designing</option>
             </select>
-            
+
+            <label>Materials & Prices</label>
+            <div className="material-labels-row">
+              <label className='mat-label'>Name</label>
+              <label className='mat-label'>Description</label>
+              <label className='mat-label'>Delivery Time (days)</label>
+              <label className='mat-label'>Price</label>
+            </div>
+            {formData.services.map((service, index) => (
+              <div key={index} className="material-row">
+                <input
+                  type="text"
+                  placeholder="Blouse Stitching"
+                  value={service.name}
+                  onChange={(e) => handleMaterialChange(index, 'name', e.target.value)}
+                  required
+                />
+                <textarea 
+                  placeholder="Service description" 
+                  value={service.description}
+                  onChange={(e) => handleMaterialChange(index, 'description', e.target.value)}
+                  required
+                ></textarea>
+                <input
+                  type="text"
+                  placeholder="ex: 5"
+                  value={service.deliveryTime}
+                  onChange={(e) => handleMaterialChange(index, 'deliveryTime', e.target.value)}
+                  required
+                  className='mat-time'
+                />
+                <input
+                  type="number"
+                  placeholder="Price"
+                  value={service.price}
+                  onChange={(e) => handleMaterialChange(index, 'price', e.target.value)}
+                  required
+                  className='mati-price'
+                />
+                
+                <button 
+                  type="button" 
+                  className="remove-material-btn" 
+                  onClick={() => handleRemoveMaterial(index)}
+                >
+                  X
+                </button>
+              </div>
+            ))}
+            <button className='add' type="button" onClick={handleAddMaterial}>+ Add Material</button>
+                  
             <label>Cover Image(Max 2MB):</label>
             <input type="file" name="cover" accept="image/*" required onChange={(e) => handleImageUpload(e, 'covers')} />
             {formData.cover && (

@@ -37,6 +37,7 @@ export async function creategig(req, res) {
           category: req.body.category || 'tailoring',
           cover: req.body.cover || '',
           images: req.body.images || [],
+          services:req.body.services || [],
           createdAt: new Date(),
       });
       
@@ -201,49 +202,68 @@ export const getUserProfessionalGigs = async (req, res) => {
 // Update a professional gig
 export const updateProfessionalGig = async (req, res) => {
   try {
-    // Check if user is authenticated
+    // Authentication checks...
     if (!req.isAuthenticated || !req.user || !req.user._id) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
 
     const gigId = req.params._id;
-        
+    console.log(`Updating gig with ID: ${gigId}`);
+    console.log(`User ID: ${req.user._id}`);
+
     // Check if the gig exists and belongs to the user
     const existingGig = await Gig.findById(gigId);
-        
+
     if (!existingGig) {
+      console.log(`Gig with ID ${gigId} not found`);
       return res.status(404).json({ message: 'Professional gig not found' });
     }
-        
+
     if (existingGig.user.toString() !== req.user._id.toString()) {
+      console.log(`User ${req.user._id} is not authorized to update gig ${gigId}`);
       return res.status(403).json({ message: 'You can only update your own gigs' });
     }
-        
-    // Update the gig with new data
-    const updatedGig = await Gig.findByIdAndUpdate(
-      gigId, 
-      {
-        user: req.user._id,
-        title: req.body.title || '',
-        description: req.body.description || '',
-        shorttitle: req.body.shorttitle || '',
-        shortdesc: req.body.shortdesc || '',
-        price: parseInt(req.body.price) || 0,
-        category: req.body.category || 'tailoring',
-        cover: req.body.cover || '',
-        images: req.body.images || [],
-      }, 
-      { new: true, runValidators: true }
+
+    // Create update object, preserving existing services
+    const updateData = {
+      title: req.body.title || existingGig.title,
+      description: req.body.description || existingGig.description,
+      shorttitle: req.body.shorttitle || existingGig.shorttitle,
+      shortdesc: req.body.shortdesc || existingGig.shortdesc,
+      price: parseInt(req.body.price) || existingGig.price,
+      category: req.body.category || existingGig.category,
+      cover: req.body.cover || existingGig.cover,
+      images: req.body.images || existingGig.images
+      // Intentionally not updating services
+    };
+
+    console.log("Update data:", updateData);
+
+    // Update the gig with new data, using $set to only update specified fields
+    try {
+      const updatedGig = await Gig.findByIdAndUpdate(
+        gigId,
+        { $set: updateData },
+        { new: true, runValidators: true }
       );
-      res.status(200).json({ 
-        message: 'Professional gig updated successfully', 
-        gig: updatedGig 
+
+      console.log(`Gig ${gigId} updated successfully`);
+      res.status(200).json({
+        message: 'Professional gig updated successfully',
+        gig: updatedGig
       });
+    } catch (updateError) {
+      console.error("Error during gig update:", updateError);
+      return res.status(500).json({
+        error: 'Failed to update professional gig',
+        details: updateError.message
+      });
+    }
   } catch (error) {
     console.error("Error updating professional gig:", error);
-    res.status(500).json({ 
-      error: 'Failed to update professiona gig', 
-      details: error.message 
+    res.status(500).json({
+      error: 'Failed to update professional gig',
+      details: error.message
     });
   }
 };
