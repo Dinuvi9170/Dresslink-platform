@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import "./header.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Logo from "../../assets/logo.png";
 
 const Header = ({ currentUser, setCurrentUser }) => {
+  const location = useLocation();
 
   const [open, setOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   const isUser = currentUser && currentUser.email;
@@ -36,9 +38,14 @@ const Header = ({ currentUser, setCurrentUser }) => {
         {/* Search bar */}
         <div className="search">
           <div className="search_input">
-            <input type="text" placeholder="Search..." />
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
-          <button className="search_button">Search</button>
+          <button className="search_button" onClick={() => navigate(`/search?q=${searchTerm}`)}>Search</button>
         </div>
 
         {/* Right-side links */}

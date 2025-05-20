@@ -41,20 +41,23 @@
   .filters-form {
     margin-bottom: 40px;
     display: flex;
-    justify-content:center;
+    justify-content:center !important;
+    margin-top:10px ;
   }
   
   .filter-container {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    justify-content: center;
+    justify-content: center ;
     align-items: flex-end;
+    margin-left: 120px;
   }
   
   .filter-group {
     display: flex;
     flex-direction: row;
+    
   }  
   
   .filter-group label {
@@ -62,7 +65,7 @@
     margin-bottom: 5px;
     color: #2C3E50;
     margin-right: 10px;
-
+    margin-top: -10px;
   }
   
   .filter-group input,
@@ -71,8 +74,13 @@
     border: 1px solid #ccc;
     border-radius: 6px;
     min-width: 180px;
+    height: 40px;
+    
   }
-  
+  .filter-group input{
+    margin-top: -15px;
+    height:20px;
+  }
   .button-group {
     display: flex;
     flex-direction: column;
@@ -87,6 +95,9 @@
     border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    width: 80px !important;
+    height: 40px !important;
+    text-align: center;
   }
   
   .find-button:hover {

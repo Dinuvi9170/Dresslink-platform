@@ -47,21 +47,6 @@ const Orders = () => {
     fetchOrders();
   }, []);
 
-  const getStatusIcon = (status) => {
-    switch(status) {
-      case 'pending':
-        return <span className="status-icon pending">⏱️</span>;
-      case 'in-progress':
-        return <span className="status-icon in-progress">⚠️</span>;
-      case 'completed':
-        return <span className="status-icon completed">✓</span>;
-      case 'cancelled':
-        return <span className="status-icon cancelled">✗</span>;
-      default:
-        return <span className="status-icon">⏱️</span>;
-    }
-  };
-
   const getStatusClass = (status) => {
     return `status-badge ${status || 'pending'}`;
   };
@@ -94,7 +79,6 @@ const Orders = () => {
     <div className="orders-container">
       <div className="orders-header">
         <h1>My Orders</h1>
-        <p>Manage and track your client orders</p>
       </div>
 
       {Array.isArray(orders) && orders.length === 0 ? (
@@ -121,7 +105,6 @@ const Orders = () => {
                   <div className="order-meta">
                     <div className="order-price">Rs. {(order.budget || 0).toFixed(2)}</div>
                     <div className={getStatusClass(order.status)}>
-                      {getStatusIcon(order.status)}
                       {order.status || 'Pending'}
                     </div>
                   </div>
@@ -154,33 +137,9 @@ const Orders = () => {
                       <p>No payment proof available</p>
                     )}
                   </div>
-
-                  {order.initialReview && (
-                    <div className="order-review">
-                      <h4>Client Initial Review</h4>
-                      <div className="review-stars">
-                        {[...Array(5)].map((_, i) => (
-                          <span 
-                            key={i} 
-                            className={i < (order.initialReview.rating || 0) ? "star filled" : "star"}
-                          >
-                            {i < (order.initialReview.rating || 0) ? "★" : "☆"}
-                          </span>
-                        ))}
-                        <span className="review-date">
-                          {formatDate(order.initialReview.givenAt || new Date())}
-                        </span>
-                      </div>
-                      <p className="review-comment">{order.initialReview.comment || "No comment provided"}</p>
-                    </div>
-                  )}
-                  
-                  <div className="order-actions">
-                    <Link to={`/chat/${order.client?._id || ''}`} className="action-button chat">
+                  <div className="orderactions">
+                    <Link to={`/chatNow/${order.client?._id || ''}`} className=" chat">
                       Chat with Client
-                    </Link>
-                    <Link to={`/orders/${order._id || ''}`} className="action-button view">
-                      View Full Details
                     </Link>
                   </div>
                 </div>

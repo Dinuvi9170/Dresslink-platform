@@ -20,13 +20,13 @@ const categories = [
       link: "/Myfit",
       
     },
-    {
-        img: "images/matching help.png",
-        title: " Style Matching Help",
-        desc: "Get suggestions from professionals based on your preferences",
-        link: "/style-matching-help",
+   // {
+    //    img: "images/matching help.png",
+     //   title: " Style Matching Help",
+    //    desc: "Get suggestions from professionals based on your preferences",
+     //   link: "/style-matching-help",
         
-      }
+     // }
   ];
   
   export default categories;
