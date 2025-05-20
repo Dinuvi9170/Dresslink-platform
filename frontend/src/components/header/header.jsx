@@ -169,7 +169,7 @@ const Header = ({ currentUser, setCurrentUser }) => {
                   {roles.includes("customer") && (
                     <>
                       <Link to="/appointments"><span>Appointments</span></Link>
-                      <Link to="/orders"><span>My Orders</span></Link>
+                      <Link to="/myOrder"><span>My Orders</span></Link>
                     </>
                   )}
                   <span className="logout" onClick={handleLogout}>Logout</span>
