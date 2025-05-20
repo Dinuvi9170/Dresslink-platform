@@ -63,7 +63,7 @@ const Header = ({ currentUser, setCurrentUser }) => {
               {open && (
                 <div className="options">
                   <Link to="/profile"><span>My Profile</span></Link>
-                  <Link to="/chat"><span>Messages</span></Link>
+                  <Link to="/messages"><span>Messages</span></Link>
                   {/* Role-Based Options */}
                   {roles.includes("professional") && (
                     <>

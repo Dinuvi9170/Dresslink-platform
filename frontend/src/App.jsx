@@ -22,6 +22,7 @@ import EditProf from "./pages/editProfessionalGig/editprof";
 import Profile from "./pages/profile/profile";
 import ManageAppoints from "./pages/manageAppoints/manageAppoints";
 import Appointments from "./pages/appointments/appointments";
+import Messages from "./pages/messages/messages";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -91,6 +92,7 @@ const App = () => {
         <Route path="profile" element={<Profile currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
         <Route path="manageAppoints" element={<ManageAppoints />} /> 
         <Route path="appointments" element={<Appointments />} /> 
+        <Route path="messages" element={<Messages/>} />
       </Route>
         
     </Routes>
