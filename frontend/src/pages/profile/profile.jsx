@@ -530,13 +530,13 @@ const Profile = ({ currentUser, setCurrentUser }) => {
                             <div className="role-buttons">
                                 <button 
                                     className="role-btn professional-btn"
-                                    onClick={() => navigate('/become-professional')}
+                                    onClick={() => navigate('/createProfessioonalgig')}
                                 >
                                     Become a Professional
                                 </button>
                                 <button 
                                     className="role-btn supplier-btn"
-                                    onClick={() => navigate('/become-supplier')}
+                                    onClick={() => navigate('/createSuppliergig')}
                                 >
                                     Become a Supplier
                                 </button>

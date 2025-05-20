@@ -51,6 +51,7 @@
   flex: 1;
   min-width: 300px;
   margin-bottom: 50px;
+  width:500px;
 }
 
 .fit-form {
@@ -129,7 +130,6 @@
 
 .form-buttons {
   display: flex;
-  gap: 15px;
   margin-top: 20px;
 }
 
@@ -140,12 +140,16 @@
   cursor: pointer;
   font-weight: 500;
   transition: background-color 0.3s;
+  
 }
 
 .primary-button {
-  background-color: #4caf50;
+  background-color: #4caf50  ;
   color: white;
   flex: 2;
+  width: 250px !important;
+  height: auto !important;
+  margin-left: 50px !important;
 }
 
 .primary-button:hover {
@@ -157,6 +161,8 @@
   color: #333;
   border: 1px solid #ddd;
   flex: 1;
+  margin-left: -270px !important;
+  height: auto;
 }
 
 .secondary-button:hover {
