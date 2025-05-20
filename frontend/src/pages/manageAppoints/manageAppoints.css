@@ -246,7 +246,7 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 }
 
-/* Status styles */
+/* Status styles 
 .appointment-card.pending {
   border-left: 4px solid #f39c12;
 }
@@ -262,7 +262,7 @@
 .appointment-card.cancelled {
   border-left: 4px solid #e74c3c;
 }
-
+*/
 .appointment-status {
   padding: 15px;
   display: flex;
