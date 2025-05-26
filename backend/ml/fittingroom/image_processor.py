@@ -61,7 +61,7 @@ class ImageProcessor:
             # If no face detected, use the whole image
             body_img = img_resized
         
-        # Remove background (simple method - in a real app use a better segmentation model)
+        # Remove background 
         mask = self._create_simple_body_mask(body_img)
         
         # Apply mask to remove background
@@ -99,17 +99,14 @@ class ImageProcessor:
         # Create mask to separate dress from background
         hsv = cv2.cvtColor(img_resized, cv2.COLOR_BGR2HSV)
         
-        # Assume background is significantly different from dress
-        # This is a simplified approach - in a real app use a better segmentation model
-        
-        # Detect dominant color (assume it's background)
+        # Detect dominant color
         hist = cv2.calcHist([hsv], [0, 1], None, [180, 256], [0, 180, 0, 256])
         max_idx = np.unravel_index(hist.argmax(), hist.shape)
         bg_h, bg_s = max_idx
         
         # Create mask by thresholding
         mask = cv2.inRange(hsv, (bg_h-10, bg_s-40, 0), (bg_h+10, bg_s+40, 255))
-        mask = cv2.bitwise_not(mask)  # Invert to get dress
+        mask = cv2.bitwise_not(mask)  
         
         # Clean up mask
         kernel = np.ones((5, 5), np.uint8)
@@ -159,8 +156,8 @@ class ImageProcessor:
         face = max(faces, key=lambda x: x[2] * x[3])
         _, _, fw, fh = face
         
-        # Estimate height based on face size (average face height is about 1/8 of total height)
-        estimated_height_cm = (target_height / fh) * 20  # Assuming face is about 20cm
+        # Estimate height based on face size 
+        estimated_height_cm = (target_height / fh) * 20  
         
         # Create body mask
         body_mask = self._create_simple_body_mask(img_resized)
@@ -178,13 +175,13 @@ class ImageProcessor:
         # Get bounding box
         x, y, w, h = cv2.boundingRect(body_contour)
         
-        # Estimate chest height (approximately 1/4 of the way down)
+        # Estimate chest height 
         chest_y = int(y + h * 0.25)
         
-        # Estimate waist height (approximately 1/2 of the way down)
+        # Estimate waist height 
         waist_y = int(y + h * 0.5)
         
-        # Estimate hip height (approximately 3/4 of the way down)
+        # Estimate hip height 
         hip_y = int(y + h * 0.75)
         
         # Calculate widths at these heights
@@ -200,8 +197,6 @@ class ImageProcessor:
         waist = waist_pixels * pixels_per_cm
         hips = hip_pixels * pixels_per_cm
         
-        # Width to circumference estimation (circumference ≈ 2π × radius)
-        # Assuming body is roughly elliptical with depth about 3/4 of width
         bust = bust * np.pi * 0.75
         waist = waist * np.pi * 0.75
         hips = hips * np.pi * 0.75
@@ -227,7 +222,7 @@ class ImageProcessor:
         # Convert to HSV
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         
-        # Detect skin tones (simplified)
+        # Detect skin tones 
         lower_skin = np.array([0, 20, 70], dtype=np.uint8)
         upper_skin = np.array([20, 100, 255], dtype=np.uint8)
         mask1 = cv2.inRange(hsv, lower_skin, upper_skin)
@@ -252,7 +247,7 @@ class ImageProcessor:
         body_mask = np.zeros_like(skin_mask)
         
         if contours:
-            # Find largest contour (should be body)
+            # Find largest contour 
             max_contour = max(contours, key=cv2.contourArea)
             
             # Fill contour

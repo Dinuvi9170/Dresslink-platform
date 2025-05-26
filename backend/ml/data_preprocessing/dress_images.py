@@ -170,7 +170,7 @@ if __name__ == "__main__":
     processor = DressImageProcessor(
         data_path=r"F:\dresses",
         output_path=r"F:\processed_dresses",
-        image_size=(128, 96)  # Very small images to save memory
+        image_size=(128, 96) 
     )
     
     try:
@@ -178,7 +178,6 @@ if __name__ == "__main__":
         total, categories = processor.process_directory(batch_size=5)
         print(f"Processed {total} images in categories: {categories}")
         
-        # Example: Process a single image
         sample_image = r"F:\dresses\woman\dresses\some_dress.jpg"
         if os.path.exists(sample_image):
             result = processor.process_single_image(sample_image)

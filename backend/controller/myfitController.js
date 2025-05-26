@@ -1,6 +1,5 @@
 // Check authentication status
 export const checkAuthStatus = (req, res) => {
-  // authMiddleware sets isAuthenticated
   if (req.isAuthenticated) {
     return res.status(200).json({ 
       isAuthenticated: true,

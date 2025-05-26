@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import "./gigCard.css";
 import Star from "../../assets/icons/star.png";
-//import UnfilledHeart from "../../assets/icons/unfill-heart.png";
 
 const GigCard = ({ gig }) => {
   return (

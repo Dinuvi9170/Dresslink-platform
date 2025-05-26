@@ -412,8 +412,7 @@ class ModelEvaluator:
             body_model_rule.update_measurements({"bust": bust, "waist": waist, "hips": hips})
             transformer_rule.set_body_model(body_model_rule)
             
-            # Use a simple recommendation logic for testing
-            # In a real implementation, this would be your recommendation algorithm
+            #simple recommendation logic for testing
             if ml_shape == "hourglass":
                 ml_pref_styles = ["elegant", "formal"]
             elif ml_shape == "apple":

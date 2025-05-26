@@ -95,7 +95,6 @@ class BodyModel:
             if key in self.measurements:
                 self.measurements[key] = value
         
-        # If measurements processor is available, use it to enhance measurements
         if self.measurements_processor:
             try:
                 # Get body shape from the processor
@@ -158,7 +157,7 @@ class BodyModel:
         else:
             self.body_shape = 'rectangle'
         
-        # Determine size (simplified approach)
+        # Determine size 
         if bust < 82:
             self.size = 'XS'
         elif bust < 87:
@@ -189,7 +188,7 @@ class BodyModel:
         
         # Apply shape-specific modifications
         if self.body_shape == 'hourglass':
-            # Hourglass: emphasized bust and hips, narrow waist
+            
             shoulder_width_factor = 1.05
             bust_width_factor = 1.0
             waist_width_factor = 0.95
@@ -197,26 +196,26 @@ class BodyModel:
             waist_position_factor = 1.0
             
         elif self.body_shape == 'apple':
-            # Apple: wider upper body, less defined waist
+            
             shoulder_width_factor = 1.1
             bust_width_factor = 1.15
             waist_width_factor = 1.1
             hips_width_factor = 0.95
-            waist_position_factor = 0.9  # Higher waist
+            waist_position_factor = 0.9  
             
         elif self.body_shape == 'pear':
-            # Pear: narrower shoulders, wider hips
+            
             shoulder_width_factor = 0.95
             bust_width_factor = 0.9
             waist_width_factor = 0.95
             hips_width_factor = 1.1
-            waist_position_factor = 1.05  # Lower waist
+            waist_position_factor = 1.05
             
-        else:  # rectangle
-            # Rectangle: balanced proportions
+        else:  
+            
             shoulder_width_factor = 1.0
             bust_width_factor = 1.0
-            waist_width_factor = 1.05  # Less defined waist
+            waist_width_factor = 1.05  
             hips_width_factor = 1.0
             waist_position_factor = 1.0
         
@@ -287,7 +286,7 @@ class BodyModel:
         
         # Create transparent canvas
         canvas = np.ones((self.canvas_size[1], self.canvas_size[0], 4), dtype=np.uint8) * 255
-        canvas[:, :, 3] = 0  # Transparent background
+        canvas[:, :, 3] = 0  
         
         # Draw body
         self._draw_body(canvas)
@@ -318,7 +317,7 @@ class BodyModel:
         arms = self.body_segments['arms']
         legs = self.body_segments['legs']
         
-        # Draw head (simple circle)
+        # Draw head
         head_radius = int(shoulders['width'] * 0.2)
         head_center = (int(shoulders['x']), int(shoulders['y'] - head_radius * 1.2))
         cv2.circle(canvas, head_center, head_radius, self.body_color + (255,), -1)
@@ -349,7 +348,7 @@ class BodyModel:
                      legs, side='right')
         
         # Add bust circles for female body shapes with appropriate size based on body shape
-        if True:  # You can condition this if needed
+        if True:  
             bust_circle_radius = int(bust['width'] / 6)
             if self.body_shape == 'hourglass' or self.body_shape == 'apple':
                 bust_circle_radius = int(bust_circle_radius * 1.2)
@@ -393,13 +392,11 @@ class BodyModel:
         # Create smoother curves based on body shape
         torso_points = []
         
-        # Add extra control points for smoother curves
-        # Left side (shoulder to hip)
         torso_points.append(shoulder_left)
         
         # Add intermediate points with shape-specific adjustments
         if self.body_shape == 'apple':
-            # Apple: fuller upper body
+            # Apple
             bust_control_left = (
                 int(shoulder_left[0] + (bust_left[0] - shoulder_left[0]) * 0.3),
                 int(shoulder_left[1] + (bust_left[1] - shoulder_left[1]) * 0.7)
@@ -409,7 +406,7 @@ class BodyModel:
         torso_points.append(bust_left)
         
         if self.body_shape == 'hourglass':
-            # Hourglass: more pronounced waist curve
+            # Hourglass
             waist_control_left = (
                 int(bust_left[0] - 5),
                 int(bust_left[1] + (waist_left[1] - bust_left[1]) * 0.6)
@@ -419,7 +416,7 @@ class BodyModel:
         torso_points.append(waist_left)
         
         if self.body_shape == 'pear':
-            # Pear: more pronounced hip curve
+            # Pear
             hip_control_left = (
                 int(waist_left[0] - 8),
                 int(waist_left[1] + (hip_left[1] - waist_left[1]) * 0.6)
@@ -431,11 +428,11 @@ class BodyModel:
         # Bottom of torso
         torso_points.append(hip_bottom)
         
-        # Right side (hip to shoulder)
+        # Right side 
         torso_points.append(hip_right)
         
         if self.body_shape == 'pear':
-            # Pear: more pronounced hip curve
+            # Pear
             hip_control_right = (
                 int(hip_right[0] + 8),
                 int(hip_right[1] - (hip_right[1] - waist_right[1]) * 0.4)
@@ -445,7 +442,7 @@ class BodyModel:
         torso_points.append(waist_right)
         
         if self.body_shape == 'hourglass':
-            # Hourglass: more pronounced waist curve
+            # Hourglass
             waist_control_right = (
                 int(waist_right[0] + 5),
                 int(waist_right[1] - (waist_right[1] - bust_right[1]) * 0.4)
@@ -455,7 +452,7 @@ class BodyModel:
         torso_points.append(bust_right)
         
         if self.body_shape == 'apple':
-            # Apple: fuller upper body
+            # Apple
             bust_control_right = (
                 int(bust_right[0] + (shoulder_right[0] - bust_right[0]) * 0.7),
                 int(bust_right[1] - (bust_right[1] - shoulder_right[1]) * 0.3)
@@ -480,7 +477,7 @@ class BodyModel:
         end_x = int(shoulder_point[0] + arms['length'] * np.sin(angle_rad))
         end_y = int(shoulder_point[1] + arms['length'] * np.cos(angle_rad))
         
-        # Arm width - adjust based on body shape
+        # Arm width 
         width = int(arms['width'])
         
         # Create arm contour
@@ -492,10 +489,8 @@ class BodyModel:
             x = int(shoulder_point[0] * (1-t) + end_x * t)
             y = int(shoulder_point[1] * (1-t) + end_y * t)
             
-            # Width at this point (thinner at wrist)
-            # Apply body-shape specific adjustments
             if self.body_shape == 'apple':
-                # Wider arms for apple shape, especially upper arm
+                # Wider arms for apple shape
                 pt_width = int(width * (1.2 - t * 0.7))
             else:
                 pt_width = int(width * (1 - t * 0.5))
@@ -507,7 +502,7 @@ class BodyModel:
             # Add points perpendicular to arm direction
             arm_points.append((int(x + perp_x * pt_width), int(y + perp_y * pt_width)))
         
-        # Add points for other side of arm (in reverse)
+        # Add points for other side of arm 
         for t in np.linspace(1, 0, 10):
             x = int(shoulder_point[0] * (1-t) + end_x * t)
             y = int(shoulder_point[1] * (1-t) + end_y * t)
@@ -539,11 +534,11 @@ class BodyModel:
         width = legs['width']
         thigh_factor = legs.get('thigh_factor', 1.0)
         
-        # Leg angle (slight angle for natural stance)
+        # Leg angle 
         angle = 5 if side == 'left' else -5
         angle_rad = np.radians(angle)
         
-        # End point (foot)
+        # End point 
         end_x = int(hip_point[0] + length * np.sin(angle_rad))
         end_y = int(hip_point[1] + length * np.cos(angle_rad))
         
@@ -556,9 +551,9 @@ class BodyModel:
             x = int(hip_point[0] * (1-t) + end_x * t)
             y = int(hip_point[1] * (1-t) + end_y * t)
             
-            # Width at this point (thinner at ankle)
+           
             # Shape-specific adjustments
-            if t < 0.4:  # Thigh
+            if t < 0.4: 
                 # Apply thigh factor based on body shape
                 pt_width = width * thigh_factor * (1 - t * 0.25)
             elif t < 0.9:  # Calf
@@ -592,7 +587,7 @@ class BodyModel:
         
         leg_points.extend(foot_points)
         
-        # Add points for other side of leg (in reverse)
+        # Add points for other side of leg 
         for t in np.linspace(1, 0, 15):
             x = int(hip_point[0] * (1-t) + end_x * t)
             y = int(hip_point[1] * (1-t) + end_y * t)
@@ -746,7 +741,7 @@ class BodyModel:
         logger.info(f"Body model loaded from JSON: {filepath}")
         return model
 
-# Example usage
+
 if __name__ == "__main__":
     # Create body model with measurements dataset
     measurements_dataset_path = "e:/Induvidual project/Dresslink-platform/backend/data/processed/body_measurements.csv"

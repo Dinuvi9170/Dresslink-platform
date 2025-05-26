@@ -155,7 +155,7 @@ export const autoUpdateAppointmentStatus = async () => {
     
     // Update all past appointments to completed status
     for (const appointment of pastAppointments) {
-      // Parse appointment time and date to create a complete datetime
+      
       const [hours, minutes] = appointment.time.split(':');
       const appointmentDateTime = new Date(appointment.date);
       appointmentDateTime.setHours(parseInt(hours, 10), parseInt(minutes, 10));

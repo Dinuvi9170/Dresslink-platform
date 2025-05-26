@@ -30,7 +30,7 @@ const ManageAppoints = () => {
         // Set up polling to periodically check for appointments that need auto-completion
         const interval = setInterval(() => {
             fetchAppointments();
-        }, 5 * 60 * 1000); // Check every 5 minutes
+        }, 5 * 60 * 1000); 
         
         return () => clearInterval(interval);
     }, []);
@@ -239,7 +239,6 @@ const ManageAppoints = () => {
         ).length;
     };
 
-    // NEW CODE: Meeting functionality
     // Function to open the meeting modal
     const openMeetingModal = (appointment) => {
         setSelectedAppointment(appointment);

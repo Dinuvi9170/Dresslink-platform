@@ -45,11 +45,11 @@ const Header = ({ currentUser, setCurrentUser }) => {
     if (searchTerm.trim()) {
       const searchTermLower = searchTerm.trim().toLowerCase();
       
-      // First, check if gigs is an array and has length
+      // check if gigs is an array and has length
       if (Array.isArray(gigs) && gigs.length > 0) {
         // Look for a professional by name
         const foundGig = gigs.find(gig => {
-          // Check professional name (safely)
+          // Check professional name 
           if (gig?.userId) {
             const fname = gig.userId.fname || "";
             const lname = gig.userId.lname || "";

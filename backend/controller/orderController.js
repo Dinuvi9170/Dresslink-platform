@@ -23,7 +23,7 @@ const createOrder = async (req, res) => {
   try {
     // Create the order record
     const order = await Order.create({
-      client: req.user._id, // Current logged in user is the client
+      client: req.user._id, 
       professional: professionalId,
       gig: gigId,
       jobDescription,
@@ -90,7 +90,7 @@ const getProfessionalOrders = async (req, res) => {
   res.status(200).json(orders);
 };
 
-// Add initial review 
+// Add review 
 const addInitialReview = async (req, res) => {
   try {
     const { rating, comment } = req.body;
@@ -133,97 +133,8 @@ const addInitialReview = async (req, res) => {
     });
   }
 };
-{/*
-//  Update an order status
-const updateOrderStatus = asyncHandler(async (req, res) => {
-  const { status } = req.body;
-  
-  if (!status) {
-    res.status(400);
-    throw new Error('Status is required');
-  }
-
-  // Find the order
-  const order = await Order.findById(req.params.id);
-  
-  if (!order) {
-    res.status(404);
-    throw new Error('Order not found');
-  }
-
-  // Check if user is the professional for this order
-  if (order.professional.toString() !== req.user._id.toString()) {
-    res.status(403);
-    throw new Error('Not authorized to update this order');
-  }
-
-  // Update fields
-  order.status = status;
-  
-  // If completing, set completedAt
-  if (status === 'completed') {
-    order.completedAt = new Date();
-  }
-
-  const updatedOrder = await order.save();
-  
-  res.status(200).json({
-    success: true,
-    message: `Order status updated to ${status}`,
-    order: updatedOrder
-  });
-});
-
-// @desc    Add deliverable to order
-// @route   POST /api/orders/:id/deliverables
-// @access  Private (professional only)
-const addDeliverable = asyncHandler(async (req, res) => {
-  const { fileUrl, description } = req.body;
-  
-  if (!fileUrl) {
-    res.status(400);
-    throw new Error('File URL is required');
-  }
-
-  // Find the order
-  const order = await Order.findById(req.params.id);
-  
-  if (!order) {
-    res.status(404);
-    throw new Error('Order not found');
-  }
-
-  // Check if user is the professional for this order
-  if (order.professional.toString() !== req.user._id.toString()) {
-    res.status(403);
-    throw new Error('Not authorized to update this order');
-  }
-
-  // Initialize deliverables array if it doesn't exist
-  if (!order.deliverables) {
-    order.deliverables = [];
-  }
-
-  // Add the deliverable
-  order.deliverables.push({
-    fileUrl,
-    description: description || '',
-    uploadedAt: new Date()
-  });
-
-  // Save the order
-  const updatedOrder = await order.save();
-  
-  res.status(200).json({
-    success: true,
-    message: 'Deliverable added successfully',
-    order: updatedOrder
-  });
-});
-*/}
 //  Cancel an order (client only, if status is pending)
 const cancelOrder = async (req, res) => {
-  // Find the order
   const order = await Order.findById(req.params.id);
   
   if (!order) {
@@ -237,7 +148,7 @@ const cancelOrder = async (req, res) => {
     throw new Error('Not authorized to cancel this order');
   }
 
-  // Check if order is in a cancellable state (pending)
+  // Check if order is in a cancellable state 
   if (order.status !== 'pending') {
     res.status(400);
     throw new Error('Cannot cancel order that is already in progress or completed');
@@ -256,9 +167,6 @@ const cancelOrder = async (req, res) => {
   });
 };
 
-// @desc    Add client feedback (client only, for completed orders)
-// @route   POST /api/orders/:id/feedback
-// @access  Private (client only)
 const addFeedback = async (req, res) => {
   const { rating, comment } = req.body;
   
@@ -296,18 +204,16 @@ const addFeedback = async (req, res) => {
   
   const updatedOrder = await order.save();
 
-  // Update the gig's rating if applicable
+  // Update the gig's rating 
   if (order.gig) {
     try {
       const gig = await Gig.findById(order.gig);
       if (gig) {
-        // Update gig rating
         gig.totalStars = (gig.totalStars || 0) + rating;
         gig.starNumber = (gig.starNumber || 0) + 1;
         await gig.save();
       }
     } catch (error) {
-      // Log error but don't fail the request
       console.error('Error updating gig rating:', error);
     }
   }
@@ -325,8 +231,6 @@ export {
   getClientOrders,
   getProfessionalOrders,
   addInitialReview,
-  //updateOrderStatus,
-  //addDeliverable,
   cancelOrder,
   addFeedback
 };

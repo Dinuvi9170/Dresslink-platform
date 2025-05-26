@@ -82,16 +82,16 @@ class DressTransformer:
         self.body_model = body_model
         
         # Default background removal settings
-        self.background_threshold = 240  # For simple background removal
+        self.background_threshold = 240 
         self.use_alpha_mask = True
         
         # Transformation settings
         self.resize_method = cv2.INTER_AREA
-        self.padding = 20  # Padding around the dress in pixels
+        self.padding = 20  
         
         # Initialize dress catalog processor
         self.dress_catalog = None
-        self.dress_images = {}  # Cache for loaded dress images
+        self.dress_images = {}  
         
         if dress_catalog_path:
             self.load_dress_catalog(dress_catalog_path)
@@ -411,8 +411,7 @@ class DressTransformer:
         # If dress info is provided and contains type, use that
         if dress_info and 'type' in dress_info:
             return dress_info['type']
-        
-        # Otherwise determine from image
+       
         # Extract alpha channel
         alpha = dress_img[:, :, 3]
         
@@ -432,13 +431,13 @@ class DressTransformer:
         bottom_ratio = max_y / height
         
         if top_ratio < 0.2 and bottom_ratio > 0.8:
-            return "full"  # Full dress/outfit
+            return "full"  
         elif top_ratio < 0.2 and bottom_ratio < 0.7:
-            return "top"   # Top/shirt
+            return "top"  
         elif top_ratio > 0.3 and bottom_ratio > 0.8:
-            return "bottom"  # Bottom/skirt/pants
+            return "bottom" 
         else:
-            return "full"  # Default to full
+            return "full"
     
     def resize_dress_for_body(self, 
                              dress_img: np.ndarray, 
@@ -532,23 +531,23 @@ class DressTransformer:
         # Create a copy of the image to avoid modifying the original
         warped_dress = np.copy(dress_img)
         
-        # Skip warping for rectangular bodies or if the dress is very small
+        
         if body_shape == "rectangle" or \
            dress_img.shape[0] < 100 or dress_img.shape[1] < 50:
             return warped_dress
         
         # Parameters for warping based on body shape
         if body_shape == "hourglass":
-            waist_factor = 0.85  # Inward at waist
-            hip_factor = 1.05 if dress_type in ["full", "bottom"] else 1.0  # Outward at hips
+            waist_factor = 0.85 
+            hip_factor = 1.05 if dress_type in ["full", "bottom"] else 1.0 
         elif body_shape == "apple":
-            waist_factor = 1.15  # Outward at waist
-            hip_factor = 0.95 if dress_type in ["full", "bottom"] else 1.0  # Inward at hips
+            waist_factor = 1.15 
+            hip_factor = 0.95 if dress_type in ["full", "bottom"] else 1.0 
         elif body_shape == "pear":
-            waist_factor = 0.9  # Slight inward at waist
-            hip_factor = 1.15 if dress_type in ["full", "bottom"] else 1.0  # More outward at hips
+            waist_factor = 0.9 
+            hip_factor = 1.15 if dress_type in ["full", "bottom"] else 1.0 
         else:
-            return warped_dress  # No warping needed
+            return warped_dress 
         
         # Calculate vertical reference points
         height = dress_img.shape[0]
@@ -556,16 +555,16 @@ class DressTransformer:
         
         # Split the image into three parts vertically: top, middle (waist), bottom
         if dress_type == "full":
-            waist_y = int(height * 0.45)  # Middle of the dress for waist
-            hip_y = int(height * 0.7)     # Lower part for hips
+            waist_y = int(height * 0.45)  
+            hip_y = int(height * 0.7)   
         elif dress_type == "top":
-            waist_y = int(height * 0.7)  # Bottom part of the top
-            hip_y = height               # No hip part for tops
+            waist_y = int(height * 0.7)
+            hip_y = height               
         elif dress_type == "bottom":
-            waist_y = int(height * 0.2)  # Top part of the bottom
-            hip_y = int(height * 0.5)    # Middle part of the bottom
+            waist_y = int(height * 0.2)  
+            hip_y = int(height * 0.5)   
         
-        # Don't apply warping if image is too small or dress type doesn't need it
+       
         if dress_type == "top" and body_shape == "pear":
             # No warping needed for tops on pear-shaped bodies
             return warped_dress
@@ -574,7 +573,7 @@ class DressTransformer:
             # No warping needed for bottoms on apple-shaped bodies
             return warped_dress
         
-        # Apply horizontal warping
+     
         # Create a map of how much to shift each pixel
         map_x = np.zeros((height, width), np.float32)
         map_y = np.zeros((height, width), np.float32)
@@ -589,7 +588,7 @@ class DressTransformer:
                 # No vertical shift
                 map_y[y, x] = y
                 
-                # Calculate horizontal shift based on vertical position (y)
+                # Calculate horizontal shift based on vertical position
                 if y < waist_y:
                     # Top portion - minimal warping
                     shift_factor = 1.0 + (waist_factor - 1.0) * (y / waist_y) * 0.5
@@ -681,7 +680,7 @@ class DressTransformer:
                     alpha = warped_dress[y, x, 3] / 255.0
                     
                     # Alpha blend
-                    for c in range(3):  # RGB channels
+                    for c in range(3):  
                         result[y_offset + y, x_offset + x, c] = int(
                             alpha * warped_dress[y, x, c] + 
                             (1 - alpha) * body_canvas[y_offset + y, x_offset + x, c]
@@ -756,7 +755,7 @@ class DressTransformer:
             # Good fit
             return 1.0
 
-# Example usage
+
 if __name__ == "__main__":
     # Ensure test files exist
     catalog_path, sample_dir = ensure_test_files_exist()

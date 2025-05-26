@@ -101,21 +101,18 @@ export const sendMessage = async (req, res) => {
         return res.status(403).json({ message: 'Not authorized to send message in this conversation' });
       }
     } 
-    // Otherwise, if receiverId is provided, find or create conversation
+    // if receiverId is provided, find or create conversation
     else if (receiverId) {
-      // Check if conversation exists
       conversation = await Conversation.findOne({
         participants: { $all: [senderId, receiverId] }
       });
       
-      // If not, create new conversation
       if (!conversation) {
         conversation = new Conversation({
           participants: [senderId, receiverId],
           unreadCount: 1
         });
       } else {
-        // Increment unread count
         conversation.unreadCount += 1;
       }
     } else {
@@ -242,7 +239,7 @@ export const deleteMessage = async (req, res) => {
       const latestMessage = await Message.findOne({
         sender: { $in: participants },
         receiver: { $in: participants },
-        _id: { $ne: messageId } // Exclude the deleted message
+        _id: { $ne: messageId }
       }).sort({ createdAt: -1 });
 
       if (latestMessage) {

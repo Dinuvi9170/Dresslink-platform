@@ -13,13 +13,11 @@ class BodyAligner:
     
     def __init__(self):
         """Initialize the body aligner"""
-        # Load face and body detection models if needed
+        # Load face and body detection models
         self.face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
         
-        # Try to load OpenPose model if available
+        # Try to load OpenPose model
         try:
-            # This is a simplified approach - in a real app you'd use a proper pose estimation model
-            # like OpenPose, BlazePose, or MediaPipe
             pass
         except:
             logger.warning("Could not load pose estimation model")

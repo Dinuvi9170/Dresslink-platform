@@ -31,7 +31,7 @@ const Myfit = () => {
     shoulder_width: 0
   });
   
-  // Backend API base URL - ensure it matches your server
+  // Backend API base URL 
   const API_BASE_URL = 'http://localhost:5000';//model
   const NODE_API_URL = 'http://localhost:3000';//authentication
 
@@ -291,22 +291,18 @@ const Myfit = () => {
   const getResultImageUrl = (path) => {
     if (!path) return null;
   
-    // Handle API paths that start with /api/get-image
     if (path.startsWith('/api/get-image/')) {
       return `${API_BASE_URL}${path}`;
     }
   
-    // Handle paths that start with /
     if (path.startsWith('/')) {
       return `${API_BASE_URL}${path}`;
     }
   
-    // Handle full URLs
     if (path.startsWith('http')) {
       return path;
     }
   
-    // For try_on_ or silhouette_ filenames
     if (path.includes('try_on_') || path.includes('silhouette_')) {
       const filename = path.split(/[\\/]/).pop();
       return `${API_BASE_URL}/${filename}`;

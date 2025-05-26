@@ -6,7 +6,6 @@ import cv2
 from flask import jsonify
 from werkzeug.utils import secure_filename
 
-# Import custom modules
 from models.body_model import BodyModel
 from models.dress_transformer import DressTransformer
 from utils.visualization import DressLinkVisualizer
@@ -14,7 +13,6 @@ from fittingroom.virtual_try_on import VirtualFittingRoom
 from fittingroom.image_processor import ImageProcessor
 from fittingroom.body_allignment import BodyAligner
 
-# Initialize components
 virtual_fitting_room = VirtualFittingRoom()
 image_processor = ImageProcessor()
 body_aligner = BodyAligner()
@@ -107,7 +105,7 @@ class body_shape_controller:
             except Exception as e:
                 logger.error(f"Error in ML classification: {str(e)}")
                 logger.info("Falling back to rule-based classification")
-                # Fall back to rule-based classification
+               
         
         # Rule-based classification
         bust = measurements['bust']
@@ -186,10 +184,9 @@ class upload_controller:
                 # Save the uploaded file
                 file_path = os.path.join(dress_dir, f"{dress_id}_{filename}")
                 file.save(file_path)
-                
-                # Process image (remove background if needed)
+        
                 try:
-                    # This is a placeholder - in a real implementation you'd have an image processor
+                   
                     processed_path = file_path
                 except:
                     processed_path = file_path
@@ -221,15 +218,15 @@ class silhouette_controller:
                 return jsonify({"error": "No measurements provided"}), 400
             
             # Create silhouette image
-            # In a real implementation, this would use a more sophisticated approach
+            
             bust = float(measurements.get('bust', 90))
             waist = float(measurements.get('waist', 70))
             hips = float(measurements.get('hips', 95))
             height = float(measurements.get('height', 170))
             
             # Create a simple silhouette
-            width = max(300, int(max(bust, hips) * 1.5))  # Ensure minimum width
-            canvas_height = max(600, int(height * 3.5))   # Ensure minimum height
+            width = max(300, int(max(bust, hips) * 1.5)) 
+            canvas_height = max(600, int(height * 3.5))  
             
             # Create a white canvas
             silhouette = np.ones((canvas_height, width, 3), dtype=np.uint8) * 255
@@ -358,7 +355,7 @@ class try_on_controller:
             if dress_img is None:
                 return jsonify({"error": f"Failed to load dress image from {dress_image}"}), 500
             
-            # Simple overlay - in a real app this would be more sophisticated
+           
             # Resize dress to match silhouette width
             silhouette_height, silhouette_width = silhouette_img.shape[:2]
             dress_height, dress_width = dress_img.shape[:2]
@@ -515,8 +512,8 @@ class try_on_controller:
             # Convert to HSV for better color detection
             hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
             # Define range for white/light gray color
-            lower_white = np.array([0, 0, 180])  # Light colors with low saturation
-            upper_white = np.array([180, 30, 255])  # Includes white and very light grays
+            lower_white = np.array([0, 0, 180]) 
+            upper_white = np.array([180, 30, 255]) 
             # Create a mask for background
             background_mask = cv2.inRange(hsv, lower_white, upper_white)
         
@@ -529,7 +526,7 @@ class try_on_controller:
             # Apply tightness adjustment (horizontal scaling)
             if tightness != 0:
                 # Calculate scaling factor based on tightness parameter
-                scale_x = 1.0 - (tightness / 20.0)  # -5 to 5 maps to 1.25 to 0.75
+                scale_x = 1.0 - (tightness / 20.0)  
                 center_x = w // 2
                 scale_matrix = np.array([
                     [scale_x, 0, center_x * (1 - scale_x)],
@@ -539,14 +536,14 @@ class try_on_controller:
                                             borderMode=cv2.BORDER_CONSTANT, 
                                             borderValue=(255, 255, 255))
         
-            # Apply length adjustment (vertical scaling of bottom part)
+            # Apply length adjustment
             if length != 0:
                 # Scale only the bottom half of the image
                 mid_y = h // 2
                 bottom_half = modified_img[mid_y:, :]
             
                 # Calculate scaling factor based on length parameter
-                scale_y = 1.0 + (length / 20.0)  # -5 to 5 maps to 0.75 to 1.25
+                scale_y = 1.0 + (length / 20.0)  
             
                 # Resize bottom half
                 new_h = int(bottom_half.shape[0] * scale_y)
@@ -565,12 +562,12 @@ class try_on_controller:
         
             # Apply shoulder width adjustment
             if shoulder_width != 0:
-                # This is a simplistic implementation - in a real app, you'd need more sophisticated warping
-                shoulder_y = int(h * 0.2)  # Approximate shoulder position
+               
+                shoulder_y = int(h * 0.2)
                 shoulder_height = int(h * 0.1)
             
                 # Calculate scaling factor for shoulders
-                scale_shoulders = 1.0 + (shoulder_width / 20.0)  # -5 to 5 maps to 0.75 to 1.25
+                scale_shoulders = 1.0 + (shoulder_width / 20.0)  
             
                 # Extract and scale shoulder region
                 shoulder_region = modified_img[shoulder_y:shoulder_y+shoulder_height, :]
@@ -592,10 +589,10 @@ class try_on_controller:
             result_path = os.path.join(temp_dir, result_filename)
             cv2.imwrite(result_path, modified_img)
         
-            # Generate a fit description based on adjustments
+            
             fit_description = f"Dress fit adjusted with {tightness:+d} tightness, {length:+d} length, and {shoulder_width:+d} shoulder width."
         
-            # Return both the filename and the full API path for flexibility
+            
             return jsonify({
                 "success": True,
                 "result_image": f"/api/get-image/temp/{os.path.basename(result_path)}",

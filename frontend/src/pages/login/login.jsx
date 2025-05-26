@@ -20,10 +20,9 @@ const SignIn = ({setCurrentUser}) => {
       // Store token in localStorage;
       localStorage.setItem("token",token);
 
-      // Make sure user object includes image from the response
       const userWithImage = {
         ...user,
-        image: user.image // Default image if none provided
+        image: user.image 
       };
       console.log(user.fname, user.lname, user.email, user.image, user.role);
 

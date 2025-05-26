@@ -31,7 +31,7 @@ class VirtualFittingRoom:
         # Create directories if they don't exist
         os.makedirs(self.templates_dir, exist_ok=True)
         
-        # Load body templates for each body shape if available
+        # Load body templates for each body shape 
         self.body_templates = {}
         for shape in ["hourglass", "apple", "pear", "rectangle"]:
             template_path = os.path.join(self.templates_dir, f"{shape}_template.png")
@@ -68,7 +68,7 @@ class VirtualFittingRoom:
             
         # Use alpha channel if available, otherwise create a mask
         if dress_img.shape[2] == 4:
-            # Image has alpha channel
+           
             dress_mask = dress_img[:,:,3]
             dress_img = dress_img[:,:,0:3]
         else:
@@ -82,17 +82,17 @@ class VirtualFittingRoom:
                 dress_mask, 
                 body_shape, 
                 measurements,
-                silhouette.shape[0],  # Height of silhouette
-                silhouette.shape[1]   # Width of silhouette
+                silhouette.shape[0],  
+                silhouette.shape[1]  
             )
         # Otherwise use body shape templates
         elif body_shape and body_shape in self.body_templates:
-            # Use template for the specific body shape
+            
             transformed_dress, transformed_mask = self._transform_dress_for_body_shape(
                 dress_img, dress_mask, body_shape
             )
         else:
-            # Simple resize to fit silhouette
+            
             transformed_dress = cv2.resize(dress_img, (silhouette.shape[1], silhouette.shape[0]))
             transformed_mask = cv2.resize(dress_mask, (silhouette.shape[1], silhouette.shape[0]))
         
@@ -131,40 +131,40 @@ class VirtualFittingRoom:
         height = measurements.get('height', 165)  # cm
         
         # Calculate proportions relative to standard measurements
-        bust_ratio = bust / 90.0  # Compared to standard 90cm bust
-        waist_ratio = waist / 70.0  # Compared to standard 70cm waist
-        hip_ratio = hips / 95.0  # Compared to standard 95cm hips
+        bust_ratio = bust / 90.0  
+        waist_ratio = waist / 70.0  
+        hip_ratio = hips / 95.0  
         
         # Create transformation mesh
         src_mesh = np.array([
-            [0, 0], [w_dress, 0],  # Top row (shoulders)
-            [0, int(h_dress * 0.3)], [w_dress, int(h_dress * 0.3)],  # Bust row
-            [0, int(h_dress * 0.4)], [w_dress, int(h_dress * 0.4)],  # Waist row
-            [0, int(h_dress * 0.6)], [w_dress, int(h_dress * 0.6)],  # Hip row
-            [0, h_dress], [w_dress, h_dress]  # Bottom row
+            [0, 0], [w_dress, 0],
+            [0, int(h_dress * 0.3)], [w_dress, int(h_dress * 0.3)], 
+            [0, int(h_dress * 0.4)], [w_dress, int(h_dress * 0.4)],  
+            [0, int(h_dress * 0.6)], [w_dress, int(h_dress * 0.6)], 
+            [0, h_dress], [w_dress, h_dress]
         ], dtype=np.float32).reshape(-1, 2)
         
         # Calculate base width for dress at different points
-        base_width = target_width * 0.7  # Base width for standard measurements
+        base_width = target_width * 0.7  
         
         # Width adjustments based on measurements and body shape
-        shoulder_width = base_width * (1.0 + (bust_ratio - 1.0) * 0.5)  # Less affected by bust
+        shoulder_width = base_width * (1.0 + (bust_ratio - 1.0) * 0.5)
         bust_width = base_width * bust_ratio
         waist_width = base_width * waist_ratio
         hip_width = base_width * hip_ratio
-        bottom_width = base_width * (1.0 + (hip_ratio - 1.0) * 0.7)  # Somewhat related to hips
+        bottom_width = base_width * (1.0 + (hip_ratio - 1.0) * 0.7)  
         
         # Adjust for specific body shapes
         if body_shape == "hourglass":
-            waist_width *= 0.95  # Slightly more defined waist
+            waist_width *= 0.95 
         elif body_shape == "apple":
-            waist_width *= 1.05  # Wider waist
-            hip_width *= 0.98  # Slightly narrower hips
+            waist_width *= 1.05 
+            hip_width *= 0.98  
         elif body_shape == "pear":
-            waist_width *= 0.98  # Slightly narrower waist
-            hip_width *= 1.05  # Wider hips
+            waist_width *= 0.98  
+            hip_width *= 1.05  
         elif body_shape == "rectangle":
-            waist_width = (bust_width + hip_width) / 2  # More even distribution
+            waist_width = (bust_width + hip_width) / 2  
         
         # Calculate horizontal offsets to center the dress
         shoulder_offset = (target_width - shoulder_width) / 2
@@ -175,11 +175,11 @@ class VirtualFittingRoom:
         
         # Target mesh with measurements-specific adjustments
         dst_mesh = np.array([
-            [shoulder_offset, 0], [shoulder_offset + shoulder_width, 0],  # Top row (shoulders)
-            [bust_offset, int(target_height * 0.3)], [bust_offset + bust_width, int(target_height * 0.3)],  # Bust row
-            [waist_offset, int(target_height * 0.4)], [waist_offset + waist_width, int(target_height * 0.4)],  # Waist row
-            [hip_offset, int(target_height * 0.6)], [hip_offset + hip_width, int(target_height * 0.6)],  # Hip row
-            [bottom_offset, target_height], [bottom_offset + bottom_width, target_height]  # Bottom row
+            [shoulder_offset, 0], [shoulder_offset + shoulder_width, 0],  
+            [bust_offset, int(target_height * 0.3)], [bust_offset + bust_width, int(target_height * 0.3)],  
+            [waist_offset, int(target_height * 0.4)], [waist_offset + waist_width, int(target_height * 0.4)],  
+            [hip_offset, int(target_height * 0.6)], [hip_offset + hip_width, int(target_height * 0.6)],  
+            [bottom_offset, target_height], [bottom_offset + bottom_width, target_height] 
         ], dtype=np.float32).reshape(-1, 2)
         
         # Apply transformation using thin plate spline
@@ -232,13 +232,13 @@ class VirtualFittingRoom:
         # Apply transformations based on adjustment parameters
         
         # 1. Adjust tightness (width scaling)
-        tightness_scale = 1 - (tightness / 50)  # -10 to +10 becomes 1.2 to 0.8
+        tightness_scale = 1 - (tightness / 50) 
         
         # 2. Adjust length
-        length_change = int(h * (length / 100))  # -10 to +10 becomes -10% to +10% of height
+        length_change = int(h * (length / 100))  
         
         # 3. Adjust shoulder width
-        shoulder_scale = 1 + (shoulder_width / 50)  # -10 to +10 becomes 0.8 to 1.2
+        shoulder_scale = 1 + (shoulder_width / 50) 
         
         # Create transformation matrix
         src_pts = np.array([[0, 0], [w, 0], [0, h], [w, h]], dtype=np.float32)
@@ -248,10 +248,10 @@ class VirtualFittingRoom:
         waist_width_change = int(w * (1 - tightness_scale) / 2)
         
         dst_pts = np.array([
-            [shoulder_width_change, 0],  # Top left
-            [w - shoulder_width_change, 0],  # Top right
-            [waist_width_change, h - length_change],  # Bottom left
-            [w - waist_width_change, h - length_change]  # Bottom right
+            [shoulder_width_change, 0], 
+            [w - shoulder_width_change, 0], 
+            [waist_width_change, h - length_change], 
+            [w - waist_width_change, h - length_change] 
         ], dtype=np.float32)
         
         # Apply perspective transform
@@ -313,8 +313,8 @@ class VirtualFittingRoom:
         h_template, w_template = template.shape[:2]
         
         # Calculate width at different heights based on template
-        waist_height = int(h_template * 0.4)  # Approximate waist position
-        hip_height = int(h_template * 0.6)  # Approximate hip position
+        waist_height = int(h_template * 0.4) 
+        hip_height = int(h_template * 0.6)  
         
         # Get template widths at different heights
         top_width = np.sum(template[int(h_template * 0.2), :, 3] > 0)
@@ -323,10 +323,10 @@ class VirtualFittingRoom:
         
         # Create transformation mesh
         src_mesh = np.array([
-            [0, 0], [w_dress, 0],  # Top row
-            [0, int(h_dress * 0.4)], [w_dress, int(h_dress * 0.4)],  # Waist row
-            [0, int(h_dress * 0.6)], [w_dress, int(h_dress * 0.6)],  # Hip row
-            [0, h_dress], [w_dress, h_dress]  # Bottom row
+            [0, 0], [w_dress, 0],  
+            [0, int(h_dress * 0.4)], [w_dress, int(h_dress * 0.4)], 
+            [0, int(h_dress * 0.6)], [w_dress, int(h_dress * 0.6)], 
+            [0, h_dress], [w_dress, h_dress]  
         ], dtype=np.float32).reshape(-1, 2)
         
         # Calculate scaling factors
@@ -340,10 +340,10 @@ class VirtualFittingRoom:
         hip_adjustment = (w_dress * hip_scale) / 2
         
         dst_mesh = np.array([
-            [w_dress/2 - width_adjustment, 0], [w_dress/2 + width_adjustment, 0],  # Top row
-            [w_dress/2 - waist_adjustment, int(h_dress * 0.4)], [w_dress/2 + waist_adjustment, int(h_dress * 0.4)],  # Waist row
-            [w_dress/2 - hip_adjustment, int(h_dress * 0.6)], [w_dress/2 + hip_adjustment, int(h_dress * 0.6)],  # Hip row
-            [w_dress/2 - width_adjustment, h_dress], [w_dress/2 + width_adjustment, h_dress]  # Bottom row
+            [w_dress/2 - width_adjustment, 0], [w_dress/2 + width_adjustment, 0], 
+            [w_dress/2 - waist_adjustment, int(h_dress * 0.4)], [w_dress/2 + waist_adjustment, int(h_dress * 0.4)], 
+            [w_dress/2 - hip_adjustment, int(h_dress * 0.6)], [w_dress/2 + hip_adjustment, int(h_dress * 0.6)],  
+            [w_dress/2 - width_adjustment, h_dress], [w_dress/2 + width_adjustment, h_dress] 
         ], dtype=np.float32).reshape(-1, 2)
         
         # Apply shape adjustments based on body shape
@@ -365,7 +365,7 @@ class VirtualFittingRoom:
             # Wider hip
             dst_mesh[4][0] -= hip_adjustment * 0.1
             dst_mesh[5][0] += hip_adjustment * 0.1
-        # Rectangle shape - no additional adjustments needed
+        
         
         # Apply transformation using thin plate spline
         tps = cv2.createThinPlateSplineShapeTransformer()
@@ -416,7 +416,7 @@ class VirtualFittingRoom:
         
         # Normalize mask to 0-1 range for alpha blending
         alpha = mask.astype(float) / 255.0
-        alpha = alpha[:, :, np.newaxis]  # Add channel dimension
+        alpha = alpha[:, :, np.newaxis] 
         
         # Apply alpha blending
         result = (1.0 - alpha) * result + alpha * dress_img

@@ -5,17 +5,13 @@ from pathlib import Path
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-# Add parent directory to path for imports
 sys.path.append(str(Path(__file__).parent.parent))
 
-# Import routes module
 from routes import register_routes
 
-# Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# Configuration
 DATA_DIR = os.environ.get('DATA_DIR', 'e:/Induvidual project/Dresslink-platform/backend/data')
 UPLOAD_FOLDER = os.path.join(DATA_DIR, 'uploads')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -24,7 +20,6 @@ CATALOG_PATH = os.path.join(DATA_DIR, 'processed/dress_catalog.csv')
 RESULTS_DIR = os.path.join(DATA_DIR, 'results')
 TEMP_DIR = os.path.join(DATA_DIR, 'temp')
 
-# Create necessary directories
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(RESULTS_DIR, exist_ok=True)
 os.makedirs(TEMP_DIR, exist_ok=True)
@@ -34,10 +29,8 @@ def create_app():
     """Create and configure Flask application"""
     app = Flask(__name__)
     
-    # Configure CORS to allow all origins
     CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
-    # Setup configuration
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload size
     app.config['DATA_DIR'] = DATA_DIR
@@ -47,7 +40,6 @@ def create_app():
     app.config['TEMP_DIR'] = TEMP_DIR
     app.config['ALLOWED_EXTENSIONS'] = ALLOWED_EXTENSIONS
     
-    # Initialize components and store in app config
     try:
         # Load body shape classifier if it exists
         if os.path.exists(MODEL_PATH):
@@ -84,7 +76,6 @@ def create_app():
     
     app.config['allowed_file'] = allowed_file
     
-    # Register routes
     register_routes(app)
     
     return app

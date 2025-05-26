@@ -54,8 +54,8 @@ const HireForm = () => {
   const calculateCompletionDate = (deliveryDays) => {
     const currentDate = new Date();
     const completionDate = new Date(currentDate);
-    completionDate.setDate(currentDate.getDate() + (deliveryDays || 7)); // Default to 7 days if not specified
-    return completionDate.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+    completionDate.setDate(currentDate.getDate() + (deliveryDays || 7)); 
+    return completionDate.toISOString().split('T')[0]; 
   };
 
   // Add effect to fetch gig details
@@ -65,7 +65,6 @@ const HireForm = () => {
         const response = await axios.get(`http://localhost:3000/gigs/${gigId}`);
         setGig(response.data);
         
-        // Set default estimation date (7 days)
         const defaultDate = calculateCompletionDate(7);
         setEstimatedCompletionDate(defaultDate);
         
@@ -160,7 +159,7 @@ const HireForm = () => {
       }
     } else if (serviceId === 'base') {
       // Base service selected
-      const completionDate = calculateCompletionDate(7); // Default 7 days
+      const completionDate = calculateCompletionDate(7); 
       setEstimatedCompletionDate(completionDate);
       
       setFormData({

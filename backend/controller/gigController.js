@@ -4,14 +4,13 @@ import Order from "../models/ordermodel.js";
 //create professional gig
 export async function creategig(req, res) {
   try {
-      // Enhanced authentication debugging
+      
       console.log("Authentication check:", {
           hasUser: !!req.user,
           userId: req.user?._id,
           isAuthenticated: !!req.isAuthenticated
       });
       
-      // Log request body for debugging
       console.log("Request body received:", req.body);
       
       // Check if user is authenticated
@@ -76,7 +75,7 @@ export async function getgig (req,res){
     if (!gigs) {
       return res.status(404).json({ message: 'Gig not found' });
     }
-    // Fetch related orders with initialReviews for this gig
+    // Fetch related orders with reviews for this gig
     const orders = await Order.find({
       gig: _id,
       'initialReview.rating': { $exists: true }
@@ -113,10 +112,8 @@ export async function findgig(req, res) {
   console.log("Filters Received → City:", city, "Min Price:", minPrice, "Max Price:", maxPrice);
   
   try {
-    // Use aggregation for more efficient filtering
     const pipeline = [];
       
-    // Start with a lookup to get user data
     pipeline.push({
       $lookup: {
         from: 'users',
@@ -126,12 +123,12 @@ export async function findgig(req, res) {
       }
     });
       
-    // Unwind the userData array
+   
     pipeline.push({
       $unwind: '$userData'
     });
       
-    // Build match conditions
+    
     const matchConditions = {};
       
     // Price filter
@@ -141,7 +138,7 @@ export async function findgig(req, res) {
       if (!isNaN(maxPrice)) matchConditions.price.$lte = parseInt(maxPrice);
     }
       
-    // City filter - apply at database level when possible
+    // City filter
     if (city) {
       matchConditions['userData.address.city'] = { $regex: new RegExp(city, 'i') };
     }
@@ -151,10 +148,8 @@ export async function findgig(req, res) {
       pipeline.push({ $match: matchConditions });
     }
       
-    // Execute the aggregation
     const filteredGigs = await Gig.aggregate(pipeline);
       
-    // Format the result to match your current structure
     const formattedGigs = filteredGigs.map(gig => ({
       ...gig,
       user: {
@@ -202,7 +197,7 @@ export const getUserProfessionalGigs = async (req, res) => {
 // Update a professional gig
 export const updateProfessionalGig = async (req, res) => {
   try {
-    // Authentication checks...
+    // Check authentication 
     if (!req.isAuthenticated || !req.user || !req.user._id) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
@@ -224,7 +219,6 @@ export const updateProfessionalGig = async (req, res) => {
       return res.status(403).json({ message: 'You can only update your own gigs' });
     }
 
-    // Create update object, preserving existing services
     const updateData = {
       title: req.body.title || existingGig.title,
       description: req.body.description || existingGig.description,
@@ -234,12 +228,11 @@ export const updateProfessionalGig = async (req, res) => {
       category: req.body.category || existingGig.category,
       cover: req.body.cover || existingGig.cover,
       images: req.body.images || existingGig.images
-      // Intentionally not updating services
     };
 
     console.log("Update data:", updateData);
 
-    // Update the gig with new data, using $set to only update specified fields
+    // Update the gig with new data
     try {
       const updatedGig = await Gig.findByIdAndUpdate(
         gigId,
@@ -278,7 +271,7 @@ export const deleteGig = async (req, res) => {
 
         const gigId = req.params._id;
         
-        // First, check if the gig exists and belongs to the user
+        // check if the gig exists and belongs to the user
         const existingGig = await Gig.findById(gigId);
         
         if (!existingGig) {
@@ -310,13 +303,11 @@ export async function searchGigs(req, res) {
   
   try {
     if (!search || search.trim() === '') {
-      // Fall back to regular filtering if no search term
       return await findgig(req, res);
     }
 
     const searchRegex = new RegExp(search.trim(), 'i');
     
-    // Use aggregation for searching by professional name or gig title
     const pipeline = [
       {
         $lookup: {
@@ -342,10 +333,8 @@ export async function searchGigs(req, res) {
       }
     ];
     
-    // Execute the aggregation
     const results = await Gig.aggregate(pipeline);
-    
-    // Format the results
+  
     const formattedResults = results.map(gig => ({
       ...gig,
       user: {

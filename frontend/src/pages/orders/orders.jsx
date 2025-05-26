@@ -27,7 +27,6 @@ const Orders = () => {
           }
         });
         
-        // Add console log to debug the response structure
         console.log('API response:', response.data);
         
         // Ensure orders is always an array
